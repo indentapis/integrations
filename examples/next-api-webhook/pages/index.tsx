@@ -1,6 +1,5 @@
+import { getSignaturePayload, sign } from '@indent/webhook'
 import { useState } from 'react'
-import webhook, { getSignaturePayload, sign } from '@indent/webhook'
-import { timeStamp } from 'console'
 
 const IndexPage = () => {
   const [state, setState] = useState({
