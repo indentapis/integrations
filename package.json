@@ -1,11 +1,11 @@
 {
-  "name": "@indent/integrations",
+  "private": true,
   "version": "0.0.0",
-  "main": "index.js",
+  "name": "@indent/integrations",
   "repository": "https://github.com/indentapis/integrations",
   "author": "Indent Inc <open@indent.com>",
   "license": "Apache-2.0",
-  "private": true,
+  "main": "index.js",
   "dependencies": {
     "@indent/types": "^0.2.1",
     "@indent/webhook": "^0.2.1",
@@ -70,6 +70,9 @@
     "dev": "turbo run dev --parallel",
     "changed": "lerna changed",
     "test": "turbo run test",
-    "ls": "lerna ls"
+    "ls": "lerna ls",
+    "prepublish": "lerna run prepublishOnly",
+    "version-canary": "lerna version prerelease --conventional-commits --preid canary --no-private",
+    "publish-canary": "lerna publish --canary"
   }
 }
