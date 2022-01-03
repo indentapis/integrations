@@ -1,8 +1,9 @@
 build
+coverage
 node_modules
 
-
 packages/**/lib
+packages/**/.turbo
 
 *.log
 .DS_Store

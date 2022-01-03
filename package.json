@@ -14,11 +14,15 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.89",
+    "@types/jest": "^27.4.0",
     "@types/node": "^17.0.6",
     "compression-webpack-plugin": "^9.2.0",
     "fs-extra": "^10.0.0",
+    "jest": "^27.4.5",
     "lerna": "^4.0.0",
     "terser-webpack-plugin": "^5.3.0",
+    "ts-jest": "^27.1.2",
+    "turbo": "^1.0.24",
     "typescript": "^4.5.4",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1"
@@ -26,16 +30,38 @@
   "workspaces": {
     "packages": [
       "packages/stable/*",
-      "packages/beta/*",
-      "examples/*"
+      "packages/beta/*"
     ]
   },
+  "turbo": {
+    "pipeline": {
+      "dev": {
+        "cache": false,
+        "outputs": [
+          "lib/**"
+        ]
+      },
+      "compile": {
+        "dependsOn": [
+          "^compile"
+        ],
+        "outputs": [
+          "lib/**"
+        ]
+      },
+      "test": {
+        "outputs": []
+      }
+    }
+  },
   "scripts": {
-    "ls": "lerna ls",
-    "changed": "lerna changed",
-    "compile": "lerna run compile --ignore next-api-webhook",
     "configure": "yarn install && yarn bootstrap",
-    "build": "lerna run build --exclude next-api-webhook",
-    "bootstrap": "lerna bootstrap && lerna link"
+    "bootstrap": "lerna bootstrap && lerna link",
+    "compile": "turbo run compile",
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "changed": "lerna changed",
+    "test": "turbo run test",
+    "ls": "lerna ls"
   }
 }

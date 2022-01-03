@@ -15,12 +15,12 @@ export default async function handle(
     new ExampleIntegration()
   )
 
-  console.log(status)
+  console.log({
+    status,
+    response,
+  })
 
-  Object.keys(response.headers || {}).forEach((header) =>
-    res.setHeader(header, response.headers[header])
-  )
-
-  res.status(response.statusCode).write(response.body)
-  res.end()
+  // res.writeHead(response.statusCode, response.headers)
+  res.end(response.body)
+  // res.end()
 }

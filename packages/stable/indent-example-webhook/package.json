@@ -2,11 +2,13 @@
   "name": "@indent/example-webhook",
   "main": "lib/index.js",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "files": [
     "lib"
   ],
   "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "test": "jest --config ../../../jest.config.json",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",

@@ -5,6 +5,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    "resolveJsonModule": true,
     "noEmitOnError": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -12,5 +13,5 @@
     "noEmit": false,
     "paths": {}
   },
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules", "lib", "test"]
 }

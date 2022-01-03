@@ -6,22 +6,18 @@ import {
   PullUpdateRequest,
 } from '@indent/base-webhook'
 import { ApplyUpdateResponse, PullUpdateResponse } from '@indent/types'
+import pkg from './package.json'
 
 export class ExampleIntegration implements FullIntegration {
   HealthCheck(): HealthCheckResponse {
-    return {
-      status: {
-        code: 0,
-        message: 'OK',
-      },
-    }
+    return { status: { code: 0 } }
   }
 
   GetInfo(): IntegrationInfo {
     return {
       name: 'indent-example-webhook',
       capabilities: ['ApplyUpdate', 'PullUpdate'],
-      version: '0.0.0',
+      version: pkg.version,
     }
   }
 
@@ -46,13 +42,15 @@ export class ExampleIntegration implements FullIntegration {
       })
     )
 
-    // TODO: check the results for errors
+    // TODO: check results for errors
 
-    return { status: { code: 0 } }
+    return {
+      status: { code: 0, details: { debugOutcome: 'success', results } },
+    }
   }
 
-  MatchPull(_req: PullUpdateRequest): boolean {
-    return true
+  MatchPull(req: PullUpdateRequest): boolean {
+    return req.kinds.map((k) => k.toLowerCase()).includes('example.v1.group')
   }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
