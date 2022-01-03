@@ -2,7 +2,7 @@
   "name": "@indent/example-webhook",
   "main": "lib/index.js",
   "types": "lib/index",
-  "version": "0.0.1-canary.0",
+  "version": "0.0.1-canary.1",
   "files": [
     "lib"
   ],
