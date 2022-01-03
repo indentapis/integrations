@@ -26,7 +26,7 @@ jobs:
           yarn
       - name: bootstrap
         run: |
-          yarn boostrap
+          yarn bootstrap
       - name: build
         run: |
           yarn build
