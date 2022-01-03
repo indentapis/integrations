@@ -1,0 +1,8 @@
+{
+  "name": "aws-okta-groups-webhook",
+  "private": true,
+  "dependencies": {
+    "@indent/provider-aws": "*",
+    "@indent/okta-webhook": "*"
+  }
+}

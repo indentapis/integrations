@@ -1,0 +1,41 @@
+{
+  "name": "@indent/integrations",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/indentapis/integrations",
+  "author": "Indent Inc <open@indent.com>",
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "@indent/types": "^0.2.1",
+    "@indent/webhook": "^0.2.1",
+    "axios": "^0.24.0",
+    "webpack": "^5.65.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.89",
+    "@types/node": "^17.0.6",
+    "compression-webpack-plugin": "^9.2.0",
+    "fs-extra": "^10.0.0",
+    "lerna": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.0",
+    "typescript": "^4.5.4",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/stable/*",
+      "packages/beta/*",
+      "examples/*"
+    ]
+  },
+  "scripts": {
+    "ls": "lerna ls",
+    "changed": "lerna changed",
+    "compile": "lerna run compile --ignore next-api-webhook",
+    "configure": "yarn install && yarn bootstrap",
+    "build": "lerna run build --exclude next-api-webhook",
+    "bootstrap": "lerna bootstrap && lerna link"
+  }
+}

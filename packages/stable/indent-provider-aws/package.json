@@ -1,0 +1,22 @@
+{
+  "name": "@indent/provider-aws",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.0",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "@indent/base-webhook": "*"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.89"
+  }
+}

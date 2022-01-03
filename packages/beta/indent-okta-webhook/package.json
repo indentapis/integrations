@@ -1,0 +1,14 @@
+{
+  "name": "@indent/okta-webhook",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-webhook": "*",
+    "njwt": "^1.2.0"
+  }
+}
