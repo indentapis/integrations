@@ -21,5 +21,8 @@
   },
   "devDependencies": {
     "next": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

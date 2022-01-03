@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.89"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

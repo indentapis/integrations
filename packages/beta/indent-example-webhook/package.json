@@ -16,5 +16,8 @@
   },
   "dependencies": {
     "@indent/base-webhook": "^0.0.1-canary.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
