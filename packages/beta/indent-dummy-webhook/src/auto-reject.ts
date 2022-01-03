@@ -8,9 +8,19 @@ import {
 import { Event } from '@indent/types'
 
 export class AutoRejectIntegration implements DecisionIntegration {
+  _name?: string
+
+  constructor(opts?: { name: string }) {
+    if (opts) {
+      this._name = opts.name
+    }
+  }
+
   GetInfo(): IntegrationInfo {
     return {
-      name: 'auto-reject-decision-webhook',
+      name: ['auto-reject-decision-webhook', this._name]
+        .filter(Boolean)
+        .join('#'),
       version: '0.0.0',
       capabilities: ['Decision'],
     }
