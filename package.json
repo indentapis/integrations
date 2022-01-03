@@ -41,6 +41,14 @@
           "lib/**"
         ]
       },
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "lib/**"
+        ]
+      },
       "compile": {
         "dependsOn": [
           "^compile"
