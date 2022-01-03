@@ -72,6 +72,6 @@
     "test": "turbo run test",
     "ls": "lerna ls",
     "prepublish": "lerna run prepublishOnly",
-    "version-canary": "lerna version prerelease -m 'chore(release): publish-canary' --conventional-commits --preid canary --no-private"
+    "version-canary": "lerna version prerelease -m 'chore(release): publish-canary' --force-publish --conventional-commits --preid canary --no-private"
   }
 }
