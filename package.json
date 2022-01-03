@@ -73,6 +73,6 @@
     "ls": "lerna ls",
     "prepublish": "lerna run prepublishOnly",
     "version-canary": "lerna version prerelease --conventional-commits --preid canary --no-private",
-    "publish-canary": "lerna publish --canary"
+    "publish-canary": "lerna publish --canary --preid canary --no-private"
   }
 }
