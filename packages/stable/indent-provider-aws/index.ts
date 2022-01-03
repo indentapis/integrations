@@ -10,23 +10,14 @@ export function getLambdaHandler({
     event
   ): Promise<APIGatewayProxyResult> => {
     const { headers, multiValueHeaders, body } = event
-    let { status, response } = await handleRequest({
-      body: body || '',
-      headers: { ...headers, ...multiValueHeaders },
-      secret: process.env.INDENT_WEBHOOK_SECRET || '',
-    })
-
-    if (status.code !== 0) {
-      // handle error reporting for lambda
-    }
-
-    if (!response) {
-      response = {
-        statusCode: status.code === 0 ? 200 : 500,
-        body: JSON.stringify({ status }),
-        headers: { 'Content-Type': 'application/json' },
-      }
-    }
+    const { response } = await handleRequest(
+      {
+        body: body || '',
+        headers: { ...headers, ...multiValueHeaders },
+        secret: process.env.INDENT_WEBHOOK_SECRET || '',
+      },
+      ...integrations
+    )
 
     return {
       body: response.body,

@@ -9,13 +9,21 @@ import { ApplyUpdateResponse, PullUpdateResponse } from '@indent/types'
 import pkg from './package.json'
 
 export class ExampleIntegration implements FullIntegration {
+  _name?: string
+
+  constructor(opts?: { name: string }) {
+    if (opts) {
+      this._name = opts.name
+    }
+  }
+
   HealthCheck(): HealthCheckResponse {
     return { status: { code: 0 } }
   }
 
   GetInfo(): IntegrationInfo {
     return {
-      name: 'indent-example-webhook',
+      name: ['indent-example-webhook', this._name].filter(Boolean).join('#'),
       capabilities: ['ApplyUpdate', 'PullUpdate'],
       version: pkg.version,
     }

@@ -42,7 +42,6 @@ export async function handleRequest(
 
     const data = JSON.parse(body)
     const callName = getWebhookCallName(data)
-    console.log('callName', callName)
 
     if (callName === 'GetInfo') {
       const status = {
@@ -105,7 +104,6 @@ export async function handleRequest(
               data as DecisionRequest
             )
           default:
-            console.error('uh did this happen?')
             return Promise.reject()
         }
       })
