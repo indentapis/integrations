@@ -2,7 +2,7 @@
   "name": "@indent/provider-aws",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.5",
+  "version": "0.0.1-canary.6",
   "files": [
     "lib"
   ],
@@ -14,7 +14,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.5",
+    "@indent/base-webhook": "^0.0.1-canary.6",
     "aws-lambda": "^1.0.7"
   },
   "devDependencies": {
