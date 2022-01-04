@@ -1,21 +1,20 @@
-import { BaseHttpResponse } from '@indent/base-webhook'
+import { BaseHttpIntegration, BaseHttpResponse } from '@indent/base-webhook'
 import { Status } from '@indent/types'
-import { AxiosRequestConfig, default as axios } from 'axios'
-import { getToken } from './auth'
+import { AxiosRequestConfig } from 'axios'
+import { getToken } from './okta-auth'
 
 // Required for all authentication
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
-export async function callOktaAPI({
-  method,
-  url,
-  data,
-}: AxiosRequestConfig): Promise<{
+export async function callOktaAPI(
+  scope: BaseHttpIntegration,
+  { method, url, data }: AxiosRequestConfig
+): Promise<{
   status: Status
   response: BaseHttpResponse
 }> {
   const { Authorization } = await getToken()
-  const response = await axios({
+  const response = await scope.Fetch({
     baseURL: /http/.test(OKTA_DOMAIN) ? OKTA_DOMAIN : `https://${OKTA_DOMAIN}`,
     method,
     url,
@@ -38,9 +37,13 @@ export async function callOktaAPI({
     10
   )
   const oktaRateLimitReset = new Date(0)
-  oktaRateLimitReset.setUTCSeconds(parseInt(headers['x-rate-limit-reset'], 10))
+  oktaRateLimitReset.setUTCSeconds(
+    parseInt(headers['x-rate-limit-reset'] || '0', 10)
+  )
   console.log(
-    `  → ${oktaRateLimitRemaining} / ${oktaRateLimitMax} requests to Okta left until ${oktaRateLimitReset.toLocaleString()}`
+    `  → ${oktaRateLimitRemaining} / ${oktaRateLimitMax} requests to Okta left ${
+      oktaRateLimitReset ? `until ${oktaRateLimitReset.toLocaleString()}` : ''
+    }`
   )
 
   // If less than 20% left, wait a minute
@@ -48,7 +51,8 @@ export async function callOktaAPI({
     await new Promise((r) => setTimeout(r, 60 * 1000))
   }
 
-  const linkInfo = parseLinkHeader(headers.link)
+  // TODO: Use linkInfo to auto-paginate
+  // const linkInfo = parseLinkHeader(headers.link)
 
   return {
     status: {},
@@ -56,6 +60,7 @@ export async function callOktaAPI({
       statusCode,
       headers,
       body: JSON.stringify(resData),
+      data: resData,
     },
   }
 }

@@ -1,7 +1,7 @@
 import { addMock } from '@indent/base-webhook'
 import { MergeIntegration, MERGE_API_HOST } from '..'
 
-function setupMergeMocks() {
+function setupMocks() {
   addMock(
     {
       method: 'get',
@@ -43,7 +43,7 @@ describe('MergeIntegration', () => {
   })
 
   describe('PullUpdate', () => {
-    beforeEach(() => setupMergeMocks())
+    beforeEach(() => setupMocks())
 
     it('should not match for unrelated kinds', () => {
       const integration = new MergeIntegration()

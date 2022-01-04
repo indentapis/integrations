@@ -16,5 +16,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@indent/types": "^0.2.1",
+    "@indent/webhook": "^0.2.1",
+    "axios": "^0.24.0"
+  }
 }

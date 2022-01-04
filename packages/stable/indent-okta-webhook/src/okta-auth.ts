@@ -7,7 +7,7 @@ const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 // Service account-based authentication
 const OKTA_TOKEN = process.env.OKTA_TOKEN || ''
 
-// App-based authentication
+// App-based auOktaGroupthentication
 const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID || ''
 const OKTA_PRIVATE_KEY = process.env.OKTA_PRIVATE_KEY || ''
 

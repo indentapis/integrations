@@ -1,2 +1,2 @@
 export * from './okta-group'
-export * from './okta-user'
+export * from './okta-types'

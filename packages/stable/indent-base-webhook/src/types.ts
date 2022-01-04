@@ -41,12 +41,12 @@ export interface BaseIntegration {
 }
 
 export interface PullIntegration extends BaseIntegration {
-  MatchPull(req: PullUpdateRequest): boolean
+  MatchPull?(req: PullUpdateRequest): boolean
   PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse>
 }
 
 export interface ApplyIntegration extends BaseIntegration {
-  MatchApply(req: ApplyUpdateRequest): boolean
+  MatchApply?(req: ApplyUpdateRequest): boolean
   ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse>
 }
 
