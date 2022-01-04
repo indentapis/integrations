@@ -7,7 +7,8 @@ import {
   PullUpdateRequest,
 } from '@indent/base-webhook'
 import { PullUpdateResponse } from '@indent/types'
-import pkg from '../package.json'
+
+const pkg = require('../package.json')
 
 export class MergeIntegration
   extends BaseHttpIntegration

@@ -6,7 +6,8 @@ import {
   PullUpdateRequest,
 } from '@indent/base-webhook'
 import { ApplyUpdateResponse, PullUpdateResponse } from '@indent/types'
-import pkg from './package.json'
+
+const pkg = require('./package.json')
 
 export class NewIntegration implements FullIntegration {
   _name?: string

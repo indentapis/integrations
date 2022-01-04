@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@indent/new-webhook",
   "main": "lib/index.js",
   "types": "lib/index",
@@ -19,5 +20,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "license": "Apache-2.0"
 }
