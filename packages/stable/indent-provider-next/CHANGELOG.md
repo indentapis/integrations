@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.6...@indent/provider-next@0.0.1-canary.7) (2022-01-04)
+
+
+### Bug Fixes
+
+* license, pkg.version, tsconfig ([a39f97f](https://github.com/indentapis/integrations/commit/a39f97fdec58b3dbe34f87eedf6e74ea67a75c58))
+
+
+### Features
+
+* wip ([4438014](https://github.com/indentapis/integrations/commit/44380142e6bf6a6ec8951f2f977ab0d05dbbed41))
+
+
+
+
+
 ## [0.0.1-canary.6](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.5...@indent/provider-next@0.0.1-canary.6) (2022-01-03)
 
 **Note:** Version bump only for package @indent/provider-next

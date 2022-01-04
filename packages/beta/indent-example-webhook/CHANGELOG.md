@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.8](https://github.com/indentapis/integrations/compare/@indent/example-webhook@0.0.1-canary.7...@indent/example-webhook@0.0.1-canary.8) (2022-01-04)
+
+
+### Bug Fixes
+
+* license, pkg.version, tsconfig ([a39f97f](https://github.com/indentapis/integrations/commit/a39f97fdec58b3dbe34f87eedf6e74ea67a75c58))
+* pkg refs ([748174c](https://github.com/indentapis/integrations/commit/748174cad8c4caa0521335cf8a3a4661e38c4108))
+
+
+### Features
+
+* okta-webhook mocks ([d145531](https://github.com/indentapis/integrations/commit/d1455319f2f30b5b986224b63d60ceb59dfff389))
+* wip ([4438014](https://github.com/indentapis/integrations/commit/44380142e6bf6a6ec8951f2f977ab0d05dbbed41))
+
+
+
+
+
 ## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/example-webhook@0.0.1-canary.6...@indent/example-webhook@0.0.1-canary.7) (2022-01-03)
 
 **Note:** Version bump only for package @indent/example-webhook
