@@ -1,6 +1,8 @@
 {
   "name": "@indent/okta-webhook",
   "version": "0.0.1-canary.6",
+  "main": "lib/index",
+  "types": "lib/index",
   "scripts": {
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
