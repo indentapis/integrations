@@ -1,9 +1,9 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const mocks = {}
 
-export function addMock(url, data) {
-  mocks[url] = data
+export function addMock(config: AxiosRequestConfig, res: AxiosResponse) {
+  mocks[getConfigKey(config)] = res
 }
 
 const getConfigKey = (config: AxiosRequestConfig) =>
@@ -11,7 +11,7 @@ const getConfigKey = (config: AxiosRequestConfig) =>
 
 const isMocked = (config: AxiosRequestConfig) => getConfigKey(config) in mocks
 
-const getMockError = (config: AxiosRequestConfig) => {
+const getMockErrorWithResponse = (config: AxiosRequestConfig) => {
   const mockError: any = new Error()
   mockError.mockData = mocks[getConfigKey(config)]
   mockError.config = config
@@ -48,11 +48,13 @@ const getMockResponse = (mockError) => {
 export function attachMockInterceptors(client: AxiosInstance) {
   client.interceptors.request.use(
     (config) => {
+      const configKey = getConfigKey(config)
+
       if (isMocked(config)) {
-        console.log('[REQ:MOCK]' + config.url)
-        return getMockError(config)
+        console.log('[REQ:MOCK] ' + configKey)
+        return getMockErrorWithResponse(config)
       }
-      console.log('[REQ]' + config.url)
+      console.log('[REQ] ' + getConfigKey(config))
       return config
     },
     (error) => Promise.reject(error)

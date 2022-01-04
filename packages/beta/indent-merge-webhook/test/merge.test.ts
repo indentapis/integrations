@@ -1,4 +1,31 @@
-import { MergeIntegration } from '..'
+import { addMock } from '@indent/base-webhook'
+import { MergeIntegration, MERGE_API_HOST } from '..'
+
+function setupMergeMocks() {
+  addMock(
+    {
+      method: 'get',
+      url: '/employees',
+      baseURL: MERGE_API_HOST,
+    },
+    {
+      status: 200,
+      statusText: '200',
+      headers: {},
+      data: {
+        results: [
+          {
+            id: 'example-123',
+            display_full_name: 'Example User',
+            work_email: 'user@example.com',
+            manager: 'manager@example.com',
+          },
+        ],
+      },
+      config: {},
+    }
+  )
+}
 
 describe('MergeIntegration', () => {
   describe('Base functionality', () => {
@@ -16,6 +43,8 @@ describe('MergeIntegration', () => {
   })
 
   describe('PullUpdate', () => {
+    beforeEach(() => setupMergeMocks())
+
     it('should not match for unrelated kinds', () => {
       const integration = new MergeIntegration()
       expect(integration.MatchPull({ kinds: ['random-kind'] })).toBeFalsy()

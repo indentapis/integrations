@@ -24,7 +24,6 @@ export class BaseHttpIntegration {
   }
 
   Fetch(config: AxiosRequestConfig): Promise<AxiosResponse> {
-    console.log(`Fetch: ${config.url}`)
     // TODO: Add intercepting/replaying in test
     if (process.env.NODE_ENV === 'test' || this._name?.includes('?mock=true')) {
       attachMockInterceptors(this._axios)

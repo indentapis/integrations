@@ -7,8 +7,12 @@ import {
   PullUpdateRequest,
 } from '@indent/base-webhook'
 import { PullUpdateResponse } from '@indent/types'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const pkg = require('../package.json')
+
+export const MERGE_API_HOST =
+  process.env.MERGE_API_HOST || 'https://api.merge.dev/api/hris/v1'
 
 export class MergeIntegration
   extends BaseHttpIntegration
@@ -36,18 +40,17 @@ export class MergeIntegration
     return req.kinds.map((k) => k.toLowerCase()).includes('merge.v1.Employee')
   }
 
-  // FetchMerge(
-  //   config: AxiosRequestConfig<any>
-  // ): Promise<AxiosResponse<any, any>> {
-  //   console.log('FetchMerge')
-  //   config.baseURL = 'https://api.merge.dev/api/hris/v1'
-  //   config.headers = { Authorization: `Bearer ${process.env.MERGE_API_KEY}` }
-  //   return this.Fetch(config)
-  // }
+  FetchMerge(
+    config: AxiosRequestConfig<any>
+  ): Promise<AxiosResponse<any, any>> {
+    config.baseURL = MERGE_API_HOST
+    config.headers = { Authorization: `Bearer ${process.env.MERGE_API_KEY}` }
+    return this.Fetch(config)
+  }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     return {
-      resources: [] /*await this.FetchMerge({
+      resources: await this.FetchMerge({
         url: '/employees',
       }).then((r) => {
         return r.data.results.map((r) => ({
@@ -59,7 +62,7 @@ export class MergeIntegration
             manager: r.manager,
           },
         }))
-      }),*/,
+      }),
     }
   }
 }
