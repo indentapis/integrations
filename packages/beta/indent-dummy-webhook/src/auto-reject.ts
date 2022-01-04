@@ -2,7 +2,7 @@ import {
   DecisionIntegration,
   DecisionResponse,
   HealthCheckResponse,
-  IntegrationInfo,
+  IntegrationInfoResponse,
   WriteRequest,
 } from '@indent/base-webhook'
 import { Event } from '@indent/types'
@@ -16,7 +16,7 @@ export class AutoRejectIntegration implements DecisionIntegration {
     }
   }
 
-  GetInfo(): IntegrationInfo {
+  GetInfo(): IntegrationInfoResponse {
     return {
       name: ['auto-reject-decision-webhook', this._name]
         .filter(Boolean)

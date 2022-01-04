@@ -1,6 +1,6 @@
 {
-  "name": "@indent/merge-webhook",
-  "main": "lib/index",
+  "name": "@indent/new-webhook",
+  "main": "lib/index.js",
   "types": "lib/index",
   "version": "0.0.0",
   "files": [
@@ -8,14 +8,14 @@
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.json merge.*",
+    "test": "jest --config ../../../jest.config.json",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.5"
+    "@indent/base-webhook": "*"
   },
   "publishConfig": {
     "access": "public"

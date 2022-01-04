@@ -8,7 +8,7 @@ import {
 import { ApplyUpdateResponse, PullUpdateResponse } from '@indent/types'
 import pkg from './package.json'
 
-export class ExampleIntegration implements FullIntegration {
+export class NewIntegration implements FullIntegration {
   _name?: string
 
   constructor(opts?: { name: string }) {

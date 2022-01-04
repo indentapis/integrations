@@ -1,6 +1,6 @@
 {
   "extends": "../../../tsconfig.build.json",
-  "include": ["src/**/*"],
+  "include": ["*.ts"],
   "exclude": ["test"],
   "compilerOptions": {
     "outDir": "./lib"

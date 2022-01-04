@@ -25,7 +25,7 @@ export type BaseHttpResponse = {
   data?: any
 }
 
-export type IntegrationInfo = {
+export type IntegrationInfoResponse = {
   name: string
   version: string
   capabilities: string[]
@@ -36,7 +36,7 @@ export type HealthCheckResponse = {
 }
 
 export interface BaseIntegration {
-  GetInfo(): IntegrationInfo
+  GetInfo(): IntegrationInfoResponse
   HealthCheck(): HealthCheckResponse
 }
 

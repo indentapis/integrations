@@ -2,16 +2,15 @@ import {
   ApplyIntegration,
   ApplyUpdateRequest,
   HealthCheckResponse,
-  IntegrationInfo,
-  WriteRequest,
+  IntegrationInfoResponse,
 } from '@indent/base-webhook'
 import { ApplyUpdateResponse } from '@indent/types'
 import { callOktaAPI } from './api'
 
-export class OktaGroupIntegration implements ApplyIntegration {
-  GetInfo(): IntegrationInfo {
+export class OktaProfileIntegration implements ApplyIntegration {
+  GetInfo(): IntegrationInfoResponse {
     return {
-      name: 'indent-okta-groups-webhook',
+      name: 'indent-okta-profile-webhook',
       capabilities: ['ApplyUpdate'],
       version: '0.0.0',
     }
@@ -26,14 +25,18 @@ export class OktaGroupIntegration implements ApplyIntegration {
     }
   }
 
-  MatchApply(req: WriteRequest): boolean {
+  MatchApply(req: ApplyUpdateRequest): boolean {
+    const event = req.events.filter(
+      (e) => e.event === 'access/grant' || e.event === 'access/revoke'
+    )[0]
+
+    if (!event.resources) {
+      return false
+    }
+
     return (
-      req.events.filter((e) =>
-        Boolean(
-          e.resources?.filter((r) =>
-            r.kind?.toLowerCase().includes('okta.v1.group')
-          ).length
-        )
+      event.resources.filter((r) =>
+        r.kind?.toLowerCase().includes('okta.v1.group')
       ).length > 0
     )
   }
@@ -51,10 +54,4 @@ export class OktaGroupIntegration implements ApplyIntegration {
 
     return { status }
   }
-
-  // PullUpdate(kinds: string[], flags?: Record<string,string>): PullUpdateResponse {
-  //   return {
-  //     resources: []
-  //   }
-  // }
 }

@@ -6,6 +6,20 @@
   "author": "Indent Inc <open@indent.com>",
   "license": "Apache-2.0",
   "main": "index.js",
+  "scripts": {
+    "configure": "yarn install && yarn bootstrap",
+    "bootstrap": "lerna bootstrap && lerna link",
+    "compile": "turbo run compile",
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "changed": "lerna changed",
+    "test": "turbo run test",
+    "clean-build": "turbo run build --no-cache --force",
+    "prepublish": "lerna run prepublishOnly",
+    "publish-canary": "lerna publish --canary",
+    "version-canary": "lerna version prerelease -m 'chore(release): publish-canary' --conventional-commits --preid canary --no-private",
+    "version-canary-force": "yarn version-canary --force-publish"
+  },
   "dependencies": {
     "@indent/types": "^0.2.1",
     "@indent/webhook": "^0.2.1",
@@ -61,19 +75,5 @@
         "outputs": []
       }
     }
-  },
-  "scripts": {
-    "configure": "yarn install && yarn bootstrap",
-    "bootstrap": "lerna bootstrap && lerna link",
-    "compile": "turbo run compile",
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "changed": "lerna changed",
-    "test": "turbo run test",
-    "ls": "lerna ls",
-    "prepublish": "lerna run prepublishOnly",
-    "publish-canary": "lerna publish --canary",
-    "version-canary": "lerna version prerelease -m 'chore(release): publish-canary' --conventional-commits --preid canary --no-private",
-    "version-canary-force": "yarn version-canary --force-publish"
   }
 }

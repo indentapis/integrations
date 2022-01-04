@@ -30,6 +30,21 @@ Now when you make changes and re-compile, the modules will pull the new code. Yo
 
 ```bash
 yarn compile
-# or compile while watching for file changes
+# or watch for file changes
 yarn dev
+```
+
+### Contributing
+
+All individual integrations are stored in the `packages/` directory. The modules are organized by the release stage: `stable`, `beta` and `alpha`. If you want to add a new webhook integration, run the following command:
+
+```bash
+cd packages/beta
+npx create-example-app -r indentapis/integrations -e new-integration
+```
+
+Or if you want to create a new custom integration in your own directory:
+
+```bash
+npx create-example-app -r indentapis/integrations -e new-integration
 ```

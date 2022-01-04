@@ -2,13 +2,13 @@ import {
   DecisionIntegration,
   DecisionResponse,
   HealthCheckResponse,
-  IntegrationInfo,
+  IntegrationInfoResponse,
   WriteRequest,
 } from '@indent/base-webhook'
 import { Event } from '@indent/types'
 
 export class PagerDutyAutoApprovalIntegration implements DecisionIntegration {
-  GetInfo(): IntegrationInfo {
+  GetInfo(): IntegrationInfoResponse {
     return {
       name: 'pagerduty-decision-webhook',
       version: '0.0.0',

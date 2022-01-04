@@ -1,13 +1,13 @@
 import {
   HealthCheckResponse,
-  IntegrationInfo,
+  IntegrationInfoResponse,
   PullIntegration,
   PullUpdateRequest,
 } from '@indent/base-webhook'
 import { PullUpdateResponse } from '@indent/types'
 
 export class OktaUserIntegration implements PullIntegration {
-  GetInfo(): IntegrationInfo {
+  GetInfo(): IntegrationInfoResponse {
     return {
       name: 'indent-okta-users-webhook',
       capabilities: ['PullUpdate'],
