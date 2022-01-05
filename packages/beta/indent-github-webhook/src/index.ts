@@ -7,6 +7,7 @@ import {
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
+  WriteRequest,
 } from '@indent/base-webhook'
 import {
   ApplyUpdateResponse,
@@ -42,6 +43,18 @@ export class GithubTeamsIntegration
       capabilities: ['ApplyUpdate', 'PullUpdate'],
       version: pkg.version,
     }
+  }
+
+  MatchApply(req: WriteRequest): boolean {
+    return (
+      req.events.filter((e) =>
+        Boolean(
+          e.resources?.filter((r) =>
+            r.kind?.toLowerCase().includes('github.v1.team')
+          ).length
+        )
+      ).length > 0
+    )
   }
 
   FetchGithub(
