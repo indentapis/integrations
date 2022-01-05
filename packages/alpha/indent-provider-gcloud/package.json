@@ -1,3 +1,21 @@
 {
-  "name": "@indent/gcloud-webhook"
+  "name": "@indent/provider-gcloud",
+  "version": "0.0.1-canary.5",
+  "main": "lib/index",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-webhook": "^0.0.1-canary.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
