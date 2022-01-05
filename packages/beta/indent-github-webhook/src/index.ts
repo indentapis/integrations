@@ -1,13 +1,19 @@
 import {
+  ApplyUpdateRequest,
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
+  FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
-  PullIntegration,
   PullUpdateRequest,
 } from '@indent/base-webhook'
-import { PullUpdateResponse, Resource } from '@indent/types'
+import {
+  ApplyUpdateResponse,
+  PullUpdateResponse,
+  Resource,
+} from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { callGithubAPI } from './github-api'
 
 const pkg = require('../package.json')
 
@@ -16,7 +22,7 @@ export const GITHUB_ORG = process.env.GITHUB_ORG
 
 export class GithubTeamsIntegration
   extends BaseHttpIntegration
-  implements PullIntegration
+  implements FullIntegration
 {
   _name?: string
 
@@ -81,6 +87,35 @@ export class GithubTeamsIntegration
       resources,
     }
   }
+
+  async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
+    const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
+    const { event, resources } = auditEvent
+    const user = getGithubIdFromResources(resources, 'user')
+    const team = getGithubTeamFromResources(resources, 'github.v1.team')
+    const method = event === 'access/grant' ? 'PUT' : 'DELETE'
+    const response = await callGithubAPI(this, {
+      method,
+      url: `/teams/${team}/memberships/${user}`,
+    })
+
+    return response
+  }
+}
+
+const getGithubIdFromResources = (
+  resources: Resource[],
+  kind: string
+): string => {
+  return resources
+    .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.labels['github/id'] || r.id)[0]
+}
+
+const getGithubTeamFromResources = (resources: Resource[], kind: string) => {
+  return resources
+    .filter((r) => r.kind?.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.labels['github/slug'])[0]
 }
 
 type GitHubTeam = {
