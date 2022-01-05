@@ -3,6 +3,7 @@ import { Status } from '@indent/types'
 import { AxiosRequestConfig } from 'axios'
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+const GITHUB_ORG = process.env.GITHUB_ORG
 
 export async function callGithubAPI(
   scope: BaseHttpIntegration,
@@ -12,7 +13,7 @@ export async function callGithubAPI(
   response: BaseHttpResponse
 }> {
   const response = await scope.Fetch({
-    baseURL: 'https://api.github.com',
+    baseURL: `https://api.github.com/orgs/${GITHUB_ORG}`,
     method,
     url,
     headers: {
