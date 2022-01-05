@@ -9,6 +9,7 @@
   "scripts": {
     "configure": "yarn install && yarn bootstrap",
     "bootstrap": "lerna bootstrap && lerna link",
+    "lerna-link": "lerna link",
     "compile": "turbo run compile",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
