@@ -6,6 +6,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   PullUpdateRequest,
+  StatusCode,
 } from '@indent/base-webhook'
 import {
   ApplyUpdateResponse,
@@ -13,7 +14,6 @@ import {
   Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { callGithubAPI } from './github-api'
 
 const pkg = require('../package.json')
 
@@ -94,12 +94,21 @@ export class GithubTeamsIntegration
     const user = getGithubIdFromResources(resources, 'user')
     const team = getGithubTeamFromResources(resources, 'github.v1.team')
     const method = event === 'access/grant' ? 'PUT' : 'DELETE'
-    const response = await callGithubAPI(this, {
+    const response = await this.FetchGithub({
       method,
       url: `/teams/${team}/memberships/${user}`,
     })
 
-    return response
+    if (response.status > 204) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data },
+        },
+      }
+    }
+
+    return { status: {} }
   }
 }
 
