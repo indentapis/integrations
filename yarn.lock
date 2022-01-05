@@ -350,6 +350,15 @@
   resolved "https://registry.yarnpkg.com/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
+"@indent/base-webhook@^0.0.1-canary.7":
+  version "0.0.1-canary.7"
+  resolved "https://registry.yarnpkg.com/@indent/base-webhook/-/base-webhook-0.0.1-canary.7.tgz#da546d6d6abbf053c2ab4de9a9ebd51ebb56dec5"
+  integrity sha512-Vo6Rkl7A2CZS1rwqBMLPazvAM2PunY1LgmDg4rLzHMqazeELayD/e0nFqgpJ0hjJQBrVtTfckFWS6zz7S+vA2A==
+  dependencies:
+    "@indent/types" "^0.2.1"
+    "@indent/webhook" "^0.2.1"
+    axios "^0.24.0"
+
 "@indent/types@0.2.1", "@indent/types@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@indent/types/-/types-0.2.1.tgz#fa6ff082cfe8124ee63937491ed26244dae78624"
