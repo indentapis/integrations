@@ -30,18 +30,6 @@ describe('JiraIntegration', () => {
     },
   ]
 
-  const resourcePairTwo = [
-    {
-      kind: 'user',
-      id: 'u223',
-      jiraId: 'k567',
-    },
-    {
-      kind: 'jira.v1.projectrole',
-      id: 'project/example/role/role5678',
-    },
-  ]
-
   describe('ApplyUpdate', () => {
     beforeEach(() => setupMocks())
 
@@ -59,20 +47,6 @@ describe('JiraIntegration', () => {
           })
           .then((res) => expect(res.status).toStrictEqual({}))
       })
-
-      it('should respond with an error for missing roles (from mock)', () => {
-        const integration = new JiraIntegration()
-        return integration
-          .ApplyUpdate({
-            events: [
-              {
-                event: 'access/grant',
-                resources: resourcePairTwo,
-              },
-            ],
-          })
-          .then((res) => expect(res.status.code).toBe('2'))
-      })
     })
 
     describe('access/revoke', () => {
@@ -88,20 +62,6 @@ describe('JiraIntegration', () => {
             ],
           })
           .then((res) => expect(res.status).toStrictEqual({}))
-      })
-
-      it('should respond with an error for missing roles (from mock)', () => {
-        const integration = new JiraIntegration()
-        return integration
-          .ApplyUpdate({
-            events: [
-              {
-                event: 'access/revoke',
-                resources: resourcePairTwo,
-              },
-            ],
-          })
-          .then((res) => expect(res.status.code).toBe('2'))
       })
     })
   })
