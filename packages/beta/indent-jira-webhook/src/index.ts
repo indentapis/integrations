@@ -5,6 +5,7 @@ import {
   BaseHttpIntegrationOpts,
   HealthCheckResponse,
   IntegrationInfoResponse,
+  StatusCode,
   WriteRequest,
 } from '@indent/base-webhook'
 import { ApplyUpdateResponse, Resource } from '@indent/types'
@@ -67,6 +68,22 @@ export class JiraIntegration
     const user = getResourceByKind(resources, 'user')
     const jiraUserId = geIdFromResources(resources, 'user')
     const method = event === 'access/grant' ? 'POST' : 'DELETE'
+
+    const response = await this.FetchJira({
+      method,
+      url: `/rest/api/3/${role.id}`,
+      data: { user: jiraUserId },
+    })
+
+    if (response.status > 204) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data },
+        },
+      }
+    }
+
     return { status: {} }
   }
 }
