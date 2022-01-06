@@ -1,0 +1,21 @@
+{
+  "name": "@indent/google-groups-webhook",
+  "version": "0.0.1-canary.7",
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build",
+    "test": "jest --config ../../../jest.config.json okta.*"
+  },
+  "dependencies": {
+    "@indent/base-webhook": "^0.0.1-canary.8",
+    "njwt": "^1.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0"
+}
