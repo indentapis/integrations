@@ -27,7 +27,7 @@ export class JiraIntegration
   }
 
   HealthCheck(): HealthCheckResponse {
-    return { status: { code: 0 } }
+    return { status: {} }
   }
 
   GetInfo(): IntegrationInfoResponse {
@@ -41,7 +41,7 @@ export class JiraIntegration
   FetchJira(config: AxiosRequestConfig<any>): Promise<AxiosResponse<any, any>> {
     config.baseURL = /http/.test(JIRA_INSTANCE_URL)
       ? JIRA_INSTANCE_URL
-      : `HTTPS://${JIRA_INSTANCE_URL}`
+      : `https://${JIRA_INSTANCE_URL}`
     config.auth = {
       username: JIRA_USER_EMAIL,
       password: JIRA_API_TOKEN,
