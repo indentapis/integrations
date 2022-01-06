@@ -6,6 +6,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   PullUpdateRequest,
+  StatusCode,
   WriteRequest,
 } from '@indent/base-webhook'
 import {
@@ -108,13 +109,22 @@ export class TailscaleGroupIntegration
     }
     response.groups[id] = aclGroup
 
-    const { status } = await this.FetchTailscale({
+    const updateResponse = await this.FetchTailscale({
       method: 'post',
       url: `/tailnet/${TAILNET}/acl`,
       data: JSON.stringify(response, null, 2),
     })
 
-    return {}
+    if (updateResponse.status > 201) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: updateResponse.data },
+        },
+      }
+    }
+
+    return { status: {} }
   }
 }
 

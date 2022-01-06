@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.json tailscale.test.*",
+    "test": "TAILSCALE_TAILNET=example TAILSCALE_API_KEY=exampleApiKey123456 jest --config ../../../jest.config.json tailscale.test.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
