@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.12](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.11...@indent/okta-webhook@0.0.1-canary.12) (2022-01-10)
+
+
+### Features
+
+* add okta-user ([2ddd300](https://github.com/indentapis/integrations/commit/2ddd300d509e003b57795e598ff945f5957d59f2))
+
+
+
+
+
 ## [0.0.1-canary.11](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.10...@indent/okta-webhook@0.0.1-canary.11) (2022-01-10)
 
 
