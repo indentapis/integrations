@@ -16,7 +16,8 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "*"
+    "@indent/base-webhook": "*",
+    "@indent/types": "^0.2.1"
   },
   "publishConfig": {
     "access": "public"
