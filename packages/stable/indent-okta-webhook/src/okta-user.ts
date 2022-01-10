@@ -135,6 +135,10 @@ export class OktaUserIntegration
       ...slackUserResources,
     ]
 
+    console.log({
+      resources,
+    })
+
     return { status, resources }
   }
 }

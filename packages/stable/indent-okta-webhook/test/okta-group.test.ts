@@ -1,5 +1,5 @@
 import { addMock } from '@indent/base-webhook'
-import { OktaGroup, OktaGroupIntegration } from '..'
+import { OktaGroup, OktaGroupIntegration } from '../lib'
 
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
