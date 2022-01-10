@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.11](https://github.com/indentapis/integrations/compare/@indent/provider-aws@0.0.1-canary.10...@indent/provider-aws@0.0.1-canary.11) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-aws
+
+
+
+
+
 ## [0.0.1-canary.10](https://github.com/indentapis/integrations/compare/@indent/provider-aws@0.0.1-canary.9...@indent/provider-aws@0.0.1-canary.10) (2022-01-10)
 
 **Note:** Version bump only for package @indent/provider-aws
