@@ -32,7 +32,12 @@ export async function handleRequest(
         const status = {
           code: 9,
           message: 'webhook failed: invalid signature - check webhook secret',
-          details: [{ error: verifyErr.toString() }],
+          details: [
+            {
+              '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+              detail: verifyErr.toString(),
+            },
+          ],
         }
         return {
           status,
@@ -50,7 +55,14 @@ export async function handleRequest(
 
     if (callName === 'GetInfo') {
       const status = {
-        details: [{ integrations: integrations.map((ign) => ign.GetInfo()) }],
+        details: [
+          {
+            '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+            detail: JSON.stringify({
+              integrations: integrations.map((ign) => ign.GetInfo()),
+            }),
+          },
+        ],
       }
       return {
         status,
@@ -84,9 +96,12 @@ export async function handleRequest(
         message: 'webhook failed: no matched integrations',
         details: [
           {
-            callName,
-            matchedIntegrations,
-            integrations: integrations.map((ign) => ign.GetInfo()),
+            '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+            detail: JSON.stringify({
+              callName,
+              matchedIntegrations,
+              integrations: integrations.map((ign) => ign.GetInfo()),
+            }),
           },
         ],
       }
@@ -137,7 +152,12 @@ export async function handleRequest(
     const status = {
       code: 10,
       message: 'Uncaught exception',
-      details: [{ error: err.toString() }],
+      details: [
+        {
+          '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+          detail: err.toString(),
+        },
+      ],
     }
     return {
       status,
