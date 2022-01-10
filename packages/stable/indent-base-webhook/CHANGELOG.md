@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.10](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.9...@indent/base-webhook@0.0.1-canary.10) (2022-01-10)
+
+
+### Bug Fixes
+
+* protobuf debug info ([f1d51ab](https://github.com/indentapis/integrations/commit/f1d51ab9e84925e5aa89beb2a58b2d29ea25fc39))
+
+
+
+
+
 ## [0.0.1-canary.9](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.8...@indent/base-webhook@0.0.1-canary.9) (2022-01-10)
 
 
