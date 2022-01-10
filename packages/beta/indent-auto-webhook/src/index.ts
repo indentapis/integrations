@@ -86,9 +86,6 @@ function getApprovalEvent(reqEvent: Event) {
     },
     resources: [reqEvent.actor, ...reqEvent.resources],
     timestamp: new Date().toISOString(),
-<<<<<<< HEAD
     reason: 'Auto-approved based on email',
-=======
->>>>>>> 5dd74bd (feat: auto webhook)
   }
 }

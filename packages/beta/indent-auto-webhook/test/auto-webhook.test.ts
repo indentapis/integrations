@@ -49,7 +49,19 @@ describe('AutoApproveIntegration', () => {
       const integration = new AutoApproveIntegration(options)
       const res = await integration.GetDecision(autoApproveInput)
 
-      expect(res).toBeTruthy()
+      expect(res).toBe({
+        claims: [
+          {
+            actor: {
+              displayName: 'Auto Approval Bot',
+              email: 'bot@indent.com',
+              id: '',
+              kind: 'bot.v1.user',
+            },
+            event: 'access/approve',
+          },
+        ],
+      })
     })
   })
 })
