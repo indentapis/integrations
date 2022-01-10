@@ -54,7 +54,7 @@ export class ExampleIntegration implements FullIntegration {
     // TODO: check results for errors
 
     return {
-      status: { code: 0, details: { debugOutcome: 'success', results } },
+      status: { code: 0, details: [{ debugOutcome: 'success', results }] },
     }
   }
 
