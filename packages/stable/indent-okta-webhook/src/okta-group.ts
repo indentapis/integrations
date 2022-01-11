@@ -1,37 +1,53 @@
 import {
   ApplyUpdateRequest,
   BaseHttpIntegration,
+  BaseHttpIntegrationOpts,
+  DecisionResponse,
   FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest,
+  WriteRequest
 } from '@indent/base-webhook'
 import {
-  ApplyUpdateResponse,
-  PullUpdateResponse,
-  Resource,
+  ApplyUpdateResponse, Event, PullUpdateResponse,
+  Resource
 } from '@indent/types'
+import { OktaGroupResponse } from '.'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
+export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & { autoApprovedOktaGroups: string[] }
+
 export class OktaGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
+
+  _name?: string
+  _autoApprovedOktaGroups: string[]
+
+  constructor(opts?: OktaGroupIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._name = opts.name
+      this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+    }
+  }
+
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
       name: 'indent-okta-groups-webhook',
-      capabilities: ['ApplyUpdate', 'PullUpdate'],
+      capabilities: ['ApplyUpdate', 'PullUpdate', 'GetDecision'],
     }
   }
 
   HealthCheck(): HealthCheckResponse {
-    return { status: {} }
+    return { status: { code: 0 } }
   }
 
   MatchApply(req: WriteRequest): boolean {
@@ -109,6 +125,34 @@ export class OktaGroupIntegration
 
     return { status, resources }
   }
+
+  MatchDecision(_req: WriteRequest): boolean {
+    return true
+  }
+
+  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+    const status = {}
+    const claims = []
+    const reqEvent = req.events.find(e => e.event === 'access/request')
+
+    // call okta API
+    // get grouplist
+    const { response: data } = await callOktaAPI(this, {
+      method: 'get',
+      url: `/api/v1/users/${reqEvent.actor.labels.oktaId || reqEvent.actor.id}/groups`
+    }) as OktaGroupResponse[]
+
+    // returns an array of objects with property id, profile, etc
+    /// check if user is member of group
+    const userPresentInArray = data.some((g) => this._autoApprovedOktaGroups.indexOf(g) !== - 1)
+    // continue
+
+    if (reqEvent && this._autoApprovedOktaGroups.includes(reqEvent.actor.email) {
+      claims.push(getApprovalEvent(reqEvent))
+    }
+
+    return { status, claims }
+  }
 }
 
 const getOktaIdFromResources = (
@@ -134,3 +178,34 @@ const pick = (obj: any) =>
     }),
     {}
   )
+
+  function getApprovalEvent(reqEvent: Event) {
+    let expireTime = new Date()
+    let hours = 1
+
+    expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
+
+    return {
+      actor: {
+        displayName: 'Auto Approval Bot',
+        email: 'bot@indent.com',
+        id: '',
+        kind: 'bot.v1.user',
+      },
+      event: 'access/approve',
+      meta: {
+        labels: {
+          'indent.com/time/duration': `${hours}h0m0s`,
+          'indent.com/time/expires': expireTime.toISOString(),
+          'indent.com/workflow/origin/id':
+            reqEvent.meta.labels['indent.com/workflow/origin/id'],
+          'indent.com/workflow/origin/run/id':
+            reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
+          petition: reqEvent.meta.labels.petition,
+        },
+      },
+      resources: [reqEvent.actor, ...reqEvent.resources],
+      timestamp: new Date().toISOString(),
+      reason: 'Auto-approved based on email',
+    }
+  }
