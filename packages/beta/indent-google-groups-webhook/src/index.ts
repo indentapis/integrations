@@ -5,10 +5,25 @@ import {
   FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
+  PullUpdateRequest,
+  StatusCode,
+  WriteRequest,
 } from '@indent/base-webhook'
+import {
+  ApplyUpdateResponse,
+  PullUpdateResponse,
+  Resource,
+} from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import {
+  addUserToGroup,
+  loadFromGoogleGroups,
+  removeUserFromGroup,
+} from './google-api'
 
 const GOOGLE_CUSTOMER_ID = process.env.GOOGLE_CUSTOMER_ID
+const GCP_SVC_ACCT_EMAIL = process.env.GCP_SVC_ACCT_EMAIL
+
 const version = require('../package.json').version
 
 export class GoogleGroupsIntegration
@@ -26,7 +41,7 @@ export class GoogleGroupsIntegration
       name: ['indent-google-groups-webhook', this._name]
         .filter(Boolean)
         .join('#'),
-      capabilities: ['ApplyUpdate', 'PullUpdate'],
+      capabilities: ['ApplyUpdate', 'PullUpdate', 'GetDecision'],
       version,
     }
   }
@@ -38,11 +53,6 @@ export class GoogleGroupsIntegration
   FetchGoogleGroups(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://api.github.com/orgs/${GITHUB_ORG}`
-    config.headers = {
-      Accept: `application/vnd.github.v3+json`,
-      Authorization: `token ${GITHUB_TOKEN}`,
-    }
     return this.Fetch(config)
   }
 
@@ -58,9 +68,69 @@ export class GoogleGroupsIntegration
     )
   }
 
-  async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {}
+  MatchPull(req: PullUpdateRequest): boolean {
+    return req.kinds.map((k) => k.toLowerCase()).includes('google.v1.group')
+  }
+
+  async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    if (!this.MatchPull(req)) {
+      return {
+        status: {
+          code: StatusCode.INVALID_ARGUMENT,
+          details: {
+            expectedKindLower: 'google.v1.group',
+            actualKinds: req.kinds,
+          },
+        },
+      }
+    }
+
+    const groups = await loadFromGoogleGroups()
+    const timestamp = new Date().toISOString()
+    const kind = 'google.v1.Group'
+    const resources = groups.map((g) => ({
+      id: g.name.split('/')[1],
+      kind,
+      displayName: g.displayName,
+      labels: {
+        ...(g.labels || {}),
+        timestamp,
+      },
+    })) as Resource[]
+
+    return { status: { code: 0 }, resources }
+  }
 
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
-    return { status: {} }
+    const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
+    const { event, resources } = auditEvent
+    const group = getIdFromResources(resources, 'google.v1.group')
+    const user = getEmailFromResources(resources, 'user')
+
+    try {
+      if (event === 'access/grant') {
+        await addUserToGroup({ user, group })
+      } else {
+        await removeUserFromGroup({ user, group })
+      }
+
+      return { status: { code: 0 } }
+    } catch (err) {
+      return { status: { code: 2, message: err.message, details: err.stack } }
+    }
   }
+
+  GetDecision
+}
+
+function getIdFromResources(resources: Resource[], kind: string) {
+  return resources
+    .filter((r) => r.kind?.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.id)[0]
+}
+
+function getEmailFromResources(resources: Resource[], kind: string) {
+  return resources
+    .filter((r) => r.kind?.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.email || r.id)[0]
 }

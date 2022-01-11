@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@indent/base-webhook": "^0.0.1-canary.8",
+    "googleapis": "^92.0.0",
     "njwt": "^1.2.0"
   },
   "publishConfig": {
