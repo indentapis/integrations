@@ -36,7 +36,6 @@ export class OktaGroupIntegration
   constructor(opts?: OktaGroupIntegrationOpts) {
     super(opts)
     if (opts) {
-      this._name = opts.name
       this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
     }
   }
@@ -213,6 +212,6 @@ function getApprovalEvent(reqEvent: Event) {
     },
     resources: [reqEvent.actor, ...reqEvent.resources],
     timestamp: new Date().toISOString(),
-    reason: 'Auto-approved based on email',
+    reason: 'Auto-approved based on existing group membership',
   }
 }
