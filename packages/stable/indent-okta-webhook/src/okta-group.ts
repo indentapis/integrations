@@ -8,25 +8,28 @@ import {
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest
+  WriteRequest,
 } from '@indent/base-webhook'
 import {
-  ApplyUpdateResponse, Event, PullUpdateResponse,
-  Resource
+  ApplyUpdateResponse,
+  Event,
+  PullUpdateResponse,
+  Resource,
 } from '@indent/types'
-import { OktaGroupResponse } from '.'
+import { PartialOktaGroup } from '.'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
-export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & { autoApprovedOktaGroups: string[] }
+export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & {
+  autoApprovedOktaGroups: string[]
+}
 
 export class OktaGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
-
   _name?: string
   _autoApprovedOktaGroups: string[]
 
@@ -133,21 +136,25 @@ export class OktaGroupIntegration
   async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
     const status = {}
     const claims = []
-    const reqEvent = req.events.find(e => e.event === 'access/request')
+    const reqEvent = req.events.find((e) => e.event === 'access/request')
 
     // call okta API
     // get grouplist
-    const { response: data } = await callOktaAPI(this, {
+    const { response } = await callOktaAPI(this, {
       method: 'get',
-      url: `/api/v1/users/${reqEvent.actor.labels.oktaId || reqEvent.actor.id}/groups`
-    }) as OktaGroupResponse[]
+      url: `/api/v1/users/${
+        reqEvent.actor.labels.oktaId || reqEvent.actor.id
+      }/groups`,
+    })
 
-    // returns an array of objects with property id, profile, etc
-    /// check if user is member of group
-    const userPresentInArray = data.some((g) => this._autoApprovedOktaGroups.indexOf(g) !== - 1)
-    // continue
+    const groups = response.data as PartialOktaGroup[]
 
-    if (reqEvent && this._autoApprovedOktaGroups.includes(reqEvent.actor.email) {
+    const groupsSet = new Set(groups.map((g) => g.id))
+
+    if (
+      reqEvent &&
+      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
+    ) {
       claims.push(getApprovalEvent(reqEvent))
     }
 
@@ -179,33 +186,33 @@ const pick = (obj: any) =>
     {}
   )
 
-  function getApprovalEvent(reqEvent: Event) {
-    let expireTime = new Date()
-    let hours = 1
+function getApprovalEvent(reqEvent: Event) {
+  let expireTime = new Date()
+  let hours = 1
 
-    expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
+  expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
 
-    return {
-      actor: {
-        displayName: 'Auto Approval Bot',
-        email: 'bot@indent.com',
-        id: '',
-        kind: 'bot.v1.user',
+  return {
+    actor: {
+      displayName: 'Auto Approval Bot',
+      email: 'bot@indent.com',
+      id: '',
+      kind: 'bot.v1.user',
+    },
+    event: 'access/approve',
+    meta: {
+      labels: {
+        'indent.com/time/duration': `${hours}h0m0s`,
+        'indent.com/time/expires': expireTime.toISOString(),
+        'indent.com/workflow/origin/id':
+          reqEvent.meta.labels['indent.com/workflow/origin/id'],
+        'indent.com/workflow/origin/run/id':
+          reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
+        petition: reqEvent.meta.labels.petition,
       },
-      event: 'access/approve',
-      meta: {
-        labels: {
-          'indent.com/time/duration': `${hours}h0m0s`,
-          'indent.com/time/expires': expireTime.toISOString(),
-          'indent.com/workflow/origin/id':
-            reqEvent.meta.labels['indent.com/workflow/origin/id'],
-          'indent.com/workflow/origin/run/id':
-            reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
-          petition: reqEvent.meta.labels.petition,
-        },
-      },
-      resources: [reqEvent.actor, ...reqEvent.resources],
-      timestamp: new Date().toISOString(),
-      reason: 'Auto-approved based on email',
-    }
+    },
+    resources: [reqEvent.actor, ...reqEvent.resources],
+    timestamp: new Date().toISOString(),
+    reason: 'Auto-approved based on email',
   }
+}

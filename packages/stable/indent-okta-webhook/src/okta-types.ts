@@ -9,7 +9,7 @@ export interface OktaGroup {
   _links: Links
 }
 
-export interface OktaGroupResponse {
+export interface PartialOktaGroup {
   id: string
   profile: Profile
 }
