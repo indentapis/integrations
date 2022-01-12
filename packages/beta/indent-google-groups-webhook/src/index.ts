@@ -26,14 +26,24 @@ const GCP_SVC_ACCT_EMAIL = process.env.GCP_SVC_ACCT_EMAIL
 
 const version = require('../package.json').version
 
+export type GoogleGroupsIntegrationOpts = BaseHttpIntegrationOpts & {
+  autoApprovedGoogleGroups?: string[]
+}
 export class GoogleGroupsIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
   _name?: string
+  _autoApprovedGoogleGroups?: string[]
 
-  constructor(opts?: BaseHttpIntegrationOpts) {
+  constructor(opts?: GoogleGroupsIntegrationOpts) {
     super(opts)
+
+    if (opts) {
+      if (opts.autoApprovedGoogleGroups) {
+        this._autoApprovedGoogleGroups = opts.autoApprovedGoogleGroups
+      }
+    }
   }
 
   GetInfo(): IntegrationInfoResponse {
@@ -119,8 +129,6 @@ export class GoogleGroupsIntegration
       return { status: { code: 2, message: err.message, details: err.stack } }
     }
   }
-
-  GetDecision
 }
 
 function getIdFromResources(resources: Resource[], kind: string) {
