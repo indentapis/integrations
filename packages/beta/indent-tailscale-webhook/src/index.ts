@@ -88,8 +88,6 @@ export class TailscaleGroupIntegration
     const { email } = getResourceByKind(resources, 'user')
     const { id } = getResourceByKind(resources, 'tailscale.v1.group')
 
-    // event access grant
-
     // get the tailscale acl from remote
     const response = (await this.FetchTailscale({
       method: 'get',
