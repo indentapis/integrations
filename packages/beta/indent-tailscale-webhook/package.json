@@ -3,7 +3,7 @@
   "name": "@indent/tailscale-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1-canary.12",
   "files": [
     "lib"
   ],
@@ -16,7 +16,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.7"
+    "@indent/base-webhook": "^0.0.1-canary.12"
   },
   "publishConfig": {
     "access": "public"
