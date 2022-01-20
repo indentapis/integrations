@@ -1,12 +1,19 @@
 import {
+  ApplyUpdateRequest,
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
+  FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
-  PullIntegration,
   PullUpdateRequest,
+  StatusCode,
+  WriteRequest,
 } from '@indent/base-webhook'
-import { PullUpdateResponse, Resource } from '@indent/types'
+import {
+  ApplyUpdateResponse,
+  PullUpdateResponse,
+  Resource,
+} from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const pkg = require('../package.json')
@@ -16,7 +23,7 @@ export const GITHUB_ORG = process.env.GITHUB_ORG
 
 export class GithubTeamsIntegration
   extends BaseHttpIntegration
-  implements PullIntegration
+  implements FullIntegration
 {
   _name?: string
 
@@ -36,6 +43,18 @@ export class GithubTeamsIntegration
       capabilities: ['ApplyUpdate', 'PullUpdate'],
       version: pkg.version,
     }
+  }
+
+  MatchApply(req: WriteRequest): boolean {
+    return (
+      req.events.filter((e) =>
+        Boolean(
+          e.resources?.filter((r) =>
+            r.kind?.toLowerCase().includes('github.v1.team')
+          ).length
+        )
+      ).length > 0
+    )
   }
 
   FetchGithub(
@@ -81,6 +100,44 @@ export class GithubTeamsIntegration
       resources,
     }
   }
+
+  async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
+    const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
+    const { event, resources } = auditEvent
+    const user = getGithubIdFromResources(resources, 'user')
+    const team = getGithubTeamFromResources(resources, 'github.v1.team')
+    const method = event === 'access/grant' ? 'PUT' : 'DELETE'
+    const response = await this.FetchGithub({
+      method,
+      url: `/teams/${team}/memberships/${user}`,
+    })
+
+    if (response.status > 204) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data },
+        },
+      }
+    }
+
+    return { status: {} }
+  }
+}
+
+const getGithubIdFromResources = (
+  resources: Resource[],
+  kind: string
+): string => {
+  return resources
+    .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.labels['github/id'] || r.id)[0]
+}
+
+const getGithubTeamFromResources = (resources: Resource[], kind: string) => {
+  return resources
+    .filter((r) => r.kind?.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.labels['github/slug'])[0]
 }
 
 type GitHubTeam = {
