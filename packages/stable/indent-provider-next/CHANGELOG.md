@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.12](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.11...@indent/provider-next@0.0.1-canary.12) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-next
+
+
+
+
+
+## [0.0.1-canary.11](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.10...@indent/provider-next@0.0.1-canary.11) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-next
+
+
+
+
+
+## [0.0.1-canary.10](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.9...@indent/provider-next@0.0.1-canary.10) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-next
+
+
+
+
+
+## [0.0.1-canary.9](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.8...@indent/provider-next@0.0.1-canary.9) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-next
+
+
+
+
+
+## [0.0.1-canary.8](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.7...@indent/provider-next@0.0.1-canary.8) (2022-01-10)
+
+**Note:** Version bump only for package @indent/provider-next
+
+
+
+
+
 ## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/provider-next@0.0.1-canary.6...@indent/provider-next@0.0.1-canary.7) (2022-01-04)
 
 

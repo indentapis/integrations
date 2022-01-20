@@ -20,6 +20,7 @@ export async function handleRequest(
 ): Promise<BaseResponse> {
   try {
     const { body, secret, headers } = req
+    console.log('@indent/base-webhook: handleRequest: [REQ]')
     try {
       await verify({
         body,
@@ -31,7 +32,12 @@ export async function handleRequest(
         const status = {
           code: 9,
           message: 'webhook failed: invalid signature - check webhook secret',
-          details: verifyErr.toString(),
+          details: [
+            {
+              '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+              detail: verifyErr.toString(),
+            },
+          ],
         }
         return {
           status,
@@ -43,11 +49,20 @@ export async function handleRequest(
     const data = JSON.parse(body)
     const callName = getWebhookCallName(data)
 
+    console.log(
+      '@indent/base-webhook: handleRequest: [REQ] webhookType: ' + callName
+    )
+
     if (callName === 'GetInfo') {
       const status = {
-        details: {
-          integrations: integrations.map((ign) => ign.GetInfo()),
-        },
+        details: [
+          {
+            '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+            detail: JSON.stringify({
+              integrations: integrations.map((ign) => ign.GetInfo()),
+            }),
+          },
+        ],
       }
       return {
         status,
@@ -72,15 +87,23 @@ export async function handleRequest(
       return true
     })
 
+    console.log('@indent/base-webhook: handleRequest: [REQ] integrations')
+    console.log({ integrations, matchedIntegrations })
+
     if (matchedIntegrations.length === 0) {
       const status = {
         code: StatusCode.NOT_FOUND,
         message: 'webhook failed: no matched integrations',
-        details: {
-          callName,
-          matchedIntegrations,
-          integrations: integrations.map((ign) => ign.GetInfo()),
-        },
+        details: [
+          {
+            '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+            detail: JSON.stringify({
+              callName,
+              matchedIntegrations,
+              integrations: integrations.map((ign) => ign.GetInfo()),
+            }),
+          },
+        ],
       }
       return {
         status,
@@ -115,18 +138,26 @@ export async function handleRequest(
 
     const { status = {}, ...rest } = results[0]
 
+    console.log('@indent/base-webhook: handleRequest: [RES] success')
+    console.log({ status })
+
     return {
       status,
       response: toResponse(status, rest),
     }
   } catch (err) {
     // TODO: handle error
-    console.error('error:')
+    console.error('@indent/base-webhook: handleRequest: [ERR]')
     console.error(err)
     const status = {
       code: 10,
       message: 'Uncaught exception',
-      details: err.toString(),
+      details: [
+        {
+          '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+          detail: err.toString(),
+        },
+      ],
     }
     return {
       status,
