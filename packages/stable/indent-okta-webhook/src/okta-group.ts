@@ -76,10 +76,12 @@ export class OktaGroupIntegration
       return {
         status: {
           code: StatusCode.INVALID_ARGUMENT,
-          details: {
-            expectedKindLower: 'okta.v1.group',
-            actualKinds: req.kinds,
-          },
+          details: [
+            {
+              expectedKindLower: 'okta.v1.group',
+              actualKinds: req.kinds,
+            },
+          ],
         },
       }
     }
