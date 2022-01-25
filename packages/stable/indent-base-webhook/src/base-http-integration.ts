@@ -18,7 +18,9 @@ export class BaseHttpIntegration {
       if (props.axios) {
         this._axios = props.axios
       }
-    } else {
+    }
+
+    if (!this._axios) {
       this._axios = axios.create()
     }
   }
