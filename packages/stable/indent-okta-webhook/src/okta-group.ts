@@ -195,7 +195,7 @@ function getApprovalEvent(reqEvent: Event) {
     actor: {
       displayName: 'Auto Approval Bot',
       email: 'bot@indent.com',
-      id: '',
+      id: 'custom-okta-approval-bot',
       kind: 'bot.v1.user',
     },
     event: 'access/approve',
