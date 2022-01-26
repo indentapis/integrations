@@ -1,20 +1,20 @@
 import { addMock } from '@indent/base-webhook'
-import { JiraIntegration } from '..'
+import { JiraProjectRoleIntegration } from '..'
 
 const JIRA_INSTANCE_URL = process.env.JIRA_INSTANCE_URL || ''
 
-describe('JiraIntegration', () => {
+describe('JiraProjectRoleIntegration', () => {
   describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
-      const integration = new JiraIntegration()
+      const integration = new JiraProjectRoleIntegration()
       const res = integration.HealthCheck()
       expect(res.status).toStrictEqual({})
     })
 
     it('should respond with a valid integration info', () => {
-      const integration = new JiraIntegration()
+      const integration = new JiraProjectRoleIntegration()
       const res = integration.GetInfo()
-      expect(res.name).toBe('indent-jira-webhook')
+      expect(res.name).toBe('indent-jira-project-role-webhook')
     })
   })
 
@@ -35,7 +35,7 @@ describe('JiraIntegration', () => {
 
     describe('access/grant', () => {
       it('should respond with success (from mock)', () => {
-        const integration = new JiraIntegration()
+        const integration = new JiraProjectRoleIntegration()
         return integration
           .ApplyUpdate({
             events: [
@@ -51,7 +51,7 @@ describe('JiraIntegration', () => {
 
     describe('access/revoke', () => {
       it('should respond with success (from mock)', () => {
-        const integration = new JiraIntegration()
+        const integration = new JiraProjectRoleIntegration()
         return integration
           .ApplyUpdate({
             events: [

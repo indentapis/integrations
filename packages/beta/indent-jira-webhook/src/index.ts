@@ -16,7 +16,7 @@ const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN || ''
 const JIRA_USER_EMAIL = process.env.JIRA_USER_EMAIL || ''
 const JIRA_INSTANCE_URL = process.env.JIRA_INSTANCE_URL || ''
 
-export class JiraIntegration
+export class JiraProjectRoleIntegration
   extends BaseHttpIntegration
   implements ApplyIntegration
 {
@@ -32,13 +32,17 @@ export class JiraIntegration
 
   GetInfo(): IntegrationInfoResponse {
     return {
-      name: ['indent-jira-webhook', this._name].filter(Boolean).join('#'),
+      name: ['indent-jira-project-role-webhook', this._name]
+        .filter(Boolean)
+        .join('#'),
       capabilities: ['ApplyUpdate'],
       version,
     }
   }
 
-  FetchJira(config: AxiosRequestConfig<any>): Promise<AxiosResponse<any, any>> {
+  FetchJiraProjectRole(
+    config: AxiosRequestConfig<any>
+  ): Promise<AxiosResponse<any, any>> {
     config.baseURL = /http/.test(JIRA_INSTANCE_URL)
       ? JIRA_INSTANCE_URL
       : `https://${JIRA_INSTANCE_URL}`
@@ -65,11 +69,10 @@ export class JiraIntegration
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
     const role = getResourceByKind(resources, 'jira.v1.projectrole')
-    const user = getResourceByKind(resources, 'user')
     const jiraUserId = geIdFromResources(resources, 'user')
     const method = event === 'access/grant' ? 'POST' : 'DELETE'
 
-    const response = await this.FetchJira({
+    const response = await this.FetchJiraProjectRole({
       method,
       url: `/rest/api/3/${role.id}`,
       data: { user: jiraUserId },
