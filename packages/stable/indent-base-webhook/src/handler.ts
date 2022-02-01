@@ -78,7 +78,7 @@ export async function handleRequest(
         return (ign as ApplyIntegration).MatchApply(data as ApplyUpdateRequest)
       } else if (callName === 'PullUpdate') {
         return (ign as PullIntegration).MatchPull(data as PullUpdateRequest)
-      } else if (callName === 'Decision') {
+      } else if (callName === 'GetDecision') {
         return (ign as DecisionIntegration).MatchDecision(
           data as DecisionRequest
         )
@@ -122,7 +122,7 @@ export async function handleRequest(
             return (ign as PullIntegration).PullUpdate(
               data as PullUpdateRequest
             )
-          case 'Decision':
+          case 'GetDecision':
             return (ign as DecisionIntegration).GetDecision(
               data as DecisionRequest
             )

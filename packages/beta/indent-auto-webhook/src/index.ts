@@ -9,7 +9,8 @@ import {
 } from '@indent/base-webhook'
 import { Event } from '@indent/types'
 
-const pkg = require('../package.json')
+const version = require('../package.json').version
+const AUTO_APPROVED_EMAILS = process.env.AUTO_APPROVED_EMAILS.split(',') || ['']
 
 export type AutoApproveIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedEmails: string[]
@@ -26,7 +27,10 @@ export class AutoApproveIntegration
     super(opts)
     if (opts) {
       this._name = opts.name
-      this._autoApprovedEmails = opts.autoApprovedEmails
+      this._autoApprovedEmails =
+        opts.autoApprovedEmails.length > 0
+          ? opts.autoApprovedEmails
+          : AUTO_APPROVED_EMAILS
     }
   }
 
@@ -38,7 +42,7 @@ export class AutoApproveIntegration
     return {
       name: ['indent-auto-webhook', this._name].filter(Boolean).join('#'),
       capabilities: ['GetDecision'],
-      version: pkg.version,
+      version,
     }
   }
 
