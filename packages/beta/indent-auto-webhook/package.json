@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@indent/new-webhook",
+  "name": "@indent/auto-webhook",
   "main": "lib/index",
   "types": "lib/index",
   "version": "0.0.1-canary.7",
