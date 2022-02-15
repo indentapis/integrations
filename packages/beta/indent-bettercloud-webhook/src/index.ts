@@ -19,7 +19,7 @@ import {
   BettercloudActionResponse,
   BettercloudWorkflow,
   BettercloudWorkflowResponse,
-} from '../bettercloud-types'
+} from './bettercloud-types'
 
 const version = require('../package.json').version
 
@@ -61,6 +61,7 @@ export class BettercloudActionIntegration
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchBettercloud({
+      method: 'GET',
       url: '/v1/actions',
       params: {
         page: 1,
@@ -133,8 +134,6 @@ export class BettercloudActionIntegration
         },
       }
     }
-
-    // if access/grant then do action A? else do action B
 
     return { status: {} }
   }
@@ -243,8 +242,6 @@ export class BettercloudWorkflowIntegration
         },
       }
     }
-
-    // if access/grant then do action A? else do action B
 
     return { status: {} }
   }
