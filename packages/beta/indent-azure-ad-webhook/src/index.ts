@@ -18,6 +18,9 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { AzureADGroup } from './azure-ad-types'
 
 const version = require('../package.json').version
+const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID || ''
+const AZURE_CLIENT_ID = process.env.AZURE_CLIENT_ID || ''
+const AZURE_REDIRECT_URI = process.env.AZURE_REDIRECT_URI || ''
 
 export class AzureADIntegration
   extends BaseHttpIntegration
@@ -53,6 +56,20 @@ export class AzureADIntegration
       Accept: 'application/json',
     }
     return this.Fetch(config)
+  }
+
+  fetchAzureAuth(
+    config: AxiosRequestConfig<any>
+  ): Promise<AxiosResponse<any, any>> {
+    config.baseURL = `https://login.microsoftonline.com/${AZURE_TENANT_ID}`
+
+    return this.Fetch(config)
+  }
+
+  async getAzureAdminConsent() {
+    // setup query
+    // send request
+    // catalog response
   }
 
   MatchApply(req: WriteRequest): boolean {
