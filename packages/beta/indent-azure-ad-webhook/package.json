@@ -8,13 +8,14 @@
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.json azure-ad-graph.*",
+    "test": "jest --config ../../../jest.config.json azure-ad.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
+    "@azure/msal-node": "^1.6.0",
     "@indent/base-webhook": "^0.0.1-canary.12"
   },
   "publishConfig": {

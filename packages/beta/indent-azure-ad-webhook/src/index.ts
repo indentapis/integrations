@@ -16,11 +16,13 @@ import {
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { AzureADGroup } from './azure-ad-types'
+import { getAzureToken } from './azure-auth'
 
 const version = require('../package.json').version
 const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID || ''
 const AZURE_CLIENT_ID = process.env.AZURE_CLIENT_ID || ''
-const AZURE_REDIRECT_URI = process.env.AZURE_REDIRECT_URI || ''
+const AZURE_CLIENT_SECRET = process.env.AZURE_CLIENT_SECRET || ''
+// const AZURE_REDIRECT_URI = process.env.AZURE_REDIRECT_URI || ''
 
 export class AzureADIntegration
   extends BaseHttpIntegration
@@ -30,9 +32,6 @@ export class AzureADIntegration
 
   constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
-    if (opts) {
-      this._name = opts.name
-    }
   }
 
   GetInfo(): IntegrationInfoResponse {
@@ -47,29 +46,23 @@ export class AzureADIntegration
     return { status: { code: 0 } }
   }
 
-  fetchAzureAD(
+  async FetchAzureAD(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
+    const azureToken = await getAzureToken({
+      azureTenant: AZURE_TENANT_ID,
+      azureClientId: AZURE_CLIENT_ID,
+      azureClientSecret: AZURE_CLIENT_SECRET,
+    })
+    const { accessToken } = azureToken
+
     config.baseURL = 'https://graph.microsoft.com/v1.0'
     config.headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     }
     return this.Fetch(config)
-  }
-
-  fetchAzureAuth(
-    config: AxiosRequestConfig<any>
-  ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://login.microsoftonline.com/${AZURE_TENANT_ID}`
-
-    return this.Fetch(config)
-  }
-
-  async getAzureAdminConsent() {
-    // setup query
-    // send request
-    // catalog response
   }
 
   MatchApply(req: WriteRequest): boolean {
@@ -91,7 +84,7 @@ export class AzureADIntegration
     const group = getAzureIdFromResources(resources, 'azure.v1.group')
 
     const method = event === 'access/grant' ? 'POST' : 'DELETE'
-    const response = await this.fetchAzureAD({
+    const response = await this.FetchAzureAD({
       method,
       url: `/groups/${group}/members/$ref}`,
       data: {
@@ -130,7 +123,7 @@ export class AzureADIntegration
       }
     }
 
-    const response = await this.fetchAzureAD({
+    const response = await this.FetchAzureAD({
       method: 'GET',
       url: '/groups',
     })
