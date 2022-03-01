@@ -1,5 +1,5 @@
 import { addMock } from '@indent/base-webhook'
-import { OktaGroup, OktaGroupIntegration } from '..'
+import { OktaGroup, OktaGroupIntegration } from '../lib'
 
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
@@ -8,7 +8,7 @@ describe('OktaGroupIntegration', () => {
     it('should respond with a valid health check', () => {
       const integration = new OktaGroupIntegration()
       const res = integration.HealthCheck()
-      expect(res.status).toStrictEqual({})
+      expect(res.status).toStrictEqual({ code: 0 })
     })
 
     it('should respond with a valid integration info', () => {
@@ -86,6 +86,47 @@ describe('OktaGroupIntegration', () => {
       )
     })
   })
+
+  const date = new Date().toISOString()
+  const options = {
+    name: 'indent-okta-groups-webhook',
+    autoApprovedOktaGroups: ['0ohijklmn5678'],
+  }
+
+  const autoApproveInput = {
+    events: [
+      {
+        event: 'access/request',
+        actor: {
+          id: 'U0ABCDEFGHIJKLMNOP',
+          displayName: 'Jane Okta',
+          kind: 'slack/user',
+          email: 'jane.okta@example.com',
+          labels: {
+            oktaId: '0oabcdefg1234',
+          },
+        },
+        meta: {
+          labels: {
+            'indent.com/time/expires': date,
+            'indent.com/workflow/origin/id': 'test-11111111',
+            'indent.com/workflow/origin/run/id': 'test-11111111',
+          },
+        },
+        resources: [],
+      },
+    ],
+  }
+
+  describe('GetDecision', () => {
+    beforeEach(() => setupMocks())
+    it('should respond with Approval details', async () => {
+      const integration = new OktaGroupIntegration(options)
+      const res = await integration.GetDecision(autoApproveInput)
+
+      expect(res).toBeTruthy()
+    })
+  })
 })
 
 function setupMocks() {
@@ -130,6 +171,28 @@ function setupMocks() {
           type: 'OKTA_GROUP',
         },
       ] as OktaGroup[],
+    }
+  )
+  addMock(
+    {
+      method: 'get',
+      url: '/api/v1/users/0oabcdefg1234/groups',
+      baseURL: `https://${OKTA_DOMAIN}`,
+    },
+    {
+      config: {},
+      headers: {},
+      status: 200,
+      statusText: '200',
+      data: [
+        {
+          id: '0ohijklmn5678',
+          profile: {
+            name: 'Group Alpha',
+            description: 'The first group in the Greek alphabet',
+          },
+        },
+      ],
     }
   )
 }

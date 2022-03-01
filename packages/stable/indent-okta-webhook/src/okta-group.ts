@@ -1,6 +1,8 @@
 import {
   ApplyUpdateRequest,
   BaseHttpIntegration,
+  BaseHttpIntegrationOpts,
+  DecisionResponse,
   FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
@@ -10,28 +12,44 @@ import {
 } from '@indent/base-webhook'
 import {
   ApplyUpdateResponse,
+  Event,
   PullUpdateResponse,
   Resource,
 } from '@indent/types'
+import { PartialOktaGroup } from '.'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
+export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & {
+  autoApprovedOktaGroups: string[]
+}
+
 export class OktaGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
+  _name?: string
+  _autoApprovedOktaGroups: string[]
+
+  constructor(opts?: OktaGroupIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+    }
+  }
+
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
       name: 'indent-okta-groups-webhook',
-      capabilities: ['ApplyUpdate', 'PullUpdate'],
+      capabilities: ['ApplyUpdate', 'PullUpdate', 'GetDecision'],
     }
   }
 
   HealthCheck(): HealthCheckResponse {
-    return { status: {} }
+    return { status: { code: 0 } }
   }
 
   MatchApply(req: WriteRequest): boolean {
@@ -76,10 +94,12 @@ export class OktaGroupIntegration
       return {
         status: {
           code: StatusCode.INVALID_ARGUMENT,
-          details: {
-            expectedKindLower: 'okta.v1.group',
-            actualKinds: req.kinds,
-          },
+          details: [
+            {
+              expectedKindLower: 'okta.v1.group',
+              actualKinds: req.kinds,
+            },
+          ],
         },
       }
     }
@@ -107,6 +127,38 @@ export class OktaGroupIntegration
 
     return { status, resources }
   }
+
+  MatchDecision(_req: WriteRequest): boolean {
+    return true
+  }
+
+  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+    const status = {}
+    const claims = []
+    const reqEvent = req.events.find((e) => e.event === 'access/request')
+
+    // call okta API
+    // get grouplist
+    const { response } = await callOktaAPI(this, {
+      method: 'get',
+      url: `/api/v1/users/${
+        reqEvent.actor.labels.oktaId || reqEvent.actor.id
+      }/groups`,
+    })
+
+    const groups = response.data as PartialOktaGroup[]
+
+    const groupsSet = new Set(groups.map((g) => g.id))
+
+    if (
+      reqEvent &&
+      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
+    ) {
+      claims.push(getApprovalEvent(reqEvent))
+    }
+
+    return { status, claims }
+  }
 }
 
 const getOktaIdFromResources = (
@@ -132,3 +184,34 @@ const pick = (obj: any) =>
     }),
     {}
   )
+
+function getApprovalEvent(reqEvent: Event) {
+  let expireTime = new Date()
+  let hours = 1
+
+  expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
+
+  return {
+    actor: {
+      displayName: 'Auto Approval Bot',
+      email: 'bot@indent.com',
+      id: 'custom-okta-approval-bot',
+      kind: 'bot.v1.user',
+    },
+    event: 'access/approve',
+    meta: {
+      labels: {
+        'indent.com/time/duration': `${hours}h0m0s`,
+        'indent.com/time/expires': expireTime.toISOString(),
+        'indent.com/workflow/origin/id':
+          reqEvent.meta.labels['indent.com/workflow/origin/id'],
+        'indent.com/workflow/origin/run/id':
+          reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
+        petition: reqEvent.meta.labels.petition,
+      },
+    },
+    resources: [reqEvent.actor, ...reqEvent.resources],
+    timestamp: new Date().toISOString(),
+    reason: 'Auto-approved based on existing group membership',
+  }
+}

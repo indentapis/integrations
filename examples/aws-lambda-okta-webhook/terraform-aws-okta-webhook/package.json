@@ -34,8 +34,8 @@
     "webpack": "^4.42.1"
   },
   "dependencies": {
-    "@indent/okta-webhook": "*",
-    "@indent/provider-aws": "*",
+    "@indent/okta-webhook": "latest",
+    "@indent/provider-aws": "latest",
     "@indent/webhook": "latest",
     "@indent/types": "latest",
     "aws-lambda": "^1.0.6",
