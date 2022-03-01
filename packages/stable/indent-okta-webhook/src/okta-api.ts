@@ -1,5 +1,5 @@
 import { BaseHttpIntegration, BaseHttpResponse } from '@indent/base-webhook'
-import { Status } from '@indent/types'
+import { Resource, Status } from '@indent/types'
 import { AxiosRequestConfig } from 'axios'
 import { getToken } from './okta-auth'
 
@@ -8,7 +8,12 @@ const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export async function callOktaAPI(
   scope: BaseHttpIntegration,
-  { method, url, data }: AxiosRequestConfig
+  {
+    method,
+    url,
+    data,
+    transform,
+  }: AxiosRequestConfig & { transform?: (props: any) => Resource }
 ): Promise<{
   status: Status
   response: BaseHttpResponse
@@ -27,7 +32,7 @@ export async function callOktaAPI(
     // Optional request payload data
     data,
   })
-  const { status: statusCode, headers, data: resData } = response
+  let { status: statusCode, headers, data: resData } = response
   const oktaRateLimitMax = parseInt(
     String(headers['x-rate-limit-limit'] || '1'),
     10
@@ -52,7 +57,14 @@ export async function callOktaAPI(
   }
 
   // TODO: Use linkInfo to auto-paginate
-  // const linkInfo = parseLinkHeader(headers.link)
+  const linkInfo = parseLinkHeader(headers.link)
+
+  console.log('@indent/okta-webhook: linkInfo')
+  console.log({ linkInfo })
+
+  if (resData && transform) {
+    resData = resData.map(transform)
+  }
 
   return {
     status: {},

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@indent/new-webhook",
-  "main": "lib/index.js",
+  "main": "lib/index",
   "types": "lib/index",
   "version": "0.0.0",
   "files": [

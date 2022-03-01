@@ -1,5 +1,5 @@
 {
-  "name": "@indent/okta-webhook",
+  "name": "@indent/google-groups-webhook",
   "version": "0.0.1-canary.12",
   "main": "lib/index",
   "types": "lib/index",
@@ -8,10 +8,11 @@
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build",
-    "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.json okta.*"
+    "test": "jest --config ../../../jest.config.json example.test.*"
   },
   "dependencies": {
     "@indent/base-webhook": "^0.0.1-canary.12",
+    "googleapis": "^92.0.0",
     "njwt": "^1.2.0"
   },
   "publishConfig": {

@@ -1,20 +1,20 @@
 import { addMock } from '@indent/base-webhook'
-import { OktaGroup, OktaGroupIntegration } from '..'
+import { JiraProjectRoleIntegration } from '..'
 
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+const JIRA_INSTANCE_URL = process.env.JIRA_INSTANCE_URL || ''
 
-describe('OktaGroupIntegration', () => {
+describe('JiraProjectRoleIntegration', () => {
   describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
-      const integration = new OktaGroupIntegration()
+      const integration = new JiraProjectRoleIntegration()
       const res = integration.HealthCheck()
       expect(res.status).toStrictEqual({})
     })
 
     it('should respond with a valid integration info', () => {
-      const integration = new OktaGroupIntegration()
+      const integration = new JiraProjectRoleIntegration()
       const res = integration.GetInfo()
-      expect(res.name).toBe('indent-okta-groups-webhook')
+      expect(res.name).toBe('indent-jira-project-role-webhook')
     })
   })
 
@@ -22,10 +22,11 @@ describe('OktaGroupIntegration', () => {
     {
       kind: 'user',
       id: 'u123',
+      jiraId: 'j456',
     },
     {
-      kind: 'group',
-      id: 'g123',
+      kind: 'jira.v1.projectrole',
+      id: 'project/example/role/role1234',
     },
   ]
 
@@ -34,7 +35,7 @@ describe('OktaGroupIntegration', () => {
 
     describe('access/grant', () => {
       it('should respond with success (from mock)', () => {
-        const integration = new OktaGroupIntegration()
+        const integration = new JiraProjectRoleIntegration()
         return integration
           .ApplyUpdate({
             events: [
@@ -50,7 +51,7 @@ describe('OktaGroupIntegration', () => {
 
     describe('access/revoke', () => {
       it('should respond with success (from mock)', () => {
-        const integration = new OktaGroupIntegration()
+        const integration = new JiraProjectRoleIntegration()
         return integration
           .ApplyUpdate({
             events: [
@@ -62,28 +63,6 @@ describe('OktaGroupIntegration', () => {
           })
           .then((res) => expect(res.status).toStrictEqual({}))
       })
-    })
-  })
-
-  describe('PullUpdate', () => {
-    beforeEach(() => setupMocks())
-
-    it('should respond with a list of 1 resources (from mock)', () => {
-      const integration = new OktaGroupIntegration()
-      return integration.PullUpdate({ kinds: ['okta.v1.Group'] }).then((res) =>
-        expect(res.resources).toStrictEqual([
-          {
-            id: 'okta.example.com/api/v1/groups/0g123',
-            kind: 'okta.v1.Group',
-            labels: {
-              description: '',
-              oktaGroupType: 'OKTA_GROUP',
-              oktaId: '0g123',
-              timestamp: res.resources[0].labels.timestamp,
-            },
-          },
-        ])
-      )
     })
   })
 })
@@ -99,37 +78,49 @@ function setupMocks() {
 
   addMock(
     {
-      method: 'put',
-      url: '/api/v1/groups/g123/users/u123',
-      baseURL: `https://${OKTA_DOMAIN}`,
+      method: 'post',
+      baseURL: `${JIRA_INSTANCE_URL}`,
+      url: '/rest/api/3/project/example/role/role1234',
     },
     empty200
   )
+
   addMock(
     {
       method: 'delete',
-      url: '/api/v1/groups/g123/users/u123',
-      baseURL: `https://${OKTA_DOMAIN}`,
+      baseURL: `${JIRA_INSTANCE_URL}`,
+      url: '/rest/api/3/project/example/role/role1234',
     },
-    empty200
+    { config: {}, headers: {}, status: 204, statusText: '204', data: null }
   )
+
   addMock(
     {
-      method: 'get',
-      url: '/api/v1/groups',
-      baseURL: `https://${OKTA_DOMAIN}`,
+      method: 'post',
+      baseURL: `${JIRA_INSTANCE_URL}`,
+      url: '/rest/api/3/project/example/role/role5678',
     },
     {
       config: {},
       headers: {},
-      status: 200,
-      statusText: '200',
-      data: [
-        {
-          id: '0g123',
-          type: 'OKTA_GROUP',
-        },
-      ] as OktaGroup[],
+      status: 404,
+      statusText: '404 NOT FOUND',
+      data: null,
+    }
+  )
+
+  addMock(
+    {
+      method: 'delete',
+      baseURL: `${JIRA_INSTANCE_URL}`,
+      url: '/rest/api/3/project/example/role/role5678',
+    },
+    {
+      config: {},
+      headers: {},
+      status: 404,
+      statusText: '404 NOT FOUND',
+      data: null,
     }
   )
 }

@@ -1,13 +1,14 @@
 {
-  "name": "@indent/provider-next",
+  "name": "@indent/jira-project-role-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.12",
+  "version": "0.0.1-canary.13",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
+    "test": "JIRA_INSTANCE_URL='https://api.jirainstance.com/' JIRA_USER_EMAIL='jirauser@example.com' JIRA_API_TOKEN=ABCdefGH1j89l jest --config ../../../jest.config.json jira.test.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
@@ -15,12 +16,6 @@
   },
   "dependencies": {
     "@indent/base-webhook": "^0.0.1-canary.12"
-  },
-  "peerDependencies": {
-    "next": "*"
-  },
-  "devDependencies": {
-    "next": "*"
   },
   "publishConfig": {
     "access": "public"
