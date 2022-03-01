@@ -1,0 +1,25 @@
+{
+  "name": "@indent/provider-google",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.1-canary.12",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-webhook": "^0.0.1-canary.12",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0"
+}
