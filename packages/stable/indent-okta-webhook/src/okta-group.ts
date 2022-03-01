@@ -17,7 +17,7 @@ import {
   PullUpdateResponse,
   Resource,
 } from '@indent/types'
-import { PartialOktaGroup } from '.'
+import { approvalEvent, PartialOktaGroup } from '.'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
@@ -25,6 +25,7 @@ const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedOktaGroups?: string[]
+  getApprovalEvent?: approvalEvent
 }
 
 export class OktaDecisionIntegration
@@ -33,12 +34,14 @@ export class OktaDecisionIntegration
 {
   _name?: string
   _autoApprovedOktaGroups?: string[]
+  _getApprovalEvent?: any
 
   constructor(opts?: OktaDecisionIntegrationOpts) {
     super(opts)
     if (opts) {
       this._name = opts.name
       this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+      this._getApprovalEvent = opts.getApprovalEvent
     }
   }
 
@@ -80,7 +83,9 @@ export class OktaDecisionIntegration
       reqEvent &&
       this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
     ) {
-      claims.push(getDefaultApprovalEvent(reqEvent))
+      const getApprovalEvent =
+        this._getApprovalEvent || getDefaultApprovalEvent(reqEvent)
+      claims.push(getApprovalEvent)
     }
 
     return { status, claims }
@@ -247,7 +252,7 @@ const pick = (obj: any) =>
     {}
   )
 
-function getDefaultApprovalEvent(reqEvent: Event) {
+function getDefaultApprovalEvent(reqEvent: Event): approvalEvent {
   let expireTime = new Date()
   let hours = 1
 

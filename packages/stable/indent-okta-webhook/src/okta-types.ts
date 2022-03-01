@@ -1,3 +1,5 @@
+import { Resource } from '@indent/types'
+
 export interface OktaGroup {
   id: string
   created: string
@@ -37,4 +39,26 @@ export interface Users {
 
 export interface Apps {
   href: string
+}
+
+export interface approvalEvent {
+  actor: {
+    id: string
+    kind: string
+    displayName?: string
+    email?: string
+  }
+  event: string
+  meta: {
+    labels?: {
+      'indent.com/time/duration'?: string
+      'indent.com/time/expires'?: string
+      'indent.com/workflow/origin/id'?: string
+      'indent.com/workflow/origin/run/id'?: string
+      petition?: string
+    }
+  }
+  resources: Resource[]
+  reason: string
+  timestamp?: string
 }
