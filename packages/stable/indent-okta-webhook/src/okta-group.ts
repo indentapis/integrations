@@ -2,6 +2,7 @@ import {
   ApplyUpdateRequest,
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
+  DecisionIntegration,
   DecisionResponse,
   FullIntegration,
   HealthCheckResponse,
@@ -22,20 +23,21 @@ import { callOktaAPI } from './okta-api'
 const version = require('../package.json').version
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
-export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & {
-  autoApprovedOktaGroups: string[]
+export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
+  autoApprovedOktaGroups?: string[]
 }
 
-export class OktaGroupIntegration
+export class OktaDecisionIntegration
   extends BaseHttpIntegration
-  implements FullIntegration
+  implements DecisionIntegration
 {
   _name?: string
-  _autoApprovedOktaGroups: string[]
+  _autoApprovedOktaGroups?: string[]
 
-  constructor(opts?: OktaGroupIntegrationOpts) {
+  constructor(opts?: OktaDecisionIntegrationOpts) {
     super(opts)
     if (opts) {
+      this._name = opts.name
       this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
     }
   }
@@ -43,8 +45,68 @@ export class OktaGroupIntegration
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
+      name: 'indent-okta-groups-decision-webhook',
+      capabilities: ['GetDecision'],
+    }
+  }
+
+  HealthCheck(): HealthCheckResponse {
+    return { status: { code: 0 } }
+  }
+
+  MatchDecision(_req: WriteRequest): boolean {
+    return true
+  }
+
+  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+    const status = {}
+    const claims = []
+    const reqEvent = req.events.find((e) => e.event === 'access/request')
+
+    // call okta API
+    // get grouplist
+    const { response } = await callOktaAPI(this, {
+      method: 'get',
+      url: `/api/v1/users/${
+        reqEvent.actor.labels.oktaId || reqEvent.actor.id
+      }/groups`,
+    })
+
+    const groups = response.data as PartialOktaGroup[]
+
+    const groupsSet = new Set(groups.map((g) => g.id))
+
+    if (
+      reqEvent &&
+      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
+    ) {
+      claims.push(getDefaultApprovalEvent(reqEvent))
+    }
+
+    return { status, claims }
+  }
+}
+
+export class OktaGroupIntegration
+  extends BaseHttpIntegration
+  implements FullIntegration
+{
+  _name?: string
+  // _autoApprovedOktaGroups?: string[]
+
+  constructor(opts?: BaseHttpIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._name = opts.name
+      // this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+    }
+  }
+
+  GetInfo(): IntegrationInfoResponse {
+    return {
+      version,
       name: 'indent-okta-groups-webhook',
-      capabilities: ['ApplyUpdate', 'PullUpdate', 'GetDecision'],
+      capabilities: ['ApplyUpdate', 'PullUpdate'],
     }
   }
 
@@ -128,37 +190,37 @@ export class OktaGroupIntegration
     return { status, resources }
   }
 
-  MatchDecision(_req: WriteRequest): boolean {
-    return true
-  }
+  // MatchDecision(_req: WriteRequest): boolean {
+  //   return true
+  // }
 
-  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
-    const status = {}
-    const claims = []
-    const reqEvent = req.events.find((e) => e.event === 'access/request')
+  // async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+  //   const status = {}
+  //   const claims = []
+  //   const reqEvent = req.events.find((e) => e.event === 'access/request')
 
-    // call okta API
-    // get grouplist
-    const { response } = await callOktaAPI(this, {
-      method: 'get',
-      url: `/api/v1/users/${
-        reqEvent.actor.labels.oktaId || reqEvent.actor.id
-      }/groups`,
-    })
+  //   // call okta API
+  //   // get grouplist
+  //   const { response } = await callOktaAPI(this, {
+  //     method: 'get',
+  //     url: `/api/v1/users/${
+  //       reqEvent.actor.labels.oktaId || reqEvent.actor.id
+  //     }/groups`,
+  //   })
 
-    const groups = response.data as PartialOktaGroup[]
+  //   const groups = response.data as PartialOktaGroup[]
 
-    const groupsSet = new Set(groups.map((g) => g.id))
+  //   const groupsSet = new Set(groups.map((g) => g.id))
 
-    if (
-      reqEvent &&
-      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
-    ) {
-      claims.push(getApprovalEvent(reqEvent))
-    }
+  //   if (
+  //     reqEvent &&
+  //     this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
+  //   ) {
+  //     claims.push(getApprovalEvent(reqEvent))
+  //   }
 
-    return { status, claims }
-  }
+  //   return { status, claims }
+  // }
 }
 
 const getOktaIdFromResources = (
@@ -185,7 +247,7 @@ const pick = (obj: any) =>
     {}
   )
 
-function getApprovalEvent(reqEvent: Event) {
+function getDefaultApprovalEvent(reqEvent: Event) {
   let expireTime = new Date()
   let hours = 1
 
