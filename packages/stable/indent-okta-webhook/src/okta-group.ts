@@ -17,7 +17,7 @@ import {
   PullUpdateResponse,
   Resource,
 } from '@indent/types'
-import { approvalEvent, PartialOktaGroup } from '.'
+import { PartialOktaGroup } from '.'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
@@ -25,7 +25,7 @@ const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedOktaGroups?: string[]
-  getApprovalEvent?: approvalEvent
+  getApprovalEvent?: Event
 }
 
 export class OktaDecisionIntegration
@@ -97,13 +97,11 @@ export class OktaGroupIntegration
   implements FullIntegration
 {
   _name?: string
-  // _autoApprovedOktaGroups?: string[]
 
   constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
     if (opts) {
       this._name = opts.name
-      // this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
     }
   }
 
@@ -194,38 +192,6 @@ export class OktaGroupIntegration
 
     return { status, resources }
   }
-
-  // MatchDecision(_req: WriteRequest): boolean {
-  //   return true
-  // }
-
-  // async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
-  //   const status = {}
-  //   const claims = []
-  //   const reqEvent = req.events.find((e) => e.event === 'access/request')
-
-  //   // call okta API
-  //   // get grouplist
-  //   const { response } = await callOktaAPI(this, {
-  //     method: 'get',
-  //     url: `/api/v1/users/${
-  //       reqEvent.actor.labels.oktaId || reqEvent.actor.id
-  //     }/groups`,
-  //   })
-
-  //   const groups = response.data as PartialOktaGroup[]
-
-  //   const groupsSet = new Set(groups.map((g) => g.id))
-
-  //   if (
-  //     reqEvent &&
-  //     this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
-  //   ) {
-  //     claims.push(getApprovalEvent(reqEvent))
-  //   }
-
-  //   return { status, claims }
-  // }
 }
 
 const getOktaIdFromResources = (
@@ -252,7 +218,7 @@ const pick = (obj: any) =>
     {}
   )
 
-function getDefaultApprovalEvent(reqEvent: Event): approvalEvent {
+function getDefaultApprovalEvent(reqEvent: Event): Event {
   let expireTime = new Date()
   let hours = 1
 
@@ -270,11 +236,7 @@ function getDefaultApprovalEvent(reqEvent: Event): approvalEvent {
       labels: {
         'indent.com/time/duration': `${hours}h0m0s`,
         'indent.com/time/expires': expireTime.toISOString(),
-        'indent.com/workflow/origin/id':
-          reqEvent.meta.labels['indent.com/workflow/origin/id'],
-        'indent.com/workflow/origin/run/id':
-          reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
-        petition: reqEvent.meta.labels.petition,
+        ...reqEvent.meta.labels,
       },
     },
     resources: [reqEvent.actor, ...reqEvent.resources],
