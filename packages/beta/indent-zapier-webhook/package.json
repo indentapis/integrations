@@ -1,0 +1,20 @@
+{
+  "name": "@indent/zapier-webhook",
+  "version": "0.0.1-canary.12",
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build",
+    "test": "ZAP_ENDPOINT='https://hooks.zapier.com/hooks/catch/12345678/abcdef0/' jest --config ../../../jest.config.json zapier.*"
+  },
+  "dependencies": {
+    "@indent/base-webhook": "^0.0.1-canary.12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0"
+}
