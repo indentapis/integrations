@@ -2,6 +2,7 @@ import {
   ApplyUpdateRequest,
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
+  DecisionIntegration,
   DecisionResponse,
   FullIntegration,
   HealthCheckResponse,
@@ -22,8 +23,73 @@ import { callOktaAPI } from './okta-api'
 const version = require('../package.json').version
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
-export type OktaGroupIntegrationOpts = BaseHttpIntegrationOpts & {
-  autoApprovedOktaGroups: string[]
+export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
+  autoApprovedOktaGroups?: string[]
+  getApprovalEvent?: Event
+}
+
+export class OktaDecisionIntegration
+  extends BaseHttpIntegration
+  implements DecisionIntegration
+{
+  _name?: string
+  _autoApprovedOktaGroups?: string[]
+  _getApprovalEvent?: any
+
+  constructor(opts?: OktaDecisionIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._name = opts.name
+      this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+      this._getApprovalEvent = opts.getApprovalEvent
+    }
+  }
+
+  GetInfo(): IntegrationInfoResponse {
+    return {
+      version,
+      name: 'indent-okta-groups-decision-webhook',
+      capabilities: ['GetDecision'],
+    }
+  }
+
+  HealthCheck(): HealthCheckResponse {
+    return { status: { code: 0 } }
+  }
+
+  MatchDecision(_req: WriteRequest): boolean {
+    return true
+  }
+
+  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+    const status = {}
+    const claims = []
+    const reqEvent = req.events.find((e) => e.event === 'access/request')
+
+    // call okta API
+    // get grouplist
+    const { response } = await callOktaAPI(this, {
+      method: 'get',
+      url: `/api/v1/users/${
+        reqEvent.actor.labels.oktaId || reqEvent.actor.id
+      }/groups`,
+    })
+
+    const groups = response.data as PartialOktaGroup[]
+
+    const groupsSet = new Set(groups.map((g) => g.id))
+
+    if (
+      reqEvent &&
+      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
+    ) {
+      const getApprovalEvent =
+        this._getApprovalEvent || getDefaultApprovalEvent(reqEvent)
+      claims.push(getApprovalEvent)
+    }
+
+    return { status, claims }
+  }
 }
 
 export class OktaGroupIntegration
@@ -31,12 +97,11 @@ export class OktaGroupIntegration
   implements FullIntegration
 {
   _name?: string
-  _autoApprovedOktaGroups: string[]
 
-  constructor(opts?: OktaGroupIntegrationOpts) {
+  constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
     if (opts) {
-      this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
+      this._name = opts.name
     }
   }
 
@@ -44,7 +109,7 @@ export class OktaGroupIntegration
     return {
       version,
       name: 'indent-okta-groups-webhook',
-      capabilities: ['ApplyUpdate', 'PullUpdate', 'GetDecision'],
+      capabilities: ['ApplyUpdate', 'PullUpdate'],
     }
   }
 
@@ -127,38 +192,6 @@ export class OktaGroupIntegration
 
     return { status, resources }
   }
-
-  MatchDecision(_req: WriteRequest): boolean {
-    return true
-  }
-
-  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
-    const status = {}
-    const claims = []
-    const reqEvent = req.events.find((e) => e.event === 'access/request')
-
-    // call okta API
-    // get grouplist
-    const { response } = await callOktaAPI(this, {
-      method: 'get',
-      url: `/api/v1/users/${
-        reqEvent.actor.labels.oktaId || reqEvent.actor.id
-      }/groups`,
-    })
-
-    const groups = response.data as PartialOktaGroup[]
-
-    const groupsSet = new Set(groups.map((g) => g.id))
-
-    if (
-      reqEvent &&
-      this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
-    ) {
-      claims.push(getApprovalEvent(reqEvent))
-    }
-
-    return { status, claims }
-  }
 }
 
 const getOktaIdFromResources = (
@@ -185,7 +218,7 @@ const pick = (obj: any) =>
     {}
   )
 
-function getApprovalEvent(reqEvent: Event) {
+function getDefaultApprovalEvent(reqEvent: Event): Event {
   let expireTime = new Date()
   let hours = 1
 
@@ -203,11 +236,7 @@ function getApprovalEvent(reqEvent: Event) {
       labels: {
         'indent.com/time/duration': `${hours}h0m0s`,
         'indent.com/time/expires': expireTime.toISOString(),
-        'indent.com/workflow/origin/id':
-          reqEvent.meta.labels['indent.com/workflow/origin/id'],
-        'indent.com/workflow/origin/run/id':
-          reqEvent.meta.labels['indent.com/workflow/origin/run/id'],
-        petition: reqEvent.meta.labels.petition,
+        ...reqEvent.meta.labels,
       },
     },
     resources: [reqEvent.actor, ...reqEvent.resources],

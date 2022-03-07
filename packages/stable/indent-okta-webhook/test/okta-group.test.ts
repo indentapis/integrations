@@ -1,5 +1,5 @@
 import { addMock } from '@indent/base-webhook'
-import { OktaGroup, OktaGroupIntegration } from '../lib'
+import { OktaGroup, OktaGroupIntegration, OktaDecisionIntegration } from '../lib'
 
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
@@ -121,7 +121,7 @@ describe('OktaGroupIntegration', () => {
   describe('GetDecision', () => {
     beforeEach(() => setupMocks())
     it('should respond with Approval details', async () => {
-      const integration = new OktaGroupIntegration(options)
+      const integration = new OktaDecisionIntegration(options)
       const res = await integration.GetDecision(autoApproveInput)
 
       expect(res).toBeTruthy()
