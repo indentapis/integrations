@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@indent/github-webhook",
   "main": "lib/index",
   "types": "lib/index",
