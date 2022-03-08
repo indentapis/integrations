@@ -1,6 +1,6 @@
 {
   "name": "@indent/okta-webhook",
-  "version": "0.0.1-canary.13",
+  "version": "0.0.1-canary.14",
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.json okta.*"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.13",
+    "@indent/base-webhook": "^0.0.1-canary.14",
     "njwt": "^1.2.0"
   },
   "publishConfig": {

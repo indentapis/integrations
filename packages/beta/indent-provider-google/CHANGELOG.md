@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.14](https://github.com/indentapis/integrations/compare/@indent/provider-google@0.0.1-canary.13...@indent/provider-google@0.0.1-canary.14) (2022-03-08)
+
+**Note:** Version bump only for package @indent/provider-google
+
+
+
+
+
 ## 0.0.1-canary.13 (2022-03-08)
 
 

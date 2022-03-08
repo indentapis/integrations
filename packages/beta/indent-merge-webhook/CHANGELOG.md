@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/merge-webhook@0.0.1-canary.6...@indent/merge-webhook@0.0.1-canary.7) (2022-03-08)
+
+**Note:** Version bump only for package @indent/merge-webhook
+
+
+
+
+
 ## [0.0.1-canary.6](https://github.com/indentapis/integrations/compare/@indent/merge-webhook@0.0.1-canary.5...@indent/merge-webhook@0.0.1-canary.6) (2022-03-08)
 
 **Note:** Version bump only for package @indent/merge-webhook

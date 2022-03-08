@@ -1,9 +1,8 @@
 {
-  "private": true,
   "name": "@indent/github-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1-canary.0",
   "files": [
     "lib"
   ],
@@ -16,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.7"
+    "@indent/base-webhook": "^0.0.1-canary.14"
   },
   "publishConfig": {
     "access": "public"

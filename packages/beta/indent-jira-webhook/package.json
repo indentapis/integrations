@@ -2,7 +2,7 @@
   "name": "@indent/jira-project-role-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.14",
+  "version": "0.0.1-canary.15",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.13"
+    "@indent/base-webhook": "^0.0.1-canary.14"
   },
   "publishConfig": {
     "access": "public"
