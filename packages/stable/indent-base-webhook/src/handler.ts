@@ -74,6 +74,8 @@ export async function handleRequest(
       const info = ign.GetInfo()
       if (!info.capabilities.includes(callName)) {
         return false
+      } else if (integrations.length === 1) {
+        return true
       } else if (callName === 'ApplyUpdate') {
         return (ign as ApplyIntegration).MatchApply(data as ApplyUpdateRequest)
       } else if (callName === 'PullUpdate') {

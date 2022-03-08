@@ -68,6 +68,10 @@ export class GithubTeamsIntegration
     return this.Fetch(config)
   }
 
+  MatchPull(req: PullUpdateRequest): boolean {
+    return req.kinds.map((k) => k.toLowerCase()).includes('github.v1.team')
+  }
+
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchGithub({
       url: '/teams',
