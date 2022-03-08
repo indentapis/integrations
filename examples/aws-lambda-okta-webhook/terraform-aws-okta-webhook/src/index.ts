@@ -1,6 +1,6 @@
 import { OktaGroupIntegration } from '@indent/okta-webhook'
 import { getLambdaHandler } from '@indent/provider-aws'
 
-export default getLambdaHandler({
+export const handle = getLambdaHandler({
   integrations: [new OktaGroupIntegration()],
 })
