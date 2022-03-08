@@ -2,7 +2,7 @@
   "name": "@indent/provider-google",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.12",
+  "version": "0.0.1-canary.13",
   "files": [
     "lib"
   ],
@@ -14,10 +14,9 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.12",
+    "@indent/base-webhook": "^0.0.1-canary.13",
     "express": "^4.17.2"
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   },

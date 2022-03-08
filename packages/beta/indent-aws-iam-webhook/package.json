@@ -2,7 +2,7 @@
   "name": "@indent/aws-iam-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.8",
+  "version": "0.0.1-canary.9",
   "files": [
     "lib"
   ],
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-iam": "^3.46.0",
-    "@indent/base-webhook": "^0.0.1-canary.7"
+    "@indent/base-webhook": "^0.0.1-canary.13"
   },
   "publishConfig": {
     "access": "public"
