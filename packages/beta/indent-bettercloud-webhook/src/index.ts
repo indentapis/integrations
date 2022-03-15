@@ -54,7 +54,7 @@ export class BetterCloudActionIntegration
   FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://app.bettercloud.com`
+    config.baseURL = `https://app.bettercloud.com/api/v1`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       Authorization: `${BETTERCLOUD_TOKEN}`,
@@ -69,7 +69,7 @@ export class BetterCloudActionIntegration
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchBetterCloud({
       method: 'GET',
-      url: '/v1/actions',
+      url: '/actions',
       params: {
         page: 1,
         per_page: 999,
@@ -130,7 +130,7 @@ export class BetterCloudActionIntegration
 
     const response = await this.FetchBetterCloud({
       method: 'POST',
-      url: `/v1/actions/${actionId}/execute`,
+      url: `/actions/${actionId}/execute`,
     })
 
     if (response.status > 204) {
@@ -174,7 +174,7 @@ export class BetterCloudWorkflowIntegration
   FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://app.bettercloud.com`
+    config.baseURL = `https://app.bettercloud.com/api/v1`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       Authorization: `${BETTERCLOUD_TOKEN}`,
@@ -189,7 +189,7 @@ export class BetterCloudWorkflowIntegration
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchBetterCloud({
       method: 'get',
-      url: '/v1/workflows',
+      url: '/workflows',
     })
 
     const { data: results } = response
@@ -244,7 +244,7 @@ export class BetterCloudWorkflowIntegration
 
     const response = await this.FetchBetterCloud({
       method: 'POST',
-      url: `/v1/workflows/${workflowId}/execute`,
+      url: `/workflows/${workflowId}/execute`,
     })
 
     if (response.status > 204) {
