@@ -54,7 +54,7 @@ export class BetterCloudActionIntegration
   FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://api.bettercloud.com`
+    config.baseURL = `https://app.bettercloud.com`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       Authorization: `${BETTERCLOUD_TOKEN}`,
@@ -174,7 +174,7 @@ export class BetterCloudWorkflowIntegration
   FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://api.bettercloud.com`
+    config.baseURL = `https://app.bettercloud.com`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       Authorization: `${BETTERCLOUD_TOKEN}`,
