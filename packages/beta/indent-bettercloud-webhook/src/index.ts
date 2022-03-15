@@ -1,6 +1,7 @@
 import {
   ApplyUpdateRequest,
   BaseHttpIntegration,
+  BaseHttpIntegrationOpts,
   FullIntegration,
   HealthCheckResponse,
   IntegrationInfoResponse,
@@ -15,21 +16,26 @@ import {
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import {
-  BettercloudAction,
-  BettercloudActionResponse,
-  BettercloudWorkflow,
-  BettercloudWorkflowResponse,
+  BetterCloudAction,
+  BetterCloudActionResponse,
+  BetterCloudWorkflow,
+  BetterCloudWorkflowResponse,
 } from './bettercloud-types'
 
 const version = require('../package.json').version
 
 export const BETTERCLOUD_TOKEN = process.env.BETTERCLOUD_TOKEN || ''
 
-export class BettercloudActionIntegration
+export class BetterCloudActionIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
-  _name?: string
+  constructor(opts?: BaseHttpIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._name = opts.name
+    }
+  }
 
   HealthCheck(): HealthCheckResponse {
     return { status: { code: 0 } }
@@ -45,12 +51,13 @@ export class BettercloudActionIntegration
     }
   }
 
-  FetchBettercloud(
+  FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
     config.baseURL = `https://api.bettercloud.com`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: `${BETTERCLOUD_TOKEN}`,
     }
     return this.Fetch(config)
   }
@@ -60,7 +67,7 @@ export class BettercloudActionIntegration
   }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
-    const response = await this.FetchBettercloud({
+    const response = await this.FetchBetterCloud({
       method: 'GET',
       url: '/v1/actions',
       params: {
@@ -70,10 +77,10 @@ export class BettercloudActionIntegration
     })
 
     const { data: results } = response
-    const { content } = results as BettercloudActionResponse
+    const { content } = results as BetterCloudActionResponse
     const kind = 'bettercloud.v1.Action'
     const timestamp = new Date().toISOString()
-    const resources = content.map((c: BettercloudAction) => ({
+    const resources = content.map((c: BetterCloudAction) => ({
       id: c.id,
       kind,
       displayName: c.name,
@@ -121,7 +128,7 @@ export class BettercloudActionIntegration
         actionId = action.id
     }
 
-    const response = await this.FetchBettercloud({
+    const response = await this.FetchBetterCloud({
       method: 'POST',
       url: `/v1/actions/${actionId}/execute`,
     })
@@ -139,11 +146,16 @@ export class BettercloudActionIntegration
   }
 }
 
-export class BettercloudWorkflowIntegration
+export class BetterCloudWorkflowIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
-  _name?: string
+  constructor(opts?: BaseHttpIntegrationOpts) {
+    super(opts)
+    if (opts) {
+      this._name = opts.name
+    }
+  }
 
   HealthCheck(): HealthCheckResponse {
     return { status: { code: 0 } }
@@ -159,12 +171,13 @@ export class BettercloudWorkflowIntegration
     }
   }
 
-  FetchBettercloud(
+  FetchBetterCloud(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
     config.baseURL = `https://api.bettercloud.com`
     config.headers = {
       'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: `${BETTERCLOUD_TOKEN}`,
     }
     return this.Fetch(config)
   }
@@ -174,16 +187,16 @@ export class BettercloudWorkflowIntegration
   }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
-    const response = await this.FetchBettercloud({
+    const response = await this.FetchBetterCloud({
       method: 'get',
       url: '/v1/workflows',
     })
 
     const { data: results } = response
-    const { content } = results as BettercloudWorkflowResponse
+    const { content } = results as BetterCloudWorkflowResponse
     const kind = 'bettercloud.v1.Workflow'
     const timestamp = new Date().toISOString()
-    const resources = content.map((c: BettercloudWorkflow) => ({
+    const resources = content.map((c: BetterCloudWorkflow) => ({
       id: c.workflowId,
       kind,
       displayName: c.name,
@@ -229,7 +242,7 @@ export class BettercloudWorkflowIntegration
         workflowId = workflow.id
     }
 
-    const response = await this.FetchBettercloud({
+    const response = await this.FetchBetterCloud({
       method: 'POST',
       url: `/v1/workflows/${workflowId}/execute`,
     })

@@ -1,31 +1,31 @@
-export type BettercloudAction = {
+export type BetterCloudAction = {
   id: string
-  parameters: BettercloudActionParameters[]
+  parameters: BetterCloudActionParameters[]
   name?: string
   description?: string
 }
 
-export type BettercloudActionParameters = {
+export type BetterCloudActionParameters = {
   id: string
   required: boolean
   name: string
   type: string
 }
 
-export type BettercloudWorkflow = {
+export type BetterCloudWorkflow = {
   workflowId: string
   name: string
 }
 
-export interface BettercloudActionResponse extends BettercloudAPIResponse {
-  content: BettercloudAction[]
+export interface BetterCloudActionResponse extends BetterCloudAPIResponse {
+  content: BetterCloudAction[]
 }
 
-export interface BettercloudWorkflowResponse extends BettercloudAPIResponse {
-  content: BettercloudWorkflow[]
+export interface BetterCloudWorkflowResponse extends BetterCloudAPIResponse {
+  content: BetterCloudWorkflow[]
 }
 
-type BettercloudAPIResponse = {
+type BetterCloudAPIResponse = {
   last: boolean
   totalPages: number
   totalElements: number
