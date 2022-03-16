@@ -145,7 +145,9 @@ export async function handleRequest(
     )
     if (status.details) {
       console.log(
-        `@indent/base-webhook: handleRequest: [RES] — { details: ${status.details} }`
+        `@indent/base-webhook: handleRequest: [RES] — { details: ${JSON.stringify(
+          status.details
+        )} }`
       )
     }
 
