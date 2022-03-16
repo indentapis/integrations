@@ -140,8 +140,14 @@ export async function handleRequest(
 
     const { status = {}, ...rest } = results[0]
 
-    console.log('@indent/base-webhook: handleRequest: [RES] success')
-    console.log({ status })
+    console.log(
+      `@indent/base-webhook: handleRequest: [RES] { code: ${status.code} }`
+    )
+    if (status.details) {
+      console.log(
+        `@indent/base-webhook: handleRequest: [RES] — { details: ${status.details} }`
+      )
+    }
 
     return {
       status,

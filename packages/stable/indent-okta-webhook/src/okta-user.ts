@@ -42,8 +42,10 @@ export class OktaUserIntegration
           code: StatusCode.INVALID_ARGUMENT,
           details: [
             {
-              expectedKindLower: 'okta.v1.user',
-              actualKinds: req.kinds,
+              '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+              detail: `expected = okta.v1.user (lowercase), got = ${req.kinds.join(
+                ', '
+              )}`,
             },
           ],
         },
