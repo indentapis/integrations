@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.17](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.16...@indent/base-webhook@0.0.1-canary.17) (2022-03-16)
+
+
+### Bug Fixes
+
+* **base:** handler logging ([1889096](https://github.com/indentapis/integrations/commit/188909643f83703eec4614eeb91d3e438f270214))
+
+
+
+
+
 ## [0.0.1-canary.16](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.15...@indent/base-webhook@0.0.1-canary.16) (2022-03-16)
 
 
