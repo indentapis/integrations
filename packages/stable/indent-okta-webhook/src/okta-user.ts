@@ -94,7 +94,7 @@ export class OktaUserIntegration
     } = !APP_ID
       ? { response: { data: [] } }
       : await callOktaAPI(this, {
-          url: `/apps/${APP_ID}/users`,
+          url: `/api/v1/apps/${APP_ID}/users`,
           transform: (appuser) => ({
             id: [OKTA_DOMAIN, appuser.id].join(`/api/v1/apps/${APP_ID}/users/`),
             kind: 'okta.v1.AppUser',
