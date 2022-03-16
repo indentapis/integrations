@@ -1,6 +1,6 @@
 {
   "name": "@indent/okta-webhook",
-  "version": "0.0.1-canary.17",
+  "version": "0.0.1-canary.18",
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {

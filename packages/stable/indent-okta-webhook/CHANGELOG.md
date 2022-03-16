@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.18](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.17...@indent/okta-webhook@0.0.1-canary.18) (2022-03-16)
+
+
+### Bug Fixes
+
+* **okta:** slack app user resolution ([9da4637](https://github.com/indentapis/integrations/commit/9da4637eb5e03811a9446c89ec118a453c2953d4))
+
+
+
+
+
 ## [0.0.1-canary.17](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.16...@indent/okta-webhook@0.0.1-canary.17) (2022-03-16)
 
 **Note:** Version bump only for package @indent/okta-webhook
