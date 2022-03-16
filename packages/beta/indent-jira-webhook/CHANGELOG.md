@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.17](https://github.com/indentapis/integrations/compare/@indent/jira-project-role-webhook@0.0.1-canary.16...@indent/jira-project-role-webhook@0.0.1-canary.17) (2022-03-16)
+
+**Note:** Version bump only for package @indent/jira-project-role-webhook
+
+
+
+
+
 ## [0.0.1-canary.16](https://github.com/indentapis/integrations/compare/@indent/jira-project-role-webhook@0.0.1-canary.15...@indent/jira-project-role-webhook@0.0.1-canary.16) (2022-03-08)
 
 **Note:** Version bump only for package @indent/jira-project-role-webhook

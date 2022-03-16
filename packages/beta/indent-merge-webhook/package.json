@@ -2,7 +2,7 @@
   "name": "@indent/merge-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.8",
+  "version": "0.0.1-canary.9",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.15"
+    "@indent/base-webhook": "^0.0.1-canary.16"
   },
   "publishConfig": {
     "access": "public"

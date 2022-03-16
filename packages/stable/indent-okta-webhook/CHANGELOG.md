@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.16](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.15...@indent/okta-webhook@0.0.1-canary.16) (2022-03-16)
+
+
+### Bug Fixes
+
+* **okta:** user MatchPull error ([5d84598](https://github.com/indentapis/integrations/commit/5d84598dcda783c57dcb91ee57203e3f2a98f0ed))
+
+
+
+
+
 ## [0.0.1-canary.15](https://github.com/indentapis/integrations/compare/@indent/okta-webhook@0.0.1-canary.14...@indent/okta-webhook@0.0.1-canary.15) (2022-03-08)
 
 **Note:** Version bump only for package @indent/okta-webhook
