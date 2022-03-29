@@ -15,6 +15,7 @@ import {
   Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { CloudflareMember } from './cloudflare-types'
 
 const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
@@ -99,25 +100,33 @@ export class CloudflareIntegration
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
     const user = getResourceByKind(resources, 'user')
+    const cloudflareRole = getResourceByKind(resources, 'cloudflare.v.role')
     // list cloudflare members
-    const cloudflareMembers = await this.FetchCloudflare({
+    const cloudflareMembersResponse = await this.FetchCloudflare({
       method: 'GET',
       url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
       params: {
-        per_page: 50
-      }
+        per_page: 50,
+      },
     }) // add type
 
-    const cloudflareMember = cloudflareMembers.find()
-
+    const { data: result } = cloudflareMembersResponse
     // match object.user.email to slack/user email with find
-    // get object.id and user.id
-      // if user not found we need to add user to account based on their email
-    // proceed to put or delete role from user
+    const cloudflareMember = result.filter((r: CloudflareMember) => {
+      r.user.email === user.email
+    })
 
-    // const team = getGithubTeamFromResources(resources, 'cloudflare.v1.Role')
+    // get object.id and user.id
+    const cloudflareMemberId = cloudflareMember.id
+    const cloudflareUserId = cloudflareMember.user.id
+    // if user not found we need to add user to account based on their email
+
     const method = event === 'access/grant' ? 'PUT' : 'DELETE'
-    const response = await this.FetchCloudflare()
+    const response = await this.FetchCloudflare({
+      method,
+      url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${cloudflareMemberId}`,
+      data: {},
+    })
 
     if (response.status > 204) {
       return {
