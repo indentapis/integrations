@@ -6,7 +6,6 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   PullUpdateRequest,
-  StatusCode,
   WriteRequest,
 } from '@indent/base-webhook'
 import {
@@ -15,11 +14,9 @@ import {
   Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { CloudflareMember } from './cloudflare-types'
 
 const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
-const CLOUDFLARE_ACCOUNT_EMAIL = process.env.CLOUDFLARE_ACCOUNT_EMAIL || ''
 const CLOUDFLARE_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT || ''
 
 export class CloudflareIntegration
@@ -30,6 +27,9 @@ export class CloudflareIntegration
 
   constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
+    if (opts) {
+      this._name = opts.name
+    }
   }
 
   HealthCheck(): HealthCheckResponse {
@@ -49,7 +49,7 @@ export class CloudflareIntegration
       req.events.filter((e) =>
         Boolean(
           e.resources?.filter((r) =>
-            r.kind?.toLowerCase().includes('cloudflare.v1.role')
+            r.kind?.toLowerCase().includes('cloudflare.v1.accountrole')
           ).length
         )
       ).length > 0
@@ -68,7 +68,9 @@ export class CloudflareIntegration
   }
 
   MatchPull(req: PullUpdateRequest): boolean {
-    return req.kinds.map((k) => k.toLowerCase()).includes('cloudflare.v1.role')
+    return req.kinds
+      .map((k) => k.toLowerCase())
+      .includes('cloudflare.v1.accountrole')
   }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
@@ -77,17 +79,18 @@ export class CloudflareIntegration
     })
 
     const { data: result } = response
-    const kind = 'cloudflare.v1.Role'
+    const kind = 'cloudflare.v1.AccountRole'
     const timestamp = new Date().toISOString()
     const resources = result.map((r: any) => ({
-      id: r.id,
+      id: `api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles/${r.id}`,
       displayName: r.name,
       description: r.description,
       kind,
       labels: {
         timestamp,
         'cloudflare/id': r.id,
-        'cloudflare/permissions': r.permissions.toString(),
+        'cloudflare/permissions': JSON.stringify(r.permissions),
+        'cloudflare/role': JSON.stringify(r),
       },
     })) as Resource[]
 
@@ -100,42 +103,30 @@ export class CloudflareIntegration
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
     const user = getResourceByKind(resources, 'user')
-    const cloudflareRole = getResourceByKind(resources, 'cloudflare.v.role')
+    const cloudflareRole = getResourceByKind(
+      resources,
+      'cloudflare.v1.AccountRole'
+    )
     // list cloudflare members
-    const cloudflareMembersResponse = await this.FetchCloudflare({
-      method: 'GET',
-      url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
-      params: {
-        per_page: 50,
-      },
-    }) // add type
-
-    const { data: result } = cloudflareMembersResponse
+    // add type
     // match object.user.email to slack/user email with find
-    const cloudflareMember = result.filter((r: CloudflareMember) => {
-      r.user.email === user.email
-    })
 
     // get object.id and user.id
-    const cloudflareMemberId = cloudflareMember.id
-    const cloudflareUserId = cloudflareMember.user.id
     // if user not found we need to add user to account based on their email
 
-    const method = event === 'access/grant' ? 'PUT' : 'DELETE'
-    const response = await this.FetchCloudflare({
-      method,
-      url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${cloudflareMemberId}`,
-      data: {},
-    })
+    // const method = event === 'access/grant' ? 'PUT' : 'DELETE'
+    // const response = {
+    //   status: 200,
+    // }
 
-    if (response.status > 204) {
-      return {
-        status: {
-          code: StatusCode.UNKNOWN,
-          details: { errorData: response.data },
-        },
-      }
-    }
+    // if (response.status > 204) {
+    //   return {
+    //     status: {
+    //       code: StatusCode.UNKNOWN,
+    //       details: { errorData: response.data },
+    //     },
+    //   }
+    // }
 
     return { status: {} }
   }
@@ -147,8 +138,8 @@ function getResourceByKind(resources: Resource[], kind: string): Resource {
   )[0]
 }
 
-const getUserFromResources = (resources: Resource[], kind: string): string => {
-  return resources
-    .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
-    .map((r) => r.id)[0]
-}
+// const getUserFromResources = (resources: Resource[], kind: string): string => {
+//   return resources
+//     .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
+//     .map((r) => r.id)[0]
+// }
