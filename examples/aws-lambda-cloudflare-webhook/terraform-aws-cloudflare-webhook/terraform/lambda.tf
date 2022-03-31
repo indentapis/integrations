@@ -25,9 +25,10 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      "INDENT_WEBHOOK_SECRET" = var.indent_webhook_secret
-      "CLOUDFLARE_ACCOUNT"    = var.cloudflare_account
-      "CLOUDFLARE_TOKEN"      = var.cloudflare_token
+      "INDENT_WEBHOOK_SECRET"    = var.indent_webhook_secret
+      "CLOUDFLARE_ACCOUNT"       = var.cloudflare_account
+      "CLOUDFLARE_TOKEN"         = var.cloudflare_token
+      "CLOUDFLARE_ACCOUNT_EMAIL" = var.cloudflare_account_email
     }
   }
 }

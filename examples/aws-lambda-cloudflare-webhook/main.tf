@@ -10,15 +10,17 @@
 module "cloudflare-pull-webhook" {
   source = "./terraform-aws-cloudflare-webhook/terraform"
 
-  indent_webhook_secret = var.cloudflare_pull_webhook_secret
-  cloudflare_account    = var.cloudflare_account
-  cloudflare_token      = var.cloudflare_token
+  indent_webhook_secret    = var.cloudflare_pull_webhook_secret
+  cloudflare_account       = var.cloudflare_account
+  cloudflare_account_email = var.cloudflare_account_email
+  cloudflare_token         = var.cloudflare_token
 }
 
 module "cloudflare-change-webhook" {
   source = "./terraform-aws-cloudflare-webhook/terraform"
 
-  indent_webhook_secret = var.cloudflare_webhook_secret
-  cloudflare_account    = var.cloudflare_account
-  cloudflare_token      = var.cloudflare_token
+  indent_webhook_secret    = var.cloudflare_pull_webhook_secret
+  cloudflare_account       = var.cloudflare_account
+  cloudflare_account_email = var.cloudflare_account_email
+  cloudflare_token         = var.cloudflare_token
 }

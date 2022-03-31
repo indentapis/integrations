@@ -19,6 +19,12 @@ variable "cloudflare_account" {
   sensitive = true
 }
 
+variable "cloudflare_account_email" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
 variable "cloudflare_token" {
   type      = string
   default   = ""
