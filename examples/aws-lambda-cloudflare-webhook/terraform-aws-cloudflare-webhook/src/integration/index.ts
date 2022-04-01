@@ -7,12 +7,12 @@ import {
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest,
+  WriteRequest
 } from '@indent/base-webhook'
 import {
   ApplyUpdateResponse,
   PullUpdateResponse,
-  Resource,
+  Resource
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { CloudflareMember } from './cloudflare-types'
@@ -57,7 +57,7 @@ export class CloudflareIntegration
     )
   }
 
-  FetchCloudflare(
+  async FetchCloudflare(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
     config.baseURL = `https://api.cloudflare.com/client/v4/`
@@ -135,55 +135,58 @@ export class CloudflareIntegration
 
     console.log('cloudflare member: ', cloudflareMember)
 
-    const cloudflareMemberRoles = cloudflareMember.roles.filter((role) => {
-      role.id !== cloudflareRole.id
-    })
-    console.log('cloudflare roles: ', cloudflareMemberRoles)
+    const method = event === 'access/grant' ? 'PUT' : 'DELETE'
 
-    if (!cloudflareMember) {
-      const response = await this.FetchCloudflare({
-        method: 'POST',
-        url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
-        data: {
-          email: user.email,
-          status: 'accepted',
-          roles: [cloudflareRole.id],
-        },
-      })
+    if (method) {
+      if (cloudflareMember) {
+        const cloudflareMemberRoles = cloudflareMember.roles.filter((role) => {
+          role.id !== cloudflareRole.id
+        })
 
-      if (response.status > 204) {
-        return {
-          status: {
-            code: StatusCode.UNKNOWN,
-            details: { errorData: response.data },
+        console.log('cloudflare roles: ', cloudflareMemberRoles)
+
+        await this.FetchCloudflare({
+          method,
+          url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${cloudflareMember.id}`,
+          data: {
+            id: CLOUDFLARE_ACCOUNT,
+            user: cloudflareMember.user,
+            roles: [...cloudflareMemberRoles],
           },
-        }
+        })
+          .then((res) => {
+            console.log(res)
+            return { status: {} }
+          })
+          .catch((error) => ({
+            status: {
+              code: StatusCode.UNKNOWN,
+              details: { errorData: error.data },
+            },
+          }))
+      } else {
+        await this.FetchCloudflare({
+          method: 'POST',
+          url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
+          data: {
+            email: user.email,
+            status: 'accepted',
+            roles: [cloudflareRole.id],
+          },
+        })
+          .then((res) => {
+            console.log(res)
+            return { status: {} }
+          })
+          .catch((error) => ({
+            status: {
+              code: StatusCode.UNKNOWN,
+              details: { errorData: error.data },
+            },
+          }))
       }
     }
-
-    if (cloudflareMember) {
-      const method = event === 'access/grant' ? 'PUT' : 'DELETE'
-      const response = await this.FetchCloudflare({
-        method,
-        url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${cloudflareMember.id}`,
-        data: {
-          id: CLOUDFLARE_ACCOUNT,
-          user: cloudflareMember.user,
-          roles: [...cloudflareMemberRoles],
-        },
-      })
-
-      if (response.status > 204) {
-        return {
-          status: {
-            code: StatusCode.UNKNOWN,
-            details: { errorData: response.data },
-          },
-        }
-      }
-    }
-
-    return { status: {} }
+    return { status: {}}
   }
 }
 
