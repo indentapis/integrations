@@ -7,15 +7,15 @@ import {
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest
+  WriteRequest,
 } from '@indent/base-webhook'
 import {
   ApplyUpdateResponse,
   PullUpdateResponse,
-  Resource
+  Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { CloudflareMember } from './cloudflare-types'
+import { CloudflareMember, CloudflareRole } from './cloudflare-types'
 
 //const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
@@ -110,84 +110,92 @@ export class CloudflareIntegration
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
-    const user = getResourceByKind(resources, 'user')
-    const cloudflareRole = getResourceByKind(
-      resources,
-      'cloudflare.v1.accountrole'
-    )
-    // list cloudflare members
-    const cloudflareResponse = await this.FetchCloudflare({
-      method: 'GET',
-      url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
-      params: {
-        per_page: 50,
-      },
-    })
+    const grantee = getResourceByKind(resources, 'user')
+    const granted = getResourceByKind(resources, 'cloudflare.v1.accountrole')
 
-    const {
-      data: { result },
-    } = cloudflareResponse
+    let res: ApplyUpdateResponse = { status: { code: StatusCode.UNKNOWN } }
 
-    // match object.user.email to slack/user email with find
-    const cloudflareMember = result.find((r: CloudflareMember) => {
-      user.email === r.user.email
-    })
+    try {
+      // list cloudflare members
+      const {
+        data: { result: memberList },
+      } = await this.FetchCloudflare({
+        method: 'GET',
+        url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
+        params: { per_page: 50 },
+      })
 
-    console.log('cloudflare member: ', cloudflareMember)
+      // find existing cloudflare member
+      const existingMember: CloudflareMember = memberList.find(
+        (r: CloudflareMember) => grantee.email === r.user.email
+      )
 
-    const method = event === 'access/grant' ? 'PUT' : 'DELETE'
+      // check if member already has role
+      if (existingMember) {
+        if (
+          existingMember.roles?.find(
+            (r: CloudflareRole) => r.id === getCloudflareId(granted)
+          )
+        ) {
+          if (event === 'access/grant') {
+            // if grant respond with success
+            res.status.code = StatusCode.OK
+            return res
+          } else {
+            // if revoke, remove role from member
 
-    if (method) {
-      if (cloudflareMember) {
-        const cloudflareMemberRoles = cloudflareMember.roles.filter((role) => {
-          role.id !== cloudflareRole.id
-        })
+            // TODO: add HTTP call to update member without role
+            res.status.code = StatusCode.UNIMPLEMENTED
+            return res
+          }
+        } else {
+          // grant role to member
 
-        console.log('cloudflare roles: ', cloudflareMemberRoles)
-
-        await this.FetchCloudflare({
-          method,
-          url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${cloudflareMember.id}`,
-          data: {
-            id: CLOUDFLARE_ACCOUNT,
-            user: cloudflareMember.user,
-            roles: [...cloudflareMemberRoles],
-          },
-        })
-          .then((res) => {
-            console.log(res)
-            return { status: {} }
-          })
-          .catch((error) => ({
-            status: {
-              code: StatusCode.UNKNOWN,
-              details: { errorData: error.data },
-            },
-          }))
-      } else {
-        await this.FetchCloudflare({
+          // TODO: add HTTP call to update member with role
+          res.status.code = StatusCode.UNIMPLEMENTED
+          return res
+        }
+      } else if (event === 'access/grant') {
+        // if member does not exist, create member with role
+        const { data: createMemberData } = await this.FetchCloudflare({
           method: 'POST',
           url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
           data: {
-            email: user.email,
+            email: grantee.email,
             status: 'accepted',
-            roles: [cloudflareRole.id],
+            roles: [getCloudflareId(granted)],
           },
         })
-          .then((res) => {
-            console.log(res)
-            return { status: {} }
-          })
-          .catch((error) => ({
-            status: {
-              code: StatusCode.UNKNOWN,
-              details: { errorData: error.data },
-            },
-          }))
+
+        if (createMemberData.success) {
+          res.status.code = StatusCode.OK
+        } else {
+          console.error('failed to create member')
+          console.error(createMemberData)
+        }
+      } else {
+        // if there's no existing member and access/revoke, respond with success
+        res.status.code = StatusCode.OK
+      }
+    } catch (err) {
+      console.error(err)
+      if (err.response) {
+        res.status.message = JSON.stringify(err.response.data)
+      } else {
+        res.status.message = err.toString()
       }
     }
-    return { status: {}}
+    return res
   }
+}
+
+function getCloudflareId(resource: Resource): string {
+  if (resource.labels?.['cloudflare/id']) {
+    return resource.labels['cloudflare/id']
+  } else if (resource.id.includes('api.cloudflare.com')) {
+    return resource.id.split('/').pop()
+  }
+  return resource.id
 }
 
 function getResourceByKind(resources: Resource[], kind: string): Resource {
