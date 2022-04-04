@@ -20,7 +20,7 @@ import { CloudflareMember, CloudflareRole } from './cloudflare-types'
 //const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
 const CLOUDFLARE_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT || ''
-//const CLOUDFLARE_ACCOUNT_EMAIL = process.env.CLOUDFLARE_ACCOUNT_EMAIL || ''
+// const CLOUDFLARE_ACCOUNT_EMAIL = process.env.CLOUDFLARE_ACCOUNT_EMAIL || ''
 
 export class CloudflareIntegration
   extends BaseHttpIntegration
@@ -143,16 +143,49 @@ export class CloudflareIntegration
             return res
           } else {
             // if revoke, remove role from member
-
+            existingMember.roles?.filter(
+              (r: CloudflareRole) => r.id !== getCloudflareId(granted)
+            )
             // TODO: add HTTP call to update member without role
-            res.status.code = StatusCode.UNIMPLEMENTED
+            const { data: removeMemberData } = await this.FetchCloudflare({
+              method: 'PUT',
+              url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+              data: {
+                ...existingMember,
+              },
+            })
+
+            if (removeMemberData.success) {
+              res.status.code = StatusCode.OK
+            } else {
+              res.status.code = StatusCode.UNIMPLEMENTED
+              console.error('failed to remove member')
+              console.error(removeMemberData)
+            }
             return res
           }
         } else {
-          // grant role to member
+          existingMember.roles?.push(
+            JSON.parse(granted.labels['cloudflare/role'])
+          )
+          console.log('existing member roles')
+          console.log(existingMember.roles)
+          // TODO: add HTTP call to update member without role
+          const { data: updateMemberData } = await this.FetchCloudflare({
+            method: 'PUT',
+            url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+            data: {
+              ...existingMember,
+            },
+          })
 
-          // TODO: add HTTP call to update member with role
-          res.status.code = StatusCode.UNIMPLEMENTED
+          if (updateMemberData.success) {
+            res.status.code = StatusCode.OK
+          } else {
+            res.status.code = StatusCode.UNIMPLEMENTED
+            console.error("failed to update member's roles")
+            console.error(updateMemberData)
+          }
           return res
         }
       } else if (event === 'access/grant') {
@@ -203,17 +236,3 @@ function getResourceByKind(resources: Resource[], kind: string): Resource {
     (r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase())
   )[0]
 }
-
-// const getResourceLabelFromResources = (
-//   resources: Resource[],
-//   kind: string,
-//   label: string
-// ): string => {
-//   return resources
-//     .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
-//     .map((r) => {
-//       if (r.labels && r.labels[label]) {
-//         return r.labels[label]
-//       }
-//     })[0]
-// }
