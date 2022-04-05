@@ -16,7 +16,7 @@ export type CloudflareMember = {
     two_factor_authentication_enabled: boolean
   }
   status: string
-  roles: any[]
+  roles: CloudflareRole[]
 }
 
 export type CloudflareRole = {

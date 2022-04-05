@@ -20,7 +20,6 @@ import { CloudflareMember, CloudflareRole } from './cloudflare-types'
 //const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
 const CLOUDFLARE_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT || ''
-// const CLOUDFLARE_ACCOUNT_EMAIL = process.env.CLOUDFLARE_ACCOUNT_EMAIL || ''
 
 export class CloudflareIntegration
   extends BaseHttpIntegration
@@ -187,61 +186,6 @@ export class CloudflareIntegration
                 console.error(removeMemberRoleData)
               }
             }
-            // console.log('start remove role')
-            // // if there's more than one member
-            // if (memberList > 1) {
-            //   existingMember.roles?.filter(
-            //     (r: CloudflareRole) => r.id !== getCloudflareId(granted)
-            //   )
-            //   if (existingMember.roles?.length === 0) {
-            //     const { data: removeMemberData } = await this.FetchCloudflare({
-            //       method: 'DELETE',
-            //       url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
-            //     })
-
-            //     console.log(removeMemberData)
-            //   }
-
-            //   const { data: removeMemberRoleData } = await this.FetchCloudflare(
-            //     {
-            //       method: 'PUT',
-            //       url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
-            //       data: {
-            //         ...existingMember,
-            //       },
-            //     }
-            //   )
-
-            //   console.log(removeMemberRoleData)
-            // } else {
-            //   if (existingMember.roles?.length > 1) {
-            //     const { data: removeMemberData } = await this.FetchCloudflare({
-            //       method: 'PUT',
-            //       url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
-            //       data: {
-            //         ...existingMember,
-            //       },
-            //     })
-
-            //     console.log(removeMemberData)
-            //   }
-            // }
-            // filter
-            // if role length is 0
-            // remove
-            // return an error saying this person can't be removed
-
-            // if revoke, remove role from member
-            // TODO: add HTTP call to update member without role
-
-            // if (removeMemberData.success) {
-            //   console.log('removed role from member')
-            //   res.status.code = StatusCode.OK
-            // } else {
-            //   res.status.code = StatusCode.UNIMPLEMENTED
-            //   console.error('failed to remove member')
-            //   console.error(removeMemberData)
-            // }
             return res
           }
         } else {
