@@ -82,7 +82,7 @@ export class CloudflareIntegration
       console.log(err.response.data.errors)
       throw err
     })
-
+    console.log()
     const {
       data: { result },
     } = response
@@ -101,7 +101,7 @@ export class CloudflareIntegration
     })) as Resource[]
 
     return {
-      status: {},
+      status: { code: StatusCode.OK },
       resources,
     }
   }

@@ -81,6 +81,7 @@ export class CloudflareIntegration
     const {
       data: { result },
     } = response
+    console.log(`debug result ${result}`)
     const kind = 'cloudflare.v1.AccountRole'
     const timestamp = new Date().toISOString()
     const resources = result.map((r) => ({
@@ -94,9 +95,8 @@ export class CloudflareIntegration
         'cloudflare/role': JSON.stringify(r),
       },
     })) as Resource[]
-
+    console.log(`debug resources: resources`)
     return {
-      status: {},
       resources,
     }
   }
