@@ -1,8 +1,8 @@
- import { addMock } from '@indent/base-webhook'
+import { addMock } from '@indent/base-webhook'
 import { CloudflareIntegration } from '..'
 
 describe('CloudflareIntegration', () => {
-  xdescribe('Base functionality', () => {
+  describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
       const integration = new CloudflareIntegration()
       const res = integration.HealthCheck()
@@ -16,7 +16,7 @@ describe('CloudflareIntegration', () => {
     })
   })
 
-  describe('PullUpdate', () => {
+  xdescribe('PullUpdate', () => {
     beforeEach(() => setupMocks())
 
     it('should respond with a list of 1 resources (from mock)', () => {
