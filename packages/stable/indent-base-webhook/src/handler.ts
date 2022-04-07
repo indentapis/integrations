@@ -28,21 +28,20 @@ export async function handleRequest(
         headers: headers as { [header: string]: string | string[] },
       })
     } catch (verifyErr) {
-      if (verifyErr) {
-        const status = {
-          code: 9,
-          message: 'webhook failed: invalid signature - check webhook secret',
-          details: [
-            {
-              '@type': 'type.googleapis.com/google.rpc.DebugInfo',
-              detail: verifyErr.toString(),
-            },
-          ],
-        }
-        return {
-          status,
-          response: toResponse(status),
-        }
+      const status = {
+        code: 9,
+        message: 'webhook failed: invalid signature - check webhook secret',
+        details: [
+          {
+            '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+            detail: verifyErr.toString(),
+          },
+        ],
+      }
+      console.error(status)
+      return {
+        status,
+        response: toResponse(status),
       }
     }
 

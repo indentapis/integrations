@@ -5,7 +5,7 @@
   "version": "0.0.1-canary.17",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "CLOUDFLARE_ACCOUNT=01a7362d577a6c3019a474fd6f485823 CLOUDFLARE_TOKEN=987654321qwertyuiop jest --config ../../../jest.config.json cloudflare.*",
+    "test": "CLOUDFLARE_ACCOUNT=example_account_id CLOUDFLARE_TOKEN=example_token jest --config ../../../jest.config.json cloudflare.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",

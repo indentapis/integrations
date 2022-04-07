@@ -2,12 +2,13 @@ import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const mocks = {}
 
-export function addMock(config: AxiosRequestConfig, res: AxiosResponse) {
+export function addMock(config: AxiosRequestConfig, res: AxiosResponse): any {
   mocks[getConfigKey(config)] = res
+  return mocks
 }
 
 const getConfigKey = (config: AxiosRequestConfig) =>
-  [config.method, config.baseURL, config.url].join(':')
+  [(config.method || 'get').toLowerCase(), config.baseURL, config.url].join(':')
 
 const isMocked = (config: AxiosRequestConfig) => getConfigKey(config) in mocks
 

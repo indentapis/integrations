@@ -59,7 +59,7 @@ export class CloudflareIntegration
   async FetchCloudflare(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://api.cloudflare.com/client/v4`
+    config.baseURL = `https://api.cloudflare.com`
     config.headers = {
       'Content-Type': `application/json`,
       Authorization: `Bearer ${CLOUDFLARE_TOKEN}`,
@@ -75,7 +75,7 @@ export class CloudflareIntegration
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchCloudflare({
-      url: `/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
     })
 
     const {
@@ -111,12 +111,12 @@ export class CloudflareIntegration
     console.log('start apply')
     try {
       // list cloudflare members
+      const pageSize = 50
       const {
         data: { result: memberList },
       } = await this.FetchCloudflare({
         method: 'GET',
-        url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
-        params: { per_page: 50 },
+        url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members?per_page=${pageSize}`,
       })
 
       // find existing cloudflare member
@@ -144,7 +144,7 @@ export class CloudflareIntegration
               if (memberList.length > 1) {
                 const { data: removeMemberData } = await this.FetchCloudflare({
                   method: 'DELETE',
-                  url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+                  url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
                 })
 
                 if (removeMemberData.success) {
@@ -164,7 +164,7 @@ export class CloudflareIntegration
               const { data: removeMemberRoleData } = await this.FetchCloudflare(
                 {
                   method: 'PUT',
-                  url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+                  url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
                   data: {
                     ...existingMember,
                   },
@@ -189,7 +189,7 @@ export class CloudflareIntegration
 
           const { data: updateMemberData } = await this.FetchCloudflare({
             method: 'PUT',
-            url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+            url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
             data: {
               ...existingMember,
             },
@@ -209,7 +209,7 @@ export class CloudflareIntegration
         console.log('start create new member')
         const { data: createMemberData } = await this.FetchCloudflare({
           method: 'POST',
-          url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
+          url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members`,
           data: {
             email: grantee.email,
             roles: [getCloudflareId(granted)],
@@ -229,11 +229,11 @@ export class CloudflareIntegration
         res.status.code = StatusCode.OK
       }
     } catch (err) {
-      console.error(err)
       if (err.response) {
         res.status.message = JSON.stringify(err.response.data)
         console.log(err.response.data)
       } else {
+        console.error(err)
         res.status.message = err.toString()
       }
     }

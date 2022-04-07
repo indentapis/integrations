@@ -1,6 +1,8 @@
 import { addMock } from '@indent/base-webhook'
 import { CloudflareIntegration } from '..'
 
+const CLOUDFLARE_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT || ''
+
 describe('CloudflareIntegration', () => {
   describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
@@ -16,7 +18,7 @@ describe('CloudflareIntegration', () => {
     })
   })
 
-  xdescribe('PullUpdate', () => {
+  describe('PullUpdate', () => {
     beforeEach(() => setupMocks())
 
     it('should respond with a list of 1 resources (from mock)', () => {
@@ -35,7 +37,7 @@ describe('CloudflareIntegration', () => {
     },
     {
       kind: 'cloudflare.v1.AccountRole',
-      id: 'api.cloudflare.com/client/v4/accounts/01a7362d577a6c3019a474fd6f485823/roles/3536bcfad5faccb999b47003c79917fb',
+      id: `api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles/3536bcfad5faccb999b47003c79917fb`,
       labels: {
         'cloudflare/id': '3536bcfad5faccb999b47003c79917fb',
         'cloudflare/role':
@@ -44,7 +46,7 @@ describe('CloudflareIntegration', () => {
     },
   ]
 
-  xdescribe('ApplyUpdate', () => {
+  describe('ApplyUpdate', () => {
     beforeEach(() => setupMocks())
 
     describe('access/grant', () => {
@@ -72,203 +74,205 @@ describe('CloudflareIntegration', () => {
 })
 
 function setupMocks() {
+  console.log(
+    addMock(
+      {
+        method: 'GET',
+        baseURL: 'https://api.cloudflare.com',
+        url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
+      },
+      {
+        status: 200,
+        statusText: 'OK',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          success: true,
+          errors: [],
+          messages: [],
+          result: [
+            {
+              id: '3536bcfad5faccb999b47003c79917fb',
+              name: 'Account Administrator',
+              description: 'Administrative access to the entire Account',
+              permissions: {
+                analytics: {
+                  read: true,
+                  write: true,
+                },
+                billing: {
+                  read: true,
+                  write: true,
+                },
+                cache_purge: {
+                  read: true,
+                  write: true,
+                },
+                dns: {
+                  read: true,
+                  write: true,
+                },
+                dns_records: {
+                  read: true,
+                  write: true,
+                },
+                lb: {
+                  read: true,
+                  write: true,
+                },
+                logs: {
+                  read: true,
+                  write: true,
+                },
+                organization: {
+                  read: true,
+                  write: true,
+                },
+                ssl: {
+                  read: true,
+                  write: true,
+                },
+                waf: {
+                  read: true,
+                  write: true,
+                },
+                zones: {
+                  read: true,
+                  write: true,
+                },
+                zone_settings: {
+                  read: true,
+                  write: true,
+                },
+              },
+            },
+          ],
+        },
+        config: {},
+      }
+    )
+  )
   addMock(
     {
-      method: 'get',
+      method: 'GET',
       baseURL: 'https://api.cloudflare.com',
-      url: '/client/v4/accounts/01a7362d577a6c3019a474fd6f485823/roles',
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members?per_page=50`,
     },
     {
       status: 200,
-      statusText: 'OK',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      statusText: '200',
+      headers: {},
+      data: {},
+      config: {},
+    }
+  )
+  addMock(
+    {
+      method: 'DELETE',
+      baseURL: 'https://api.cloudflare.com',
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/4536bcfad5faccb111b47003c79917fa`,
+    },
+    {
+      status: 200,
+      statusText: '200',
+      headers: {},
       data: {
         success: true,
         errors: [],
         messages: [],
-        result: [
-          {
-            id: '3536bcfad5faccb999b47003c79917fb',
-            name: 'Account Administrator',
-            description: 'Administrative access to the entire Account',
-            permissions: {
-              analytics: {
-                read: true,
-                write: true,
-              },
-              billing: {
-                read: true,
-                write: true,
-              },
-              cache_purge: {
-                read: true,
-                write: true,
-              },
-              dns: {
-                read: true,
-                write: true,
-              },
-              dns_records: {
-                read: true,
-                write: true,
-              },
-              lb: {
-                read: true,
-                write: true,
-              },
-              logs: {
-                read: true,
-                write: true,
-              },
-              organization: {
-                read: true,
-                write: true,
-              },
-              ssl: {
-                read: true,
-                write: true,
-              },
-              waf: {
-                read: true,
-                write: true,
-              },
-              zones: {
-                read: true,
-                write: true,
-              },
-              zone_settings: {
-                read: true,
-                write: true,
-              },
-            },
-          },
-        ],
+        result: {
+          id: '9a7806061c88ada191ed06f989cc3dac',
+        },
       },
       config: {},
     }
   )
-  // addMock(
-  //   {
-  //     method: 'GET',
-  //     baseURL: 'https://api.cloudflare.com/client/v4',
-  //     url: '/accounts/01a7362d577a6c3019a474fd6f485823/members?per_page=50',
-  //   },
-  //   {
-  //     status: 200,
-  //     statusText: '200',
-  //     headers: {},
-  //     data: {},
-  //     config: {},
-  //   }
-  // )
-  // addMock(
-  //   {
-  //     method: 'DELETE',
-  //     baseURL: 'https://api.cloudflare.com/client/v4',
-  //     url: '/accounts/01a7362d577a6c3019a474fd6f485823/members/4536bcfad5faccb111b47003c79917fa',
-  //   },
-  //   {
-  //     status: 200,
-  //     statusText: '200',
-  //     headers: {},
-  //     data: {
-  //       success: true,
-  //       errors: [],
-  //       messages: [],
-  //       result: {
-  //         id: '9a7806061c88ada191ed06f989cc3dac',
-  //       },
-  //     },
-  //     config: {},
-  //   }
-  // )
-  // addMock(
-  //   {
-  //     method: 'PUT',
-  //     baseURL: 'https://api.cloudflare.com/client/v4',
-  //     url: '/accounts/01a7362d577a6c3019a474fd6f485823/members/4536bcfad5faccb111b47003c79917fa',
-  //   },
-  //   {
-  //     status: 204,
-  //     statusText: '204',
-  //     headers: {},
-  //     data: {
-  //       success: true,
-  //       errors: [],
-  //       messages: [],
-  //       result: {
-  //         id: '4536bcfad5faccb111b47003c79917fa',
-  //         code: '05dd05cce12bbed97c0d87cd78e89bc2fd41a6cee72f27f6fc84af2e45c0fac0',
-  //         user: {
-  //           id: '7c5dae5552338874e5053f2534d2767a',
-  //           first_name: 'John',
-  //           last_name: 'Appleseed',
-  //           email: 'user@example.com',
-  //           two_factor_authentication_enabled: false,
-  //         },
-  //         status: 'accepted',
-  //         roles: [
-  //           {
-  //             id: '3536bcfad5faccb999b47003c79917fb',
-  //             name: 'Account Administrator',
-  //             description: 'Administrative access to the entire Account',
-  //             permissions: {
-  //               analytics: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               billing: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               cache_purge: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               dns: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               dns_records: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               lb: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               logs: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               organization: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               ssl: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               waf: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               zones: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //               zone_settings: {
-  //                 read: true,
-  //                 write: true,
-  //               },
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     },
-  //     config: {},
-  //   }
-  // )
+  addMock(
+    {
+      method: 'PUT',
+      baseURL: 'https://api.cloudflare.com',
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/4536bcfad5faccb111b47003c79917fa`,
+    },
+    {
+      status: 204,
+      statusText: '204',
+      headers: {},
+      data: {
+        success: true,
+        errors: [],
+        messages: [],
+        result: {
+          id: '4536bcfad5faccb111b47003c79917fa',
+          code: '05dd05cce12bbed97c0d87cd78e89bc2fd41a6cee72f27f6fc84af2e45c0fac0',
+          user: {
+            id: '7c5dae5552338874e5053f2534d2767a',
+            first_name: 'John',
+            last_name: 'Appleseed',
+            email: 'user@example.com',
+            two_factor_authentication_enabled: false,
+          },
+          status: 'accepted',
+          roles: [
+            {
+              id: '3536bcfad5faccb999b47003c79917fb',
+              name: 'Account Administrator',
+              description: 'Administrative access to the entire Account',
+              permissions: {
+                analytics: {
+                  read: true,
+                  write: true,
+                },
+                billing: {
+                  read: true,
+                  write: true,
+                },
+                cache_purge: {
+                  read: true,
+                  write: true,
+                },
+                dns: {
+                  read: true,
+                  write: true,
+                },
+                dns_records: {
+                  read: true,
+                  write: true,
+                },
+                lb: {
+                  read: true,
+                  write: true,
+                },
+                logs: {
+                  read: true,
+                  write: true,
+                },
+                organization: {
+                  read: true,
+                  write: true,
+                },
+                ssl: {
+                  read: true,
+                  write: true,
+                },
+                waf: {
+                  read: true,
+                  write: true,
+                },
+                zones: {
+                  read: true,
+                  write: true,
+                },
+                zone_settings: {
+                  read: true,
+                  write: true,
+                },
+              },
+            },
+          ],
+        },
+      },
+      config: {},
+    }
+  )
 }
