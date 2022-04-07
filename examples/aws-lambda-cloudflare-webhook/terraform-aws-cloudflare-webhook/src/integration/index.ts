@@ -17,7 +17,7 @@ import {
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { CloudflareMember, CloudflareRole } from './cloudflare-types'
 
-//const pkg = require('../package.json')
+const pkg = require('../package.json')
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || ''
 const CLOUDFLARE_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT || ''
 
@@ -40,7 +40,7 @@ export class CloudflareIntegration
     return {
       name: ['indent-cloudflare-webhook', this._name].filter(Boolean).join('#'),
       capabilities: ['ApplyUpdate', 'PullUpdate'],
-      version: 'canary',
+      version: pkg.version,
     }
   }
 
@@ -59,11 +59,9 @@ export class CloudflareIntegration
   async FetchCloudflare(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://api.cloudflare.com/client/v4/`
+    config.baseURL = `https://api.cloudflare.com`
     config.headers = {
       'Content-Type': `application/json`,
-      // 'X-Auth-Key': CLOUDFLARE_TOKEN,
-      // 'X-Auth-Email': CLOUDFLARE_ACCOUNT_EMAIL,
       Authorization: `Bearer ${CLOUDFLARE_TOKEN}`,
     }
     return this.Fetch(config)
@@ -77,18 +75,16 @@ export class CloudflareIntegration
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchCloudflare({
-      url: `/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
-    }).catch((err) => {
-      console.log(err.response.data.errors)
-      throw err
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
     })
-    console.log()
+
     const {
       data: { result },
     } = response
+    console.log(`debug result ${result}`)
     const kind = 'cloudflare.v1.AccountRole'
     const timestamp = new Date().toISOString()
-    const resources = result.map((r: any) => ({
+    const resources = result.map((r) => ({
       id: `api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles/${r.id}`,
       displayName: r.name,
       kind,
@@ -99,9 +95,8 @@ export class CloudflareIntegration
         'cloudflare/role': JSON.stringify(r),
       },
     })) as Resource[]
-
+    console.log(`debug resources: resources`)
     return {
-      status: { code: StatusCode.OK },
       resources,
     }
   }
@@ -116,21 +111,19 @@ export class CloudflareIntegration
     console.log('start apply')
     try {
       // list cloudflare members
+      const pageSize = 50
       const {
         data: { result: memberList },
       } = await this.FetchCloudflare({
         method: 'GET',
-        url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
-        params: { per_page: 50 },
+        url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members?per_page=${pageSize}`,
       })
-      console.log('got members')
-      console.log(memberList)
+
       // find existing cloudflare member
       const existingMember: CloudflareMember = memberList.find(
         (r: CloudflareMember) => grantee.email === r.user.email
       )
-      console.log('existing member')
-      console.log(existingMember)
+
       // check if member already has role
       if (existingMember) {
         if (
@@ -139,7 +132,6 @@ export class CloudflareIntegration
           )
         ) {
           if (event === 'access/grant') {
-            console.log('existing member has role')
             // if grant respond with success
             res.status.code = StatusCode.OK
             return res
@@ -147,19 +139,20 @@ export class CloudflareIntegration
             existingMember.roles?.filter(
               (r: CloudflareRole) => r.id !== getCloudflareId(granted)
             )
+
             if (existingMember.roles?.length === 1) {
               if (memberList.length > 1) {
                 const { data: removeMemberData } = await this.FetchCloudflare({
                   method: 'DELETE',
-                  url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+                  url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
                 })
 
-                console.log(removeMemberData)
                 if (removeMemberData.success) {
                   res.status.code = StatusCode.OK
                 } else {
                   res.status.code = StatusCode.UNKNOWN
                   console.error('failed to delete member')
+                  console.error(removeMemberData)
                 }
               } else {
                 res.status.code = StatusCode.INVALID_ARGUMENT
@@ -171,13 +164,13 @@ export class CloudflareIntegration
               const { data: removeMemberRoleData } = await this.FetchCloudflare(
                 {
                   method: 'PUT',
-                  url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+                  url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
                   data: {
                     ...existingMember,
                   },
                 }
               )
-              console.log(removeMemberRoleData)
+
               if (removeMemberRoleData.success) {
                 res.status.code = StatusCode.OK
               } else {
@@ -186,24 +179,22 @@ export class CloudflareIntegration
                 console.error(removeMemberRoleData)
               }
             }
+
             return res
           }
         } else {
           existingMember.roles?.push(
             JSON.parse(granted.labels['cloudflare/role'])
           )
-          console.log('existing member roles')
-          console.log(existingMember)
-          // TODO: add HTTP call to update member without role
+
           const { data: updateMemberData } = await this.FetchCloudflare({
             method: 'PUT',
-            url: `/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
+            url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
             data: {
               ...existingMember,
             },
           })
-          console.log('start pdate member with new role')
-          console.log(updateMemberData)
+
           if (updateMemberData.success) {
             res.status.code = StatusCode.OK
           } else {
@@ -218,7 +209,7 @@ export class CloudflareIntegration
         console.log('start create new member')
         const { data: createMemberData } = await this.FetchCloudflare({
           method: 'POST',
-          url: `/accounts/${CLOUDFLARE_ACCOUNT}/members`,
+          url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members`,
           data: {
             email: grantee.email,
             roles: [getCloudflareId(granted)],
@@ -238,11 +229,11 @@ export class CloudflareIntegration
         res.status.code = StatusCode.OK
       }
     } catch (err) {
-      console.error(err)
       if (err.response) {
         res.status.message = JSON.stringify(err.response.data)
         console.log(err.response.data)
       } else {
+        console.error(err)
         res.status.message = err.toString()
       }
     }
