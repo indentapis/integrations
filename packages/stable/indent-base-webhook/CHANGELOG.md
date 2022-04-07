@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.18](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.17...@indent/base-webhook@0.0.1-canary.18) (2022-04-07)
+
+
+### Bug Fixes
+
+* **okta:** decision integration ([eb3b0a6](https://github.com/indentapis/integrations/commit/eb3b0a6fc9458072c082ea9d4decaa5046ccc4ee))
+
+
+
+
+
 ## [0.0.1-canary.17](https://github.com/indentapis/integrations/compare/@indent/base-webhook@0.0.1-canary.16...@indent/base-webhook@0.0.1-canary.17) (2022-03-16)
 
 
