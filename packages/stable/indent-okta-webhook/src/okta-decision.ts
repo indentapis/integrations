@@ -11,6 +11,8 @@ import { Event } from '@indent/types'
 import { PartialOktaGroup } from '.'
 import { callOktaAPI } from './okta-api'
 
+const version = require('../package.json').version
+
 export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedOktaGroups?: string[]
   getApprovalEvent?: Event
