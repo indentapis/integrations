@@ -196,7 +196,7 @@ function getWebhookCallName(data: any): string {
       return 'ApplyUpdate'
     }
 
-    return 'Decision'
+    return 'GetDecision'
   }
 
   // TODO: log unrecognized webhook call type
