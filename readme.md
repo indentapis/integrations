@@ -48,3 +48,17 @@ Or if you want to create a new custom integration in your own directory:
 ```bash
 npx create-example-app -r indentapis/integrations -e new-integration
 ```
+
+### Testing
+
+When developing an integration, you can run tests from the root of the repository:
+
+```bash
+yarn test
+```
+
+Or for a specific integration:
+
+```bash
+yarn test --scope='@indent/<integration>-webhook'
+```
