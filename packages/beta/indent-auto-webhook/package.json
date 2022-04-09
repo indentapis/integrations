@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@indent/new-webhook",
+  "name": "@indent/auto-webhook",
   "main": "lib/index",
   "types": "lib/index",
   "version": "0.0.0",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.json auto-webhook.test.*",
+    "test": "jest --config ../../../jest.config.js auto-webhook.test.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",

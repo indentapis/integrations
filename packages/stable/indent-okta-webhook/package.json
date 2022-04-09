@@ -8,7 +8,7 @@
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build",
-    "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.json okta.*"
+    "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.js okta.*"
   },
   "dependencies": {
     "@indent/base-webhook": "^0.0.1-canary.18",

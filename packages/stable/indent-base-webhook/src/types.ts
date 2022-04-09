@@ -33,6 +33,7 @@ export type IntegrationInfoResponse = {
 
 export type HealthCheckResponse = {
   status: Status
+  info?: IntegrationInfoResponse
 }
 
 export interface BaseIntegration {

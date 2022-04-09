@@ -40,13 +40,13 @@ All individual integrations are stored in the `packages/` directory. The modules
 
 ```bash
 cd packages/beta
-npx create-example-app -r indentapis/integrations -e new-integration
+npx create-example-app -r indentapis/integrations -e new-full-integration
 ```
 
 Or if you want to create a new custom integration in your own directory:
 
 ```bash
-npx create-example-app -r indentapis/integrations -e new-integration
+npx create-example-app -r indentapis/integrations -e new-full-integration
 ```
 
 ### Testing
