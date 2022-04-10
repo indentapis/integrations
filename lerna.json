@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/stable/*", "packages/beta/*", "examples/*"],
+  "packages": ["packages/stable/indent-base-integration"],
   "version": "independent",
   "useWorkspaces": true,
   "npmClient": "yarn",

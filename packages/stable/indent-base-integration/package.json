@@ -2,7 +2,11 @@
   "name": "@indent/base-integration",
   "main": "lib/index.js",
   "types": "lib/index",
+<<<<<<< HEAD
   "version": "0.0.1-canary.19",
+=======
+  "version": "0.0.1-canary.17",
+>>>>>>> 99e87f8 (chore(release): publish-canary)
   "files": [
     "lib"
   ],
@@ -21,5 +25,6 @@
     "@indent/types": "^0.2.1",
     "@indent/webhook": "^0.2.1",
     "axios": "^0.24.0"
-  }
+  },
+  "gitHead": "HEAD~1"
 }
