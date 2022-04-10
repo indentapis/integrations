@@ -2,7 +2,7 @@
   "name": "@indent/integration-merge",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.12",
+  "version": "0.0.1-canary.13",
   "files": [
     "lib"
   ],

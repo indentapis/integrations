@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.18](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.19...@indent/base-integration@0.0.1-canary.18) (2022-04-10)
+
+
+### Bug Fixes
+
+* **github:** merge ([baa7287](https://github.com/indentapis/integrations/commit/baa7287d5024bafac6e1503177474a8aa673e557))
+
+
+
+
+
 ## 0.0.1-canary.19 (2022-04-10)
 
 **Note:** Version bump only for package @indent/base-integration

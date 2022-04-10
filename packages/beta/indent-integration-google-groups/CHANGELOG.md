@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.20](https://github.com/indentapis/integrations/compare/@indent/integration-google-groups@0.0.1-canary.19...@indent/integration-google-groups@0.0.1-canary.20) (2022-04-10)
+
+**Note:** Version bump only for package @indent/integration-google-groups
+
+
+
+
+
 ## 0.0.1-canary.19 (2022-04-10)
 
 **Note:** Version bump only for package @indent/integration-google-groups
