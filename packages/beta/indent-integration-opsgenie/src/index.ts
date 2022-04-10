@@ -97,8 +97,9 @@ export class OpsgenieDecisionIntegration
     log('approvedOnCallEmails:', approvedOnCallEmails)
     log('actorEmail:', reqEvent.actor.email)
     if (reqEvent && approvedOnCallEmails[reqEvent.actor.email]) {
-      const claim =
-        this._getApprovalEvent(reqEvent) || getDefaultApprovalEvent(reqEvent)
+      const claim = this._getApprovalEvent
+        ? this._getApprovalEvent(reqEvent)
+        : getDefaultApprovalEvent(reqEvent)
       res.claims.push(claim)
       log('found email in on-calls, auto-approving:', claim)
     } else {
