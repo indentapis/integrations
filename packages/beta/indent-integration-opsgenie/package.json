@@ -2,7 +2,7 @@
   "name": "@indent/integration-opsgenie",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.4",
+  "version": "0.0.1-canary.5",
   "files": [
     "lib"
   ],
