@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.18](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.18...@indent/base-integration@0.0.1-canary.18) (2022-04-10)
+
+
+### Bug Fixes
+
+* **base:** get decision integration ([db97edc](https://github.com/indentapis/integrations/commit/db97edc9100550e6204f7126f73a9673821e3bb0))
+* build ([8d7fea8](https://github.com/indentapis/integrations/commit/8d7fea87834b0f0a73b54e4ab9ef200c705a0357))
+
+
+
+
+
 ## [0.0.1-canary.18](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.19...@indent/base-integration@0.0.1-canary.18) (2022-04-10)
 
 
