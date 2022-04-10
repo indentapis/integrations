@@ -73,9 +73,10 @@ export class OktaDecisionIntegration
       reqEvent &&
       this._autoApprovedOktaGroups.some((gId) => groupsSet.has(gId))
     ) {
-      const getApprovalEvent =
-        this._getApprovalEvent || getDefaultApprovalEvent(reqEvent)
-      claims.push(getApprovalEvent)
+      const claim = this._getApprovalEvent
+        ? this._getApprovalEvent(reqEvent)
+        : getDefaultApprovalEvent(reqEvent)
+      claims.push(claim)
     }
 
     return { status, claims }

@@ -5,6 +5,7 @@ import {
   GetDecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
+  StatusCode,
   WriteRequest,
 } from '@indent/base-integration'
 import { Event } from '@indent/types'
@@ -64,9 +65,10 @@ export class OpsgenieDecisionIntegration
   }
 
   async GetDecision(req: WriteRequest): Promise<GetDecisionResponse> {
-    const status = {}
-    const claims = []
-    const reqEvent = req.events.find((e) => e.event === 'access/request')
+    const res: GetDecisionResponse = {
+      status: { code: StatusCode.OK },
+      claims: [],
+    }
 
     // get schedules
     const response = await this.FetchOpsgenie({
@@ -75,7 +77,6 @@ export class OpsgenieDecisionIntegration
     })
 
     const schedules = response.data.data
-
     const onCallResponses = await Promise.all(
       schedules.map((sched) =>
         this.FetchOpsgenie({
@@ -85,37 +86,52 @@ export class OpsgenieDecisionIntegration
       )
     )
 
+    log('On-call responses:', onCallResponses)
     const onCalls = onCallResponses.map((r) => r.data.data).concat()
-    const approvedOnCalls = this._autoApprovedSchedules
-      ? onCalls.filter(
-          (o) =>
-            this._autoApprovedSchedules.includes(o._parent.name) ||
-            this._autoApprovedSchedules.includes(o._parent.id)
-        )
-      : onCalls
-    const approvedOnCallParticipants = []
-    walk(approvedOnCalls, (o) =>
-      o !== undefined && o.onCallParticipants
-        ? approvedOnCallParticipants.push(o.onCallParticipants)
-        : void 0
-    )
-    const approvedOnCallEmails = approvedOnCallParticipants.flat().reduce(
-      (acc, onCallParticipant) => ({
-        ...acc,
-        [onCallParticipant.name]: true,
-      }),
-      {}
-    ) as Record<string, boolean>
+    const approvedOnCallEmails = getApprovedOnCallEmails(onCalls)
+    const reqEvent = req.events.find((e) => e.event === 'access/request')
+
+    log('approvedOnCallEmails:', approvedOnCallEmails)
+    log('actorEmail:', reqEvent.actor.email)
     if (reqEvent && approvedOnCallEmails[reqEvent.actor.email]) {
-      const getApprovalEvent =
-        this._getApprovalEvent || getDefaultApprovalEvent(reqEvent)
-      claims.push(getApprovalEvent)
+      const claim =
+        this._getApprovalEvent(reqEvent) || getDefaultApprovalEvent(reqEvent)
+      res.claims.push(claim)
+      log('found email in on-calls, auto-approving:', claim)
+    } else {
+      log('skipping, email not found in on-calls')
     }
 
-    return { status, claims }
+    return res
   }
 }
 
+function log(msg: string, o?: any) {
+  console.log(msg + (o ? `\n${JSON.stringify(o)}` : ''))
+}
+
+function getApprovedOnCallEmails(onCalls: any) {
+  const approvedOnCalls = this._autoApprovedSchedules
+    ? onCalls.filter(
+        (o) =>
+          this._autoApprovedSchedules.includes(o._parent.name) ||
+          this._autoApprovedSchedules.includes(o._parent.id)
+      )
+    : onCalls
+  const approvedOnCallParticipants = []
+  walk(approvedOnCalls, (o) =>
+    o !== undefined && o.onCallParticipants
+      ? approvedOnCallParticipants.push(o.onCallParticipants)
+      : void 0
+  )
+  return approvedOnCallParticipants.flat().reduce(
+    (acc, onCallParticipant) => ({
+      ...acc,
+      [onCallParticipant.name]: true,
+    }),
+    {}
+  ) as Record<string, boolean>
+}
 function walk(o: any, f: Function) {
   f(o)
   if (typeof o !== 'object') return
