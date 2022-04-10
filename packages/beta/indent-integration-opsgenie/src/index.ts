@@ -8,7 +8,7 @@ import {
   WriteRequest,
 } from '@indent/base-integration'
 import { Event } from '@indent/types'
-import { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const version = require('../package.json').version
 
@@ -52,7 +52,7 @@ export class OpsgenieDecisionIntegration
     return true
   }
 
-  FetchOpsgenie(config: AxiosRequestConfig) {
+  FetchOpsgenie(config: AxiosRequestConfig): Promise<AxiosResponse<any, any>> {
     return this.Fetch({
       baseURL: 'https://api.opsgenie.com',
       headers: {
