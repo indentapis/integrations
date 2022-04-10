@@ -1,6 +1,5 @@
 import {
   DecisionIntegration,
-  DecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,

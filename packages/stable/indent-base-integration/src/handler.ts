@@ -9,7 +9,7 @@ import {
   BaseRequest,
   BaseResponse,
   DecisionIntegration,
-  DecisionRequest,
+  GetDecisionRequest,
   PullIntegration,
   PullUpdateRequest,
 } from './types'
@@ -79,9 +79,9 @@ export async function handleRequest(
         return (ign as ApplyIntegration).MatchApply(data as ApplyUpdateRequest)
       } else if (callName === 'PullUpdate') {
         return (ign as PullIntegration).MatchPull(data as PullUpdateRequest)
-      } else if (callName === 'Decision') {
+      } else if (callName === 'GetDecision' || callName === 'Decision') {
         return (ign as DecisionIntegration).MatchDecision(
-          data as DecisionRequest
+          data as GetDecisionRequest
         )
       }
 
@@ -124,8 +124,9 @@ export async function handleRequest(
               data as PullUpdateRequest
             )
           case 'Decision':
+          case 'GetDecision':
             return (ign as DecisionIntegration).GetDecision(
-              data as DecisionRequest
+              data as GetDecisionRequest
             )
           default:
             return Promise.reject()

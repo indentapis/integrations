@@ -52,8 +52,8 @@ export interface ApplyIntegration extends BaseIntegration {
 }
 
 export interface DecisionIntegration extends BaseIntegration {
-  MatchDecision(req: DecisionRequest): boolean
-  GetDecision(req: DecisionRequest): Promise<DecisionResponse>
+  MatchDecision(req: GetDecisionRequest): boolean
+  GetDecision(req: GetDecisionRequest): Promise<GetDecisionResponse>
 }
 
 export interface FullIntegration extends PullIntegration, ApplyIntegration {}
@@ -61,12 +61,12 @@ export interface FullIntegration extends PullIntegration, ApplyIntegration {}
 
 export type WriteRequest = { events: Event[] }
 export type ApplyUpdateRequest = WriteRequest
-export type DecisionRequest = WriteRequest
 export type PullUpdateRequest = {
   kinds: string[]
   flags?: Record<string, string>
 }
-export type DecisionResponse = {
+export type GetDecisionRequest = WriteRequest
+export type GetDecisionResponse = {
   status: Status
   claims: Event[]
 }

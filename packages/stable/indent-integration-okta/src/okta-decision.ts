@@ -2,7 +2,6 @@ import {
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
   DecisionIntegration,
-  DecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,
