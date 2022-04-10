@@ -39,7 +39,7 @@
   },
   "workspaces": {
     "packages": [
-      "packages/stable/base-integration"
+      "packages/stable/indent-base-integration"
     ]
   },
   "yarn": {
