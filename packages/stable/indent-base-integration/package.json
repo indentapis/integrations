@@ -2,11 +2,7 @@
   "name": "@indent/base-integration",
   "main": "lib/index.js",
   "types": "lib/index",
-<<<<<<< HEAD
-  "version": "0.0.1-canary.19",
-=======
   "version": "0.0.1-canary.17",
->>>>>>> 99e87f8 (chore(release): publish-canary)
   "files": [
     "lib"
   ],
