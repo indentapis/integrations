@@ -2,7 +2,7 @@
   "name": "@indent/runtime-google-cloud-function",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.20",
+  "version": "0.0.1-canary.21",
   "files": [
     "lib"
   ],

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.14](https://github.com/indentapis/integrations/compare/@indent/integration-merge@0.0.1-canary.13...@indent/integration-merge@0.0.1-canary.14) (2022-04-10)
+
+
+### Bug Fixes
+
+* build ([f35f60b](https://github.com/indentapis/integrations/commit/f35f60be6050a9f50ae5617be3583c6454e0d5d9))
+
+
+
+
+
 ## [0.0.1-canary.13](https://github.com/indentapis/integrations/compare/@indent/integration-merge@0.0.1-canary.12...@indent/integration-merge@0.0.1-canary.13) (2022-04-10)
 
 **Note:** Version bump only for package @indent/integration-merge

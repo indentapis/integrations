@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.24](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.23...@indent/integration-okta@0.0.1-canary.24) (2022-04-10)
+
+
+### Bug Fixes
+
+* **base:** get decision integration ([db97edc](https://github.com/indentapis/integrations/commit/db97edc9100550e6204f7126f73a9673821e3bb0))
+* build ([f35f60b](https://github.com/indentapis/integrations/commit/f35f60be6050a9f50ae5617be3583c6454e0d5d9))
+
+
+
+
+
 ## [0.0.1-canary.23](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.22...@indent/integration-okta@0.0.1-canary.23) (2022-04-10)
 
 **Note:** Version bump only for package @indent/integration-okta
