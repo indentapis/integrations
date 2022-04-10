@@ -2,15 +2,8 @@ import { addMock } from '@indent/base-integration'
 import { readFileSync } from 'fs'
 import path from 'path'
 import { OpsgenieDecisionIntegration } from '../lib'
-import { OpsgenieDecisionIntegrationOpts } from '../src'
-
-const OPSGENIE_KEY = process.env.OPSGENIE_KEY || ''
 
 const date = new Date().toISOString()
-const options: OpsgenieDecisionIntegrationOpts = {
-  name: 'testing-opsgenie',
-}
-
 const autoApproveInput = {
   events: [
     {
@@ -75,7 +68,7 @@ function setupMocks() {
     {
       method: 'get',
       baseURL: 'https://api.opsgenie.com',
-      url: `/v2/schedules/${SNAPSHOT_V2_SCHEDULES.data[0].id}/on-calls?scheduleIdentifierType=name&flat=false`,
+      url: `/v2/schedules/${SNAPSHOT_V2_SCHEDULES.data[0].id}/on-calls?flat=false`,
     },
     success(SNAPSHOT_V2_SCHEDULES_ONCALLS_FLAT)
   )

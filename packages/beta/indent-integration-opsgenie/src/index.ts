@@ -52,7 +52,7 @@ export class OpsgenieDecisionIntegration
     return true
   }
 
-  FetchOpsgenie(config: AxiosRequestConfig): Promise<AxiosResponse<any, any>> {
+  FetchOpsgenie(config: AxiosRequestConfig): Promise<AxiosResponse<any>> {
     return this.Fetch({
       baseURL: 'https://api.opsgenie.com',
       headers: {
@@ -80,7 +80,7 @@ export class OpsgenieDecisionIntegration
       schedules.map((sched) =>
         this.FetchOpsgenie({
           method: 'get',
-          url: `/v2/schedules/${sched.id}/on-calls?scheduleIdentifierType=name&flat=false`,
+          url: `/v2/schedules/${sched.id}/on-calls?flat=false`,
         })
       )
     )
