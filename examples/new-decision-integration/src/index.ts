@@ -5,7 +5,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   StatusCode,
-} from '@indent/base-webhook'
+} from '@indent/base-integration'
 
 const pkg = require('../package.json')
 

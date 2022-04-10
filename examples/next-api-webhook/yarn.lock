@@ -70,15 +70,15 @@
   "resolved" "https://registry.npmjs.org/@hapi/hoek/-/hoek-9.2.1.tgz"
   "version" "9.2.1"
 
-"@indent/base-webhook@*":
-  "resolved" "file:../../packages/stable/indent-base-webhook"
+"@indent/base-integration@*":
+  "resolved" "file:../../packages/stable/indent-base-integration"
   "version" "0.0.0"
 
 "@indent/example-webhook@*":
   "resolved" "file:../../packages/stable/indent-example-webhook"
   "version" "0.0.0"
   dependencies:
-    "@indent/base-webhook" "*"
+    "@indent/base-integration" "*"
 
 "@indent/types@^0.2.1", "@indent/types@0.2.1":
   "integrity" "sha512-Z6UeiQHiQrcPeGYHPU5ua59Sk3pHtEO1zctooQTXeFKhDKMEES7+5P7LJ1MUYV0JuAdXrrm4ClBs+hQaexGg5g=="

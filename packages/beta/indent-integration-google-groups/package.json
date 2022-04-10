@@ -1,22 +1,19 @@
 {
-  "private": true,
-  "name": "@indent/new-decision-webhook",
+  "name": "@indent/integration-google-groups",
+  "version": "0.0.1-canary.18",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
-  "files": [
-    "lib"
-  ],
   "scripts": {
-    "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "test": "jest --config ../../../jest.config.js example.test.*"
   },
   "dependencies": {
-    "@indent/base-integration": "*"
+    "@indent/base-integration": "^0.0.1-canary.18",
+    "googleapis": "^92.0.0",
+    "njwt": "^1.2.0"
   },
   "publishConfig": {
     "access": "public"

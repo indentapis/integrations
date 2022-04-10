@@ -6,7 +6,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,
-} from '@indent/base-webhook'
+} from '@indent/base-integration'
 import { Event } from '@indent/types'
 import { AxiosRequestConfig } from 'axios'
 

@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@indent/okta-webhook": "latest",
-    "@indent/provider-aws": "latest",
+    "@indent/runtime-aws-lambda": "latest",
     "@indent/webhook": "latest",
     "@indent/types": "latest",
     "aws-lambda": "^1.0.6",

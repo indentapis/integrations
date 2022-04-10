@@ -2,7 +2,7 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "paths": {
-      "@indent/base-webhook": ["./packages/stable/indent-base-webhook"]
+      "@indent/base-integration": ["./packages/stable/indent-base-integration"]
     },
     "types": ["jest"]
   }

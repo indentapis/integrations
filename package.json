@@ -79,8 +79,5 @@
         "outputs": []
       }
     }
-  },
-  "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.18"
   }
 }

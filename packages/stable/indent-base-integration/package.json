@@ -1,25 +1,25 @@
 {
-  "private": true,
-  "name": "@indent/new-decision-webhook",
-  "main": "lib/index",
+  "name": "@indent/base-integration",
+  "main": "lib/index.js",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1-canary.18",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
-  "dependencies": {
-    "@indent/base-integration": "*"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@indent/types": "^0.2.1",
+    "@indent/webhook": "^0.2.1",
+    "axios": "^0.24.0"
+  }
 }

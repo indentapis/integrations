@@ -9,7 +9,7 @@ import { ApplyUpdateResponse, PullUpdateResponse } from '@indent/types'
 
 const pkg = require('../package.json')
 
-export class NewIntegration implements FullIntegration {
+export class ExampleIntegration implements FullIntegration {
   _name?: string
 
   constructor(opts?: { name: string }) {
@@ -50,6 +50,8 @@ export class NewIntegration implements FullIntegration {
         }
       })
     )
+
+    // TODO: check results for errors
 
     return {
       status: { code: 0, details: [{ debugOutcome: 'success', results }] },

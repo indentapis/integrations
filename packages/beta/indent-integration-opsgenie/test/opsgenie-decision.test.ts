@@ -1,4 +1,4 @@
-import { addMock } from '@indent/base-webhook'
+import { addMock } from '@indent/base-integration'
 import { readFileSync } from 'fs'
 import path from 'path'
 import { OpsgenieDecisionIntegration } from '../lib'

@@ -32,7 +32,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@indent/provider-aws": "canary",
+    "@indent/runtime-aws-lambda": "canary",
     "@indent/webhook": "latest",
     "@indent/types": "latest",
     "ts-node": "^8.5.4"

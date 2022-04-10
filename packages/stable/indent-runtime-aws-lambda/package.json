@@ -1,22 +1,24 @@
 {
-  "private": true,
-  "name": "@indent/new-decision-webhook",
+  "name": "@indent/runtime-aws-lambda",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1-canary.18",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "*"
+    "@indent/base-integration": "^0.0.1-canary.18",
+    "aws-lambda": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.89"
   },
   "publishConfig": {
     "access": "public"

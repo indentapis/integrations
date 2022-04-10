@@ -8,10 +8,10 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@indent/base-webhook": "canary",
+    "@indent/base-integration": "canary",
     "@indent/example-webhook": "canary",
     "@indent/dummy-webhook": "canary",
-    "@indent/provider-next": "canary",
+    "@indent/runtime-next": "canary",
     "@indent/types": "^0.2.1",
     "@indent/webhook": "^0.2.1",
     "next": "latest",

@@ -1,22 +1,22 @@
 {
-  "private": true,
-  "name": "@indent/new-decision-webhook",
+  "name": "@indent/integration-aws-iam",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
+  "version": "0.0.1-canary.14",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js",
+    "test": "jest --config ../../../jest.config.js example.test.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "*"
+    "@aws-sdk/client-iam": "^3.46.0",
+    "@indent/base-integration": "^0.0.1-canary.18"
   },
   "publishConfig": {
     "access": "public"

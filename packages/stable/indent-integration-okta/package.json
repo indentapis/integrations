@@ -1,22 +1,18 @@
 {
-  "private": true,
-  "name": "@indent/new-decision-webhook",
+  "name": "@indent/integration-okta",
+  "version": "0.0.1-canary.21",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.0",
-  "files": [
-    "lib"
-  ],
   "scripts": {
-    "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.js okta.*"
   },
   "dependencies": {
-    "@indent/base-integration": "*"
+    "@indent/base-integration": "^0.0.1-canary.18",
+    "njwt": "^1.2.0"
   },
   "publishConfig": {
     "access": "public"

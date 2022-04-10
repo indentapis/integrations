@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@indent/integration-opsgenie",
   "main": "lib/index",
   "types": "lib/index",
@@ -16,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "canary"
+    "@indent/base-integration": "*"
   },
   "publishConfig": {
     "access": "public"

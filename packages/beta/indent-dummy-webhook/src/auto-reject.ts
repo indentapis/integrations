@@ -4,7 +4,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,
-} from '@indent/base-webhook'
+} from '@indent/base-integration'
 import { Event } from '@indent/types'
 
 export class AutoRejectIntegration implements DecisionIntegration {

@@ -14,7 +14,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.18"
+    "@indent/base-integration": "^0.0.1-canary.18"
   },
   "peerDependencies": {
     "next": "*"
