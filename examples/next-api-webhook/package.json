@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@indent/base-integration": "canary",
-    "@indent/example-webhook": "canary",
+    "@indent/integration-example": "canary",
     "@indent/dummy-webhook": "canary",
     "@indent/runtime-next": "canary",
     "@indent/types": "^0.2.1",

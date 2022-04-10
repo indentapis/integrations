@@ -74,7 +74,7 @@
   "resolved" "file:../../packages/stable/indent-base-integration"
   "version" "0.0.0"
 
-"@indent/example-webhook@*":
+"@indent/integration-example@*":
   "resolved" "file:../../packages/stable/indent-example-webhook"
   "version" "0.0.0"
   dependencies:

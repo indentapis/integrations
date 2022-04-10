@@ -1,6 +1,6 @@
 import { AutoRejectIntegration } from '@indent/dummy-webhook'
-import { ExampleIntegration } from '@indent/example-webhook'
-import { getNextHandler } from '@indent/provider-next'
+import { ExampleIntegration } from '@indent/integration-example'
+import { getNextHandler } from '@indent/runtime-next'
 
 export default getNextHandler({
   integrations: [
