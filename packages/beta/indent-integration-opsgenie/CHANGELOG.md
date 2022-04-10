@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.6...@indent/integration-opsgenie@0.0.1-canary.7) (2022-04-10)
+
+
+### Bug Fixes
+
+* **integrations:** opsgenie ([d74802e](https://github.com/indentapis/integrations/commit/d74802e7cd8fe8edf624d6063db1f941dc241e1b))
+
+
+
+
+
 ## [0.0.1-canary.6](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.5...@indent/integration-opsgenie@0.0.1-canary.6) (2022-04-10)
 
 
