@@ -1,5 +1,5 @@
 {
-  "name": "@indent/intgration-example",
+  "name": "@indent/integration-example",
   "main": "lib/index",
   "types": "lib/index",
   "version": "0.0.1-canary.20",

@@ -39,8 +39,7 @@
   },
   "workspaces": {
     "packages": [
-      "packages/stable/*",
-      "packages/beta/*"
+      "packages/stable/base-integration"
     ]
   },
   "yarn": {
