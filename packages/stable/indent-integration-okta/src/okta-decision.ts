@@ -2,6 +2,7 @@ import {
   BaseHttpIntegration,
   BaseHttpIntegrationOpts,
   DecisionIntegration,
+  GetDecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,
@@ -50,7 +51,7 @@ export class OktaDecisionIntegration
     return true
   }
 
-  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+  async GetDecision(req: WriteRequest): Promise<GetDecisionResponse> {
     const status = {}
     const claims = []
     const reqEvent = req.events.find((e) => e.event === 'access/request')

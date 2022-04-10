@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-iam": "^3.46.0",
-    "@indent/base-integration": "^0.0.1-canary.19"
+    "@indent/base-integration": "^0.0.1-canary.21"
   },
   "publishConfig": {
     "access": "public"

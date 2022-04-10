@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "*"
+    "@indent/base-integration": "^0.0.1-canary.21"
   },
   "publishConfig": {
     "access": "public"

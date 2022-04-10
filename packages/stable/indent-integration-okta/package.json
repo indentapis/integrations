@@ -11,7 +11,7 @@
     "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.js okta.*"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.19",
+    "@indent/base-integration": "^0.0.1-canary.21",
     "njwt": "^1.2.0"
   },
   "publishConfig": {

@@ -1,5 +1,6 @@
 import {
   DecisionIntegration,
+  GetDecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
   WriteRequest,
@@ -25,7 +26,7 @@ export class PagerDutyAutoApprovalIntegration implements DecisionIntegration {
     return true
   }
 
-  async GetDecision(req: WriteRequest): Promise<DecisionResponse> {
+  async GetDecision(req: WriteRequest): Promise<GetDecisionResponse> {
     const accessRequestEvent = req.events.filter(
       (e: Event) => e.event === 'access/request'
     )[0]
