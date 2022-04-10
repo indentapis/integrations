@@ -86,11 +86,14 @@ export class OpsgenieDecisionIntegration
       )
     )
 
-    log('On-call responses:', onCallResponses)
     const onCalls = onCallResponses.map((r) => r.data.data).concat()
-    const approvedOnCallEmails = getApprovedOnCallEmails(onCalls)
+    const approvedOnCallEmails = getApprovedOnCallEmails(
+      onCalls,
+      this._autoApprovedSchedules
+    )
     const reqEvent = req.events.find((e) => e.event === 'access/request')
 
+    log('onCalls:', onCalls)
     log('approvedOnCallEmails:', approvedOnCallEmails)
     log('actorEmail:', reqEvent.actor.email)
     if (reqEvent && approvedOnCallEmails[reqEvent.actor.email]) {
@@ -110,12 +113,12 @@ function log(msg: string, o?: any) {
   console.log(msg + (o ? `\n${JSON.stringify(o)}` : ''))
 }
 
-function getApprovedOnCallEmails(onCalls: any) {
-  const approvedOnCalls = this._autoApprovedSchedules
+function getApprovedOnCallEmails(onCalls: any, autoApprovedSchedules?: any) {
+  const approvedOnCalls = autoApprovedSchedules
     ? onCalls.filter(
         (o) =>
-          this._autoApprovedSchedules.includes(o._parent.name) ||
-          this._autoApprovedSchedules.includes(o._parent.id)
+          autoApprovedSchedules.includes(o._parent.name) ||
+          autoApprovedSchedules.includes(o._parent.id)
       )
     : onCalls
   const approvedOnCallParticipants = []
