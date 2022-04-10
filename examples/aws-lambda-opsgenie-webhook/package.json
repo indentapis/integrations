@@ -1,0 +1,47 @@
+{
+  "name": "@indent/terraform-aws-opsgenie-webhook",
+  "version": "0.0.0",
+  "description": "A Node.js starter for Terraform on AWS with Indent and OpsGenie.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "clean:dist": "rm -rf dist",
+    "clean:modules": "rm -rf node_modules",
+    "clean:tf": "rm -rf terraform/.terraform && rm -rf terraform/terraform.tfstate*",
+    "clean:all": "npm run clean:dist; npm run clean:tf; npm run clean:modules",
+    "create:all": "npm run deploy:init; npm run deploy:prepare; npm run deploy:all",
+    "deploy:init": "cd terraform; terraform init",
+    "deploy:prepare": "npm install --production && ./scripts/build-layers.sh",
+    "deploy:all": "npm run build && npm run tf:apply -auto-approve",
+    "destroy:all": "npm run tf:destroy -auto-approve",
+    "tf:plan": "cd terraform && terraform plan -var-file ./config/terraform.tfvars",
+    "tf:apply": "cd terraform && terraform apply -compact-warnings -var-file ./config/terraform.tfvars",
+    "tf:destroy": "cd terraform && terraform destroy -auto-approve -var-file ./config/terraform.tfvars"
+  },
+  "author": "Indent Inc <open@indent.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indentapis/examples.git"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.39",
+    "@types/node": "^13.9.8",
+    "@types/node-fetch": "^2.5.5",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1"
+  },
+  "dependencies": {
+    "@indent/integration-opsgenie": "canary",
+    "@indent/runtime-aws-lambda": "canary",
+    "@indent/webhook": "latest",
+    "@indent/types": "latest",
+    "aws-lambda": "^1.0.6",
+    "axios": "^0.21.1",
+    "env-cmd": "^10.1.0",
+    "njwt": "^1.1.0",
+    "ts-node": "^8.5.4"
+  }
+}
