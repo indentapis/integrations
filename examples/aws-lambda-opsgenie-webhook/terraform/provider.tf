@@ -9,5 +9,9 @@ terraform {
     random = {
       source = "hashicorp/random"
     }
+
+    aws = {
+      version = "~> 4.9"
+    }
   }
 }

@@ -5,6 +5,10 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-west-2
 
 jobs:
   terraform:
@@ -20,10 +24,15 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
+          aws-region: ${{ env.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
-          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Add profile credentials to ~/.aws/credentials 
+        run: |
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile default
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default
 
       - name: Terraform Format
         id: fmt
@@ -34,7 +43,9 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="region=${{ env.AWS_REGION }}"
 
       - name: Terraform Plan
         id: plan
@@ -42,6 +53,7 @@ jobs:
         run: terraform plan -input=false -no-color
         continue-on-error: true
         env:
+          TF_VAR_aws_region: ${{ env.AWS_REGION }}
           TF_VAR_indent_webhook_secret: ${{ secrets.INDENT_WEBHOOK_SECRET }}
           TF_VAR_opsgenie_key: ${{ secrets.OPSGENIE_KEY }}
 
@@ -74,5 +86,14 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -input=false -auto-approve
         env:
+          TF_VAR_aws_region: ${{ env.AWS_REGION }}
+          TF_VAR_indent_webhook_secret: ${{ secrets.INDENT_WEBHOOK_SECRET }}
+          TF_VAR_opsgenie_key: ${{ secrets.OPSGENIE_KEY }}
+      
+      - name: Output
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform output
+        env:
+          TF_VAR_aws_region: ${{ env.AWS_REGION }}
           TF_VAR_indent_webhook_secret: ${{ secrets.INDENT_WEBHOOK_SECRET }}
           TF_VAR_opsgenie_key: ${{ secrets.OPSGENIE_KEY }}
