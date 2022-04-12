@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@indent/tailscale-webhook",
+  "name": "@indent/integration-tailscale",
   "main": "lib/index",
   "types": "lib/index",
   "version": "0.0.1-canary.12",
@@ -16,7 +16,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-webhook": "^0.0.1-canary.12"
+    "@indent/base-integration": "canary"
   },
   "publishConfig": {
     "access": "public"

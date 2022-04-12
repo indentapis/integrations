@@ -1,4 +1,4 @@
-import { addMock } from '@indent/base-webhook'
+import { addMock } from '@indent/base-integration'
 import { TailscaleGroupIntegration } from '../src'
 
 const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY || ''
@@ -15,7 +15,7 @@ describe('TailscaleGroupIntegration', () => {
     it('should respond with a valid integration info', () => {
       const integration = new TailscaleGroupIntegration()
       const res = integration.GetInfo()
-      expect(res.name).toBe('indent-tailscale-webhook')
+      expect(res.name).toBe('indent-integration-tailscale')
     })
   })
 

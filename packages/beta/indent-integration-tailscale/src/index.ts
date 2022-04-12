@@ -8,7 +8,7 @@ import {
   PullUpdateRequest,
   StatusCode,
   WriteRequest,
-} from '@indent/base-webhook'
+} from '@indent/base-integration'
 import {
   ApplyUpdateResponse,
   PullUpdateResponse,
@@ -16,7 +16,7 @@ import {
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-const version = require('../package.json').version
+const { version } = require('../package.json')
 
 const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY
 const TAILNET = process.env.TAILSCALE_TAILNET
@@ -34,7 +34,7 @@ export class TailscaleGroupIntegration
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
-      name: 'indent-tailscale-webhook',
+      name: 'indent-integration-tailscale',
       capabilities: ['ApplyUpdate', 'PullUpdate'],
     }
   }
