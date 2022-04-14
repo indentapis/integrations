@@ -10,7 +10,6 @@ import {
 } from '@indent/base-integration'
 import { Event } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { PagerdutyUser } from './pagerduty-types'
 
 const { version } = require('../package.json')
 const PAGERDUTY_TOKEN = process.env.PAGERDUTY_TOKEN || ''
@@ -101,7 +100,7 @@ export class PagerdutyDecisionIntegration
     const approvedOnCallEmails = onCallResponses
       .map((s) => s.data.users)
       .flat()
-      .map((u: PagerdutyUser) => u.email)
+      .map((u) => u.email)
       .reduce((acc, email) => ({ ...acc, [email]: true }), {})
 
     // get approved on call emails
