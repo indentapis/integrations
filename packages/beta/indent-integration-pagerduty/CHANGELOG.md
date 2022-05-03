@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.23](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.22...@indent/integration-pagerduty@0.0.1-canary.23) (2022-05-03)
+
+
+### Bug Fixes
+
+* **integration:** variable name error ([#24](https://github.com/indentapis/integrations/issues/24)) ([7ec78e2](https://github.com/indentapis/integrations/commit/7ec78e2a16590c94d2c0e3cb70a3cc9c6cb95a8c))
+
+
+
+
+
 ## 0.0.1-canary.22 (2022-05-03)
 
 **Note:** Version bump only for package @indent/integration-pagerduty
