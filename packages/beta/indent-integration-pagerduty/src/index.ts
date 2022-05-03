@@ -12,7 +12,7 @@ import { Event } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
-const PAGERDUTY_TOKEN = process.env.PAGERDUTY_TOKEN || ''
+const PAGERDUTY_KEY = process.env.PAGERDUTY_KEY || ''
 
 export type PagerdutyDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedSchedules?: string[]
@@ -56,7 +56,7 @@ export class PagerdutyDecisionIntegration
     return this.Fetch({
       baseURL: 'https://api.pagerduty.com',
       headers: {
-        Authorization: `Token token=${PAGERDUTY_TOKEN}`,
+        Authorization: `Token token=${PAGERDUTY_KEY}`,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
@@ -131,7 +131,7 @@ export function getDefaultApprovalEvent(reqEvent: Event): Event {
     actor: {
       displayName: 'On-call Auto Approval Bot',
       email: 'bot@indent.com',
-      id: 'opsgenie-approval-bot',
+      id: 'pagerduty-approval-bot',
       kind: 'bot.v1.user',
     },
     event: 'access/approve',
