@@ -3,7 +3,7 @@
   "name": "@indent/integration-tailscale",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.12",
+  "version": "0.0.1-canary.18",
   "files": [
     "lib"
   ],
