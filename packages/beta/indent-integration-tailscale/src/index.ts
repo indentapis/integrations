@@ -17,7 +17,6 @@ import {
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
-
 const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY
 const TAILNET = process.env.TAILSCALE_TAILNET
 

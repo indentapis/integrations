@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@indent/integration-tailscale",
   "main": "lib/index",
   "types": "lib/index",
