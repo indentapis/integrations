@@ -49,5 +49,5 @@ jobs:
 
       - name: Upload to AWS S3
         run: |
-          aws s3 cp $(pwd)/dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip
-          aws s3 cp $(pwd)/dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip
+          cd examples/aws-lambda-tailscale-simple && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip
+          cd examples/aws-lambda-tailscale-simple && aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip
