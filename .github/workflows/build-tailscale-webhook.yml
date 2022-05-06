@@ -27,16 +27,15 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+          aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Add profile credentials to ~/.aws/credentials
         run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile default
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default
-          aws configure set aws_session_token ${{ secrets.AWS_SESSION_TOKEN }} --profile default
+          aws configure set aws_access_key_id ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }} --profile default
+          aws configure set aws_secret_access_key ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }} --profile default
 
       - name: setup-node
         uses: actions/setup-node@v2
