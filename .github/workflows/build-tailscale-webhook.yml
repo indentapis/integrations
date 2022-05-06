@@ -45,7 +45,7 @@ jobs:
 
       - name: Build webhook (aws-lambda-tailscale-webhook)
         run: |
-          yarn deploy:prepare && yarn && yarn build
+          cd examples/aws-lambda-tailscale-simple && yarn deploy:prepare && yarn && yarn build
 
       - name: Upload to AWS S3
         run: |
