@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "build": "tsc && ./scripts/build-function.sh",
+    "build": "tsc",
     "clean:dist": "rm -rf dist",
     "clean:modules": "rm -rf node_modules",
     "clean:tf": "rm -rf terraform/.terraform && rm -rf terraform/terraform.tfstate*",

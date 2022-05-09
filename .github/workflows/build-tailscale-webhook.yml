@@ -2,24 +2,24 @@ name: build-upload
 on:
   push:
     branches:
-      - main
       - ID-1380
   pull_request:
     paths:
-      - .github/workflows/build.yml
+      - .github/workflows/build-tailscale-webhook.yml
       - 'examples/aws-lambda-tailscale-simple/**'
 
 env:
   AWS_REGION: us-west-2
   S3_BUCKET: indent-artifacts-us-west-2
+  INDENT_TAG: ${{ github.sha }}
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        node: [12, 14, 16]
+        os: [ubuntu-latest]
+        node: [14]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -32,22 +32,19 @@ jobs:
           # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Add profile credentials to ~/.aws/credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }} --profile default
-          aws configure set aws_secret_access_key ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }} --profile default
-
       - name: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-
-      - name: Build webhook (aws-lambda-tailscale-webhook)
+      - name: Build layers (aws-lambda-tailscale-simple)
         run: |
-          cd examples/aws-lambda-tailscale-simple && yarn deploy:prepare && yarn && yarn build
+          cd examples/aws-lambda-tailscale-simple && yarn deploy:prepare && yarn
+      - name: Build function
+        run: |
+          cd examples/aws-lambda-tailscale-simple && yarn build && ./scripts/build-function.sh
 
       - name: Upload to AWS S3
         run: |
-          cd examples/aws-lambda-tailscale-simple && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip
+          cd examples/aws-lambda-tailscale-simple && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
