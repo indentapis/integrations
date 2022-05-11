@@ -34,8 +34,8 @@
     "webpack": "^4.42.1"
   },
   "dependencies": {
-    "@indent/okta-webhook": "latest",
-    "@indent/runtime-aws-lambda": "latest",
+    "@indent/okta-webhook": "canary",
+    "@indent/runtime-aws-lambda": "canary",
     "@indent/webhook": "latest",
     "@indent/types": "latest",
     "aws-lambda": "^1.0.6",
