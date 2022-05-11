@@ -8,13 +8,26 @@ variable "aws_profile" {
   default = "default"
 }
 
+variable "name" {
+  type    = string
+  default = "idt-custom-webhook"
+}
+
 variable "indent_webhook_secret" {
   type      = string
   sensitive = true
 }
 
-variable "opsgenie_key" {
-  type      = string
+variable "env" {
+  type      = map(string)
   sensitive = true
-  default   = ""
+  default   = {}
+}
+
+variable "artifact" {
+  type = object({
+    bucket       = string
+    function_key = string
+    deps_key     = string
+  })
 }

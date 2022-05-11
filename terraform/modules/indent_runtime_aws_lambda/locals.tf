@@ -1,9 +1,8 @@
 locals {
-  name          = "indent-opsgenie-webhook-${random_string.suffix.result}"
+  name          = "${var.name}-${random_string.suffix.result}"
   lambda_memory = 128
 
   tags = {
-    Name       = "Indent + OpsGenie on AWS via Terraform"
     GitRepo    = "https://github.com/indentapis/integrations"
     ProvidedBy = "Indent"
   }
