@@ -39,13 +39,13 @@ jobs:
           cache: yarn
       - name: Build layers (aws-lambda-okta-webhook)
         run: |
-          cd examples/aws-lambda-okta-webhook && yarn deploy:prepare && yarn
+          cd examples/aws-lambda-okta-simple && yarn deploy:prepare && yarn
       - name: Build function
         run: |
-          cd examples/aws-lambda-okta-webhook && yarn build && ./scripts/build-function.sh
+          cd examples/aws-lambda-okta-simple && yarn build && ./scripts/build-function.sh
 
       # TODO: add public access
       - name: Upload to AWS S3
         run: |
-          cd examples/aws-lambda-okta-webhook && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip
+          cd examples/aws-lambda-okta-simple && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip
           aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-function.zip
