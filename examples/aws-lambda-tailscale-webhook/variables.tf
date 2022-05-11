@@ -8,12 +8,7 @@ variable "aws_profile" {
   default = "default"
 }
 
-variable "tailscale_webhook_secret" {
-  type      = string
-  sensitive = true
-}
-
-variable "tailscale_pull_webhook_secret" {
+variable "indent_webhook_secret" {
   type      = string
   sensitive = true
 }

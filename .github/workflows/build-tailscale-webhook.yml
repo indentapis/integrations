@@ -6,7 +6,7 @@ on:
   pull_request:
     paths:
       - .github/workflows/build-tailscale-webhook.yml
-      - 'examples/aws-lambda-tailscale-simple/**'
+      - 'examples/aws-lambda-tailscale-webhook/**'
 
 env:
   AWS_REGION: us-west-2
@@ -37,14 +37,15 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-      - name: Build layers (aws-lambda-tailscale-simple)
+      - name: Build layers (aws-lambda-tailscale-webhook)
         run: |
-          cd examples/aws-lambda-tailscale-simple && yarn deploy:prepare && yarn
+          cd examples/aws-lambda-tailscale-webhook && yarn deploy:prepare && yarn
       - name: Build function
         run: |
-          cd examples/aws-lambda-tailscale-simple && yarn build && ./scripts/build-function.sh
+          cd examples/aws-lambda-tailscale-webhook && yarn build && ./scripts/build-function.sh
 
+      # TODO: add public access
       - name: Upload to AWS S3
         run: |
-          cd examples/aws-lambda-tailscale-simple && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
+          cd examples/aws-lambda-tailscale-webhook && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
           aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip

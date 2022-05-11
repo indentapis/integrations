@@ -7,18 +7,21 @@ terraform {
   }
 }
 
-module "tailscale-pull-webhook" {
-  source = "./terraform"
+module "tailscale-webhook" {
+  source = "github.com/indentapis/integrations//modules/indent_runtime_aws_lambda"
 
-  indent_webhook_secret = var.tailscale_pull_webhook_secret
-  tailscale_api_key     = var.tailscale_api_key
-  tailscale_tailnet     = var.tailscale_tailnet
-}
+  name                  = "idt-tailscale-webhook"
+  indent_webhook_secret = var.indent_webhook_secret
 
-module "tailscale-change-webhook" {
-  source = "./terraform"
+  artifact = {
+    bucket = "indent-artifacts-us-west-2"
 
-  indent_webhook_secret = var.tailscale_pull_webhook_secret
-  tailscale_api_key     = var.tailscale_api_key
-  tailscale_tailnet     = var.tailscale_tailnet
+    function_key = "webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip"
+    deps_key     = "webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip"
+  }
+
+  env = {
+    TAILSCALE_API_KEY = var.tailscale_api_key
+    TAILSCALE_TAILNET = var.tailscale_tailnet
+  }
 }

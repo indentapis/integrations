@@ -8,3 +8,4 @@ node_modules
 *.tfstate.*
 terraform/config/*.tfvars
 !terraform/config/example.tfvars
+*.log
