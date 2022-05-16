@@ -1,0 +1,31 @@
+{
+  "name": "@indent/template-example-webhook",
+  "version": "0.0.0",
+  "description": "A Node.js starter for Terraform on AWS with Indent and example integration.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build:src": "tsc",
+    "build:deps": "npm install --production && ./scripts/build-layers.sh",
+    "build:function": "npm install && npm run build:src && ./scripts/build-function.sh",
+    "build": "npm run build:deps && npm run build:function"
+  },
+  "author": "Indent Inc <open@indent.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.39",
+    "@types/node": "^13.9.8",
+    "@types/node-fetch": "^2.5.5",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@indent/integration-example": "canary",
+    "@indent/runtime-aws-lambda": "canary",
+    "@indent/webhook": "latest",
+    "@indent/types": "latest"
+  }
+}
