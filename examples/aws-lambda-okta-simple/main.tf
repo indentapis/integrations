@@ -1,14 +1,14 @@
 terraform {
   backend "s3" {
     encrypt = true
-    bucket  = ""
+    bucket  = "indent-terraform-state"
     region  = "us-west-2"
     key     = "indent/terraform.tfstate"
   }
 }
 
 module "okta-webhook" {
-  source = "github.com/indentapis/integrations//modules/indent_runtime_aws_lambda"
+  source = "git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda"
 
   name                  = "idt-okta-webhook"
   indent_webhook_secret = var.indent_webhook_secret
