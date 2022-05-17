@@ -23,25 +23,20 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/indentapis/examples.git"
+    "url": "https://github.com/indentapis/integrations.git"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.39",
     "@types/node": "^13.9.8",
     "@types/node-fetch": "^2.5.5",
     "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3",
-    "webpack": "^4.42.1"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "@indent/okta-webhook": "canary",
     "@indent/runtime-aws-lambda": "canary",
     "@indent/webhook": "latest",
     "@indent/types": "latest",
-    "aws-lambda": "^1.0.6",
-    "axios": "^0.21.1",
-    "env-cmd": "^10.1.0",
-    "njwt": "^1.1.0",
     "ts-node": "^8.5.4"
   }
 }
