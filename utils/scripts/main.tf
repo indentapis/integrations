@@ -21,7 +21,8 @@ module "example-webhook" {
   }
 
   env = {
-    # replaceme:env start
     # replacemen:env end
   }
 }
+
+nullPAGERDUTY_KEY = var.pagerduty_key
