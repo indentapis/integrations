@@ -7,7 +7,7 @@ import {
   IntegrationInfoResponse,
   StatusCode,
   WriteRequest,
-} from '@indent/base-webhook'
+} from '@indent/base-integration'
 import { ApplyUpdateResponse, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { getToken } from './okta-auth'

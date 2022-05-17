@@ -1,5 +1,5 @@
-import { addMock } from '@indent/base-webhook'
-import { OktaProfileIntegration } from '..'
+import { addMock } from '@indent/base-integration'
+import { OktaProfileIntegration } from '../lib'
 
 const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
