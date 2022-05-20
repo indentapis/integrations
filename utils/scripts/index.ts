@@ -1,6 +1,9 @@
 import { TerraformGenerator } from 'terraform-generator'
+import * as data from './catalog.json'
 
-const writeTerraformVariables = (varNames: string[]) => {
+const outputDir = process.cwd()
+
+const generateTfVars = (tfVars: string[]) => {
   const tfg = new TerraformGenerator()
 
   tfg.variable('aws_region', {
@@ -19,19 +22,18 @@ const writeTerraformVariables = (varNames: string[]) => {
   })
 
   // please help - map didn't work
-  for (let v = 0; v < varNames.length; v += 1) {
-    tfg.variable(`${varNames[v]}`, {
+  for (let v = 0; v < tfVars.length; v += 1) {
+    tfg.variable(`${tfVars[v]}`, {
       type: 'string',
       default: '',
       sensitive: true,
     })
   }
 
-  const outputDir = process.cwd()
   tfg.write({ dir: outputDir, format: true, tfFilename: 'variables' })
 }
 
-const writeTerraformOutput = (moduleName: string) => {
+const generateTfOutput = (moduleName: string) => {
   const tfg = new TerraformGenerator()
 
   tfg.output(moduleName, {
@@ -39,23 +41,24 @@ const writeTerraformOutput = (moduleName: string) => {
     description: 'The URL of the deployed Lambda',
   })
 
-  const outputDir = process.cwd()
   tfg.write({ dir: outputDir, format: true, tfFilename: 'outputs' })
 }
 
-const writeTerraformMain = ({
+const generateTfMain = ({
   name,
+  webhookModuleName,
   source,
   bucket,
-  function_key,
-  deps_key,
+  functionKey,
+  depsKey,
 }: // envVars,
 {
   name: string
+  webhookModuleName
   source: string
   bucket: string
-  function_key: string
-  deps_key: string
+  functionKey: string
+  depsKey: string
   // envVars: any[]
 }) => {
   const tfg = new TerraformGenerator({
@@ -67,29 +70,16 @@ const writeTerraformMain = ({
     },
   })
 
-  tfg.module(name, {
+  tfg.module(webhookModuleName, {
     source,
-    name,
-    indent_webhook_secret: tfg.variable('indent_webhook_secret'),
+    name: webhookModuleName,
+    indent_webhook_secret: 'var.indent_webhook_secret',
     artifact: {
       bucket,
-      function_key,
-      deps_key,
-    }
+      functionKey,
+      depsKey,
+    },
   })
 
-  const outputDir = process.cwd()
   tfg.write({ dir: outputDir, format: true, tfFilename: 'main' })
 }
-
-writeTerraformVariables(['pagerduty_key'])
-writeTerraformOutput('pagerduty_auto_approval_webhook')
-writeTerraformMain({
-  name: 'example-webhook',
-  source:
-    'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
-  bucket: 'indent-artifacts-us-west-2',
-  function_key: 'webhooks/aws/lambda/example-v0.0.1-canary-function.zip',
-  deps_key: 'webhooks/aws/lambda/example-v0.0.1-canary-deps.zip',
-  // envVars: [{ PAGERDUTY_KEY: 'var.pagerduty_key' }],
-})
