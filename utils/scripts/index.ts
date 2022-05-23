@@ -1,9 +1,9 @@
-import { TerraformGenerator } from 'terraform-generator'
+import { arg, TerraformGenerator } from 'terraform-generator'
 import * as data from './catalog.json'
 
 const outputDir = process.cwd()
 
-const generateTfVars = (tfVars: string[]) => {
+const generateTfVars = (environmentVariables: string[]) => {
   const tfg = new TerraformGenerator()
 
   tfg.variable('aws_region', {
@@ -22,8 +22,8 @@ const generateTfVars = (tfVars: string[]) => {
   })
 
   // please help - map didn't work
-  for (let v = 0; v < tfVars.length; v += 1) {
-    tfg.variable(`${tfVars[v]}`, {
+  for (let v = 0; v < environmentVariables.length; v += 1) {
+    tfg.variable(`${environmentVariables[v]}`, {
       type: 'string',
       default: '',
       sensitive: true,
@@ -33,11 +33,11 @@ const generateTfVars = (tfVars: string[]) => {
   tfg.write({ dir: outputDir, format: true, tfFilename: 'variables' })
 }
 
-const generateTfOutput = (moduleName: string) => {
+const generateTfOutput = (name: string) => {
   const tfg = new TerraformGenerator()
 
-  tfg.output(moduleName, {
-    value: `module.${moduleName}.function_url`,
+  tfg.output(`idt-${name}-webhook-url`, {
+    value: `module.idt-${name}-webhook-url.function_url`,
     description: 'The URL of the deployed Lambda',
   })
 
@@ -46,40 +46,57 @@ const generateTfOutput = (moduleName: string) => {
 
 const generateTfMain = ({
   name,
-  webhookModuleName,
   source,
-  bucket,
+  artifactBucket,
   functionKey,
   depsKey,
-}: // envVars,
-{
+  envVars,
+}: {
   name: string
-  webhookModuleName
   source: string
-  bucket: string
+  artifactBucket: string
   functionKey: string
   depsKey: string
-  // envVars: any[]
+  envVars: string[]
 }) => {
   const tfg = new TerraformGenerator({
     backend: {
       encrypt: true,
-      bucket,
+      artifactBucket,
       region: 'us-west-2',
       key: 'indent/terraform.tfstate',
     },
   })
 
-  tfg.module(webhookModuleName, {
+  let mappedVars = {}
+
+  envVars.forEach((e: string) => {
+    mappedVars[e] = arg(`var.${e.toLowerCase()}`)
+  })
+
+  tfg.module(name, {
     source,
-    name: webhookModuleName,
+    name: `idt-${name}-webhook`,
     indent_webhook_secret: 'var.indent_webhook_secret',
     artifact: {
-      bucket,
+      artifactBucket,
       functionKey,
       depsKey,
     },
+    env: { ...mappedVars },
   })
 
   tfg.write({ dir: outputDir, format: true, tfFilename: 'main' })
 }
+
+generateTfMain({
+  name: data.name,
+  source: data.source,
+  envVars: data.environmentVariables,
+  artifactBucket: data.artifactBucket,
+  functionKey: data.functionKey,
+  depsKey: data.depsKey,
+})
+
+generateTfOutput(data.name)
+generateTfVars(data.environmentVariables)
