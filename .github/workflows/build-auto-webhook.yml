@@ -49,12 +49,16 @@ jobs:
           sed -i "s/\@indent\/integration-example/\@indent\/pagerduty-decision-webhook/g" $WEBHOOK_DIR/src/index.ts
 
       - name: Build example (pagerduty)
+        env:
+          WEBHOOK_DIR: tmp/examples/aws-lambda-pagerduty-webhook
         run: |
           cd $WEBHOOK_DIR/
           yarn build
 
       # TODO: add public access
       - name: Upload to AWS S3
+        env:
+          WEBHOOK_DIR: tmp/examples/aws-lambda-pagerduty-webhook
         run: |
           cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/pagerduty-v0.0.1-canary-deps.zip --acl public-read
           aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip --acl public-read
