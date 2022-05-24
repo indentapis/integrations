@@ -62,4 +62,4 @@ jobs:
           WEBHOOK_DIR: tmp/examples/aws-lambda-pagerduty-webhook
         run: |
           cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/pagerduty-v0.0.1-canary-deps.zip --acl public-read
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip --acl public-read
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/pagerduty-v0.0.1-canary-function.zip --acl public-read
