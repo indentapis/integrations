@@ -19,13 +19,13 @@
     "@types/aws-lambda": "^8.10.39",
     "@types/node": "^13.9.8",
     "@types/node-fetch": "^2.5.5",
-    "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3"
+    "ts-loader": "^6.2.2"
   },
   "dependencies": {
     "@indent/integration-example": "canary",
     "@indent/runtime-aws-lambda": "canary",
     "@indent/webhook": "latest",
+    "typescript": "^3.8.3",
     "@indent/types": "latest"
   }
 }
