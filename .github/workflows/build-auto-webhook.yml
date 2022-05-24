@@ -47,6 +47,7 @@ jobs:
           cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts
           sed -i 's/ExampleIntegration/PagerdutyDecisionIntegration/g' $WEBHOOK_DIR/src/index.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-pagerduty/g" $WEBHOOK_DIR/src/index.ts
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-pagerduty/g" $WEBHOOK_DIR/package.json
 
       - name: Build example (pagerduty)
         env:
