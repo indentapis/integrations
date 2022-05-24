@@ -36,7 +36,7 @@ jobs:
       - name: Create example root directory
         run: |
           mkdir -p tmp/examples
-      
+
       - name: Create example (pagerduty)
         env:
           WEBHOOK_DIR: tmp/examples/aws-lambda-pagerduty-webhook
@@ -44,19 +44,17 @@ jobs:
           mkdir -p $WEBHOOK_DIR
           cp -r utils/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          # consider moving into `utils/scripts/format-example.ts`
-          # and run with `npx ts-node utils/scripts/format-example.ts $WEBHOOK_DIR`
+          npx ts-node utils/scripts/index.ts
           sed -i 's/ExampleIntegration/PagerdutyDecisionIntegration/g' $WEBHOOK_DIR/src/index.ts
-          sed -i 's/# REPLACEME:vars/.../g' $WEBHOOK_DIR/variables.tf
-          sed -i 's/# REPLACEME:vars/.../g' $WEBHOOK_DIR/src/index.ts
+          sed -i "s/\@indent\/integration-example/\@indent\/pagerduty-decision-webhook/g" $WEBHOOK_DIR/src/index.ts
 
       - name: Build example (pagerduty)
         run: |
-          cd tmp/examples/aws-lambda-pagerduty-webhook
+          cd $WEBHOOK_DIR/
           npm run build
 
       # TODO: add public access
       - name: Upload to AWS S3
         run: |
-          cd examples/aws-lambda-tailscale-webhook && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
+          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/pagerduty-v0.0.1-canary-deps.zip --acl public-read
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip --acl public-read
