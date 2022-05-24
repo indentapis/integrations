@@ -51,7 +51,7 @@ jobs:
       - name: Build example (pagerduty)
         run: |
           cd $WEBHOOK_DIR/
-          npm run build
+          yarn build
 
       # TODO: add public access
       - name: Upload to AWS S3
