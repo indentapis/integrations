@@ -44,9 +44,9 @@ jobs:
           mkdir -p $WEBHOOK_DIR
           cp -r utils/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          cd utils/scripts && yarn && cd ../../ && npx ts-node utils/scripts/index.ts
+          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts
           sed -i 's/ExampleIntegration/PagerdutyDecisionIntegration/g' $WEBHOOK_DIR/src/index.ts
-          sed -i "s/\@indent\/integration-example/\@indent\/pagerduty-decision-webhook/g" $WEBHOOK_DIR/src/index.ts
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-pagerduty/g" $WEBHOOK_DIR/src/index.ts
 
       - name: Build example (pagerduty)
         env:
