@@ -29,12 +29,12 @@
     "@types/node": "^13.9.8",
     "@types/node-fetch": "^2.5.5",
     "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3"
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@indent/integration-tailscale": "canary",
     "@indent/runtime-aws-lambda": "canary",
-    "@indent/webhook": "latest",
-    "@indent/types": "latest"
+    "@indent/types": "latest",
+    "@indent/webhook": "latest"
   }
 }

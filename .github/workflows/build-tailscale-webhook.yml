@@ -1,4 +1,4 @@
-name: build-upload
+name: build-tailscale-webhook
 on:
   push:
     branches:
@@ -47,5 +47,5 @@ jobs:
       # TODO: add public access
       - name: Upload to AWS S3
         run: |
-          cd examples/aws-lambda-tailscale-webhook && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-latest.zip && aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function-${{ matrix.os }}-node-${{ matrix.node }}-${{ env.INDENT_TAG }}.zip
+          cd examples/aws-lambda-tailscale-webhook && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip &&
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip
