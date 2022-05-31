@@ -32,7 +32,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: '**/yarn.lock.json'
 
       - name: Create example root directory
         run: |
