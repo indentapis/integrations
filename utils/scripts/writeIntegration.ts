@@ -14,7 +14,7 @@ const currentIntegration = `import { ${integrations.join(
   .map((i) => `new ${i}()`)
   .join(', ')}],\n})`
 
-const outputDestination = path.join(process.cwd(), 'src/index-test.ts')
+const outputDestination = path.join(process.cwd(), 'src/index.ts')
 
 const writeIntegration = async () =>
   await writeFile(outputDestination, currentIntegration)
