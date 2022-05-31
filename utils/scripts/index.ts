@@ -1,5 +1,6 @@
 import { arg, TerraformGenerator } from 'terraform-generator'
-import * as data from './catalog.json'
+import { catalogue } from './catalog'
+import { CatalogueItem } from './utils'
 
 const outputDir = process.cwd()
 
@@ -89,14 +90,39 @@ const generateTfMain = ({
   tfg.write({ dir: outputDir, format: true, tfFilename: 'main' })
 }
 
-generateTfMain({
-  name: data.name,
-  source: data.source,
-  envVars: data.environmentVariables,
-  artifactBucket: data.artifactBucket,
-  functionKey: data.functionKey,
-  depsKey: data.depsKey,
-})
+// generateTfMain({
+//   name: data.name,
+//   source: data.source,
+//   envVars: data.environmentVariables,
+//   artifactBucket: data.artifactBucket,
+//   functionKey: data.functionKey,
+//   depsKey: data.depsKey,
+// })
 
-generateTfOutput(data.name)
-generateTfVars(data.environmentVariables)
+const generateFiles = (data: CatalogueItem[]) => {
+  const integration = data.filter((d: CatalogueItem) =>
+    d.name.toLowerCase().includes(process.env.WEBHOOK_DIR.toLowerCase())
+  )
+
+  const {
+    name,
+    source,
+    environmentVariables,
+    artifactBucket,
+    functionKey,
+    depsKey,
+  } = integration[0]
+
+  generateTfMain({
+    name,
+    source,
+    envVars: environmentVariables,
+    artifactBucket,
+    functionKey,
+    depsKey,
+  })
+  generateTfOutput(name)
+  generateTfVars(environmentVariables)
+}
+
+generateFiles(catalogue)
