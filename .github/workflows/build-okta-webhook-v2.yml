@@ -46,7 +46,7 @@ jobs:
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts
           sed -i "s/{ ExampleIntegration }/{ OktaGroupIntegration, OktaUserIntegration }/g" $WEBHOOK_DIR/src/index.ts
-          sed -i "s/[new ExampleIntegration()/[new OktaGroupIntegration(), OktaUserIntegration()/g" $WEBHOOK_DIR/src/index.ts
+          sed -i "s/[new ExampleIntegration()]/[new OktaGroupIntegration(), new OktaUserIntegration()]/g" $WEBHOOK_DIR/src/index.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/src/index.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/package.json
 
