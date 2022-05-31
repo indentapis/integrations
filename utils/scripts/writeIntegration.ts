@@ -1,4 +1,5 @@
 import { writeFile } from 'fs/promises'
+import path from 'path'
 import { catalogue } from './catalog'
 
 const currentItem = catalogue.filter((item) =>
@@ -13,7 +14,7 @@ const currentIntegration = `import { ${integrations.join(
   .map((i) => `new ${i}()`)
   .join(', ')}],\n})`
 
-const outputDestination = process.cwd() + 'src/index.ts'
+const outputDestination = path.join(process.cwd(), 'src/index-test.ts')
 
 const writeIntegration = async () =>
   await writeFile(outputDestination, currentIntegration)
