@@ -100,9 +100,10 @@ const generateTfMain = ({
 // })
 
 const generateFiles = (data: CatalogueItem[]) => {
-  const integration = data.filter((d: CatalogueItem) =>
-    d.name.toLowerCase().includes(process.env.WEBHOOK_DIR.toLowerCase())
-  )
+  const integration = data.filter((d: CatalogueItem) => {
+    console.log(process.env.WEBHOOK_DIR)
+    return process.env.WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
+  })
 
   const {
     name,
