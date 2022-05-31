@@ -4,6 +4,7 @@ export const catalogue: CatalogueItem[] = [
   {
     name: 'pagerduty',
     environmentVariables: ['PAGERDUTY_KEY'],
+    integrations: ['PagerdutyDecisionIntegration'],
     source:
       'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
     artifactBucket: 'indent-artifacts-us-west-2',
@@ -12,6 +13,7 @@ export const catalogue: CatalogueItem[] = [
   },
   {
     name: 'okta',
+    integrations: ['OktaGroupIntegration', 'OktaUserIntegration'],
     environmentVariables: [
       'OKTA_DOMAIN',
       'OKTA_TOKEN',
