@@ -39,14 +39,14 @@ jobs:
 
       - name: Create example (okta)
         env:
-
           WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
         run: |
           mkdir -p $WEBHOOK_DIR
           cp -r utils/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts
-          sed -i 's/ExampleIntegration/OktaGroupIntegration, OktaUserIntegration/g' $WEBHOOK_DIR/src/index.ts
+          sed -i "s/{ ExampleIntegration }/{ OktaGroupIntegration, OktaUserIntegration }/g" $WEBHOOK_DIR/src/index.ts
+          sed -i "s/[new ExampleIntegration()/[new OktaGroupIntegration(), OktaUserIntegration()/g" $WEBHOOK_DIR/src/index.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/src/index.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/package.json
 
