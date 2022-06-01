@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises'
+import { writeFileSync } from 'fs'
 import path from 'path'
 import { catalogue } from './catalog'
 
@@ -17,6 +17,6 @@ const currentIntegration = `import { ${integrations.join(
 const outputDestination = path.join(process.cwd(), 'src/index.ts')
 
 const writeIntegration = async () =>
-  await writeFile(outputDestination, currentIntegration)
+  await writeFileSync(outputDestination, currentIntegration)
 
 writeIntegration()
