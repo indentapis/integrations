@@ -1,22 +1,40 @@
-import { writeFileSync } from 'fs'
-import path from 'path'
+import { readFile, writeFile } from 'fs/promises'
+import { join } from 'path'
 import { catalogue } from './catalog'
 
 const currentItem = catalogue.filter((item) =>
   process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
 )
 
+const path = join(process.cwd(), 'src', 'index-copy.ts')
+
 const { integrations, name } = currentItem[0]
 
-const currentIntegration = `import { ${integrations.join(
-  ', '
-)}} from '@indent/integration-${name}'\nimport { getLambdaHandler } from '@indent/runtime-aws-lambda'\n\nexport const handle = getLambdaHandler({\n  integrations: [${integrations
-  .map((i) => `new ${i}()`)
-  .join(', ')}],\n})`
+const writeIntegration = async ({
+  functionNames,
+  integrationName,
+  path,
+}: {
+  functionNames: string[]
+  integrationName: string
+  path: string
+}) => {
+  try {
+    const data = await await readFile(path, 'utf8')
+    const newIntegration = data
+      .replace('ExampleIntegration', functionNames.join(', '))
+      .replace(
+        '@indent/integration-example',
+        `@indent/integration-${integrationName}`
+      )
+      .replace(
+        '[new ExampleIntegration()]',
+        `[${functionNames.map((i) => `new ${i}()`).join(', ')}]`
+      )
+    await writeFile(path, newIntegration, 'utf8')
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-const outputDestination = path.join(process.cwd(), 'src/index.ts')
-
-const writeIntegration = async () =>
-  await writeFileSync(outputDestination, currentIntegration)
-
-writeIntegration()
+writeIntegration({ functionNames: integrations, integrationName: name, path })
