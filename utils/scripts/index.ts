@@ -2,7 +2,8 @@ import { arg, TerraformGenerator } from 'terraform-generator'
 import { catalogue } from './catalog'
 import { CatalogueItem } from './utils'
 
-const outputDir = process.cwd()
+const WEBHOOK_DIR =
+  process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
 const generateTfVars = (environmentVariables: string[]) => {
   const tfg = new TerraformGenerator()
@@ -31,7 +32,7 @@ const generateTfVars = (environmentVariables: string[]) => {
     })
   }
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'variables' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'variables' })
 }
 
 const generateTfOutput = (name: string) => {
@@ -42,7 +43,7 @@ const generateTfOutput = (name: string) => {
     description: 'The URL of the deployed Lambda',
   })
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'outputs' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'outputs' })
 }
 
 const generateTfMain = ({
@@ -87,7 +88,7 @@ const generateTfMain = ({
     env: { ...mappedVars },
   })
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'main' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
 // generateTfMain({
@@ -101,8 +102,7 @@ const generateTfMain = ({
 
 const generateFiles = (data: CatalogueItem[]) => {
   const integration = data.filter((d: CatalogueItem) => {
-    console.log(process.env.WEBHOOK_DIR)
-    return process.env.WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
+    return WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
   })
 
   const {
