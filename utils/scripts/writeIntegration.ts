@@ -6,7 +6,7 @@ const currentItem = catalogue.filter((item) =>
   process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
 )
 
-const path = join(process.cwd(), 'src', 'index.ts')
+const path = join(process.env.WEBHOOK_DIR, 'src', 'index.ts')
 
 const { integrations, name } = currentItem[0]
 
