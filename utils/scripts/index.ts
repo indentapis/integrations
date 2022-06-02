@@ -91,15 +91,6 @@ const generateTfMain = ({
   tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
-// generateTfMain({
-//   name: data.name,
-//   source: data.source,
-//   envVars: data.environmentVariables,
-//   artifactBucket: data.artifactBucket,
-//   functionKey: data.functionKey,
-//   depsKey: data.depsKey,
-// })
-
 const generateFiles = (data: CatalogueItem[]) => {
   const integration = data.filter((d: CatalogueItem) => {
     return WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
