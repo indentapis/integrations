@@ -1,7 +1,9 @@
 import { arg, TerraformGenerator } from 'terraform-generator'
-import * as data from './catalog.json'
+import { catalogue } from './catalog'
+import { CatalogueItem } from './utils'
 
-const outputDir = process.cwd()
+const WEBHOOK_DIR =
+  process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
 const generateTfVars = (environmentVariables: string[]) => {
   const tfg = new TerraformGenerator()
@@ -30,7 +32,7 @@ const generateTfVars = (environmentVariables: string[]) => {
     })
   }
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'variables' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'variables' })
 }
 
 const generateTfOutput = (name: string) => {
@@ -41,7 +43,7 @@ const generateTfOutput = (name: string) => {
     description: 'The URL of the deployed Lambda',
   })
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'outputs' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'outputs' })
 }
 
 const generateTfMain = ({
@@ -86,17 +88,33 @@ const generateTfMain = ({
     env: { ...mappedVars },
   })
 
-  tfg.write({ dir: outputDir, format: true, tfFilename: 'main' })
+  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
-generateTfMain({
-  name: data.name,
-  source: data.source,
-  envVars: data.environmentVariables,
-  artifactBucket: data.artifactBucket,
-  functionKey: data.functionKey,
-  depsKey: data.depsKey,
-})
+const generateFiles = (data: CatalogueItem[]) => {
+  const integration = data.filter((d: CatalogueItem) => {
+    return WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
+  })
 
-generateTfOutput(data.name)
-generateTfVars(data.environmentVariables)
+  const {
+    name,
+    source,
+    environmentVariables,
+    artifactBucket,
+    functionKey,
+    depsKey,
+  } = integration[0]
+
+  generateTfMain({
+    name,
+    source,
+    envVars: environmentVariables,
+    artifactBucket,
+    functionKey,
+    depsKey,
+  })
+  generateTfOutput(name)
+  generateTfVars(environmentVariables)
+}
+
+generateFiles(catalogue)
