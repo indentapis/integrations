@@ -3,10 +3,10 @@ on:
   push:
   pull_request:
 
-env:
-  AWS_REGION: us-west-2
-  S3_BUCKET: indent-artifacts-us-west-2
-  INDENT_TAG: ${{ github.sha }}
+# env:
+#   AWS_REGION: us-west-2
+#   S3_BUCKET: indent-artifacts-us-west-2
+#   INDENT_TAG: ${{ github.sha }}
 
 jobs:
   build:
@@ -20,23 +20,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
-          aws-region: ${{ env.AWS_REGION }}
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
+#           # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+#           aws-region: ${{ env.AWS_REGION }}
 
-      - name: setup-node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          cache: yarn
+#       - name: setup-node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node }}
+#           cache: yarn
 
-      - name: Create example root directory
-        run: |
-          mkdir -p tmp/examples
+#       - name: Create example root directory
+#         run: |
+#           mkdir -p tmp/examples
 
       - name: Create example (okta)
         env:
@@ -80,10 +80,10 @@ jobs:
           cd $WEBHOOK_DIR/
           yarn build
 
-      # TODO: add public access
-      - name: Upload to AWS S3
-        env:
-          WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
-        run: |
-          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip --acl public-read
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-function.zip --acl public-read
+#       # TODO: add public access
+#       - name: Upload to AWS S3
+#         env:
+#           WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
+#         run: |
+#           cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip --acl public-read
+#           aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-function.zip --acl public-read

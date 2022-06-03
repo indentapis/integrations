@@ -1,0 +1,66 @@
+name: build-auto-webhooks-v0.0.2
+on:
+  push:
+  pull_request:
+
+env:
+  AWS_REGION: us-west-2
+  S3_BUCKET: indent-artifacts-us-west-2
+  INDENT_TAG: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+        indent-runtime: [aws-lambda]
+        integration: [okta, pagerduty]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+
+      - name: Create example root directory
+        run: |
+          mkdir -p tmp/examples
+
+      - name: Create example (${{ matrix.integration }})
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          mkdir -p $WEBHOOK_DIR
+          cp -r utils/* $WEBHOOK_DIR
+          mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
+          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts
+          npx ts-node ./utils/scripts/writeIntegration.ts
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-${{ matrix.integration }}/g" $WEBHOOK_DIR/package.json
+
+      - name: Build example (${{ matrix.integration }})
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          cd $WEBHOOK_DIR/
+          yarn build
+
+      # TODO: add public access
+      - name: Upload to AWS S3
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-v0.0.1-canary-deps-test.zip --acl public-read
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-v0.0.1-canary-function-test.zip --acl public-read
