@@ -1,4 +1,4 @@
-name: build-upload
+name: build-okta-webhooks-v1
 on:
   push:
     branches:

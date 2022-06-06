@@ -1,4 +1,4 @@
-name: build-okta-webhooks
+name: build-okta-webhooks-v2
 on:
   push:
   pull_request:
@@ -51,7 +51,7 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
         with:
-          ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }
+          ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }}
 
       - name: Synchronize ${{ matrix.workflow }} using Copybara
         env:
@@ -62,7 +62,7 @@ jobs:
           git config --global user.email "indent-bot@indent.com"
           echo "https://indent-bot:${GH_TOKEN}@api.github.com" > ~/.git-credentials
           echo "Running Copybara..."
-          make copybara-${WORKFLOW} COPYBARA_FLAGS=$([[ $GITHUB_REF == *"pull"* ]] && echo "--dry-run") 2>&1 | tee /tmp/copybara-logs
+          make copybara-${WORKFLOW} COPYBARA_FLAGS=$([[ $GITHUB_REF == *"pull"* ]] && echo "") 2>&1 | tee /tmp/copybara-logs
           if [[ -n $(</tmp/copybara-logs grep "make: ***" | grep "Error") ]]; then
                   if [[ -n $(</tmp/copybara-logs grep "Migration of the revision resulted in an empty change") ]]; then
                           echo "Already up-to-date, skipping..."
