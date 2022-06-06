@@ -7,7 +7,6 @@ core.workflow(
     origin = folder.origin(),
     destination = git.github_pr_destination(
       url = integration_target,
-      pr_branch = "copybara-integration-sync"
     ),
     origin_files = glob(["tmp/examples/aws-lambda-okta-webhook", "tmp/examples/aws-lambda-okta-webhook/**"]),
     destination_files = glob(["**"]),
