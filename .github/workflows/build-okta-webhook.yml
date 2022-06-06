@@ -40,10 +40,10 @@ jobs:
           cache: yarn
       - name: Build layers (aws-lambda-okta-webhook)
         run: |
-          cd examples/aws-lambda-okta-webhook && yarn deploy:prepare && yarn
+          cd examples/aws-lambda-okta-webhook/terraform-aws-okta-webhook && yarn deploy:prepare && yarn
       - name: Build function
         run: |
-          cd examples/aws-lambda-okta-webhook && yarn build && ./scripts/build-function.sh
+          cd examples/aws-lambda-okta-webhook/terraform-aws-okta-webhook && yarn build && ./scripts/build-function.sh
 
       # TODO: add public access
       - name: Upload to AWS S3
