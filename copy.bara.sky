@@ -12,7 +12,7 @@ core.workflow(
     destination = git.github_pr_destination(
       url = integration_target,
     ),
-    origin_files = glob(["tmp/examples/aws-lambda-okta-webhook/**"]),
+    origin_files = glob(["tmp/examples/aws-lambda-okta-webhook", "tmp/examples/aws-lambda-okta-webhook/**"]),
     destination_files = glob(["**"]),
     authoring = author,
     transformations = [
