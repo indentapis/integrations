@@ -1,0 +1,19 @@
+author = authoring.overwrite("Indent Bot <indent-bot@indent.com>")
+
+integration_target = "git@github.com:indentapis/template-aws-lambda-okta.git"
+
+core.workflow(
+    name = "okta",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-okta-webhook", "tmp/examples/aws-lambda-okta-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): sync aws-lambda-okta-webhook from @indentapis/integrations"),
+      core.move("tmp/examples/aws-lambda-okta-webhook", ""),
+    ],
+)
