@@ -1,14 +1,10 @@
-integration_url = "git@github.com:indentapis/integrations.git"
-upstream = git.github_origin(
-    url = integration_url,
-)
 author = authoring.overwrite("Indent Bot <indent-bot@indent.com>")
 
 integration_target = "git@github.com:indentapis/template-aws-lambda-okta.git"
 
 core.workflow(
     name = "okta",
-    origin = upstream,
+    origin = folder.origin(),
     destination = git.github_pr_destination(
       url = integration_target,
     ),
