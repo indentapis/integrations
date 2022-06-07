@@ -91,10 +91,10 @@ export function getDefaultApprovalEvent(reqEvent: Event): Event {
 
   return {
     actor: {
-      displayName: 'Auto Approval Bot',
+      displayName: 'Okta Approval Bot',
       email: 'bot@indent.com',
       id: 'custom-okta-approval-bot',
-      kind: 'bot.v1.user',
+      kind: 'indent.v1.Bot',
     },
     event: 'access/approve',
     meta: {

@@ -70,7 +70,7 @@ function getApprovalEvent(reqEvent: Event) {
       displayName: 'Auto Approval Bot',
       email: 'bot@indent.com',
       id: '',
-      kind: 'bot.v1.user',
+      kind: 'indent.v1.Bot',
     },
     event: 'access/approve',
     meta: {

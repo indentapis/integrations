@@ -129,10 +129,10 @@ export function getDefaultApprovalEvent(reqEvent: Event): Event {
 
   return {
     actor: {
-      displayName: 'On-call Auto Approval Bot',
+      displayName: 'PagerDuty Approval Bot',
       email: 'bot@indent.com',
       id: 'pagerduty-approval-bot',
-      kind: 'bot.v1.user',
+      kind: 'indent.v1.Bot',
     },
     event: 'access/approve',
     meta: {
