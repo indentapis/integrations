@@ -50,6 +50,31 @@ jobs:
           npx ts-node ./utils/scripts/writeIntegration.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-${{ matrix.integration }}/g" $WEBHOOK_DIR/package.json
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
+        with:
+          ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }}
+
+      - name: Synchronize ${{ matrix.workflow }} using Copybara
+        env:
+          GH_TOKEN: ${{ secrets.IndentBotKey }}
+          WORKFLOW: ${{ matrix.workflow }}
+        run: |
+          git config --global user.name "Indent Bot"
+          git config --global user.email "indent-bot@indent.com"
+          echo "https://indent-bot:${GH_TOKEN}@api.github.com" > ~/.git-credentials
+          echo "Running Copybara..."
+          GITHUB_REF=. make copybara-${WORKFLOW} COPYBARA_FLAGS="--github-destination-pr-branch copybara-integration-sync $([[ $GITHUB_REF == *"pull"* ]] && echo "--dry-run")" 2>&1 | tee /tmp/copybara-logs
+          if [[ -n $(</tmp/copybara-logs grep "make: ***" | grep "Error") ]]; then
+                  if [[ -n $(</tmp/copybara-logs grep "Migration of the revision resulted in an empty change") ]]; then
+                          echo "Already up-to-date, skipping..."
+                          exit 0
+                  fi
+                  echo "Encountered error"
+                  exit 2
+          fi
+          echo "Copybara ran successfully"
+
       - name: Build example (${{ matrix.integration }})
         env:
           WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
