@@ -49,7 +49,7 @@ if (githubActionObject?.jobs) {
         aliasDuplicateObjects: false,
       })
       fs.writeFileSync(
-        '../.github/workflows/deploy-updated.yaml',
+        WEBHOOK_DIR + '/.github/workflows/deploy.yaml',
         updatedGithubAction,
         'utf-8'
       )
