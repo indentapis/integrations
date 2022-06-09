@@ -1,4 +1,4 @@
-import { CatalogueItem } from './utils'
+import { CatalogueItem } from './format-types'
 
 export const catalogue: CatalogueItem[] = [
   {
