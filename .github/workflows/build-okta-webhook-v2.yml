@@ -45,7 +45,7 @@ jobs:
           mkdir -p $WEBHOOK_DIR
           cp -r utils/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/writeGithubAction.ts
+          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/js/writeGithubAction.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
