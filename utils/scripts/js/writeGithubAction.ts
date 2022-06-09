@@ -4,7 +4,7 @@ import { catalogue } from './catalogue'
 
 const WEBHOOK_DIR = process.env.WEBHOOK_DIR || ''
 const githubAction = fs.readFileSync(
-  '../.github/workflows/deploy.yaml',
+  WEBHOOK_DIR + '/.github/workflows/deploy.yaml',
   'utf-8'
 )
 
