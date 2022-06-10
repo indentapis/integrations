@@ -1,8 +1,8 @@
 author = authoring.overwrite("Indent Bot <indent-bot@indent.com>")
 
 integration_target_okta = "git@github.com:indentapis/template-aws-lambda-okta.git"
-integration_target_pagerduty = "git@github:indentapis/template-aws-lambda-pagerduty.git"
-integration_target_tailscale = "git@github:indentapis/template-aws-lambda-tailscale.git"
+integration_target_pagerduty = "git@github.com:indentapis/template-aws-lambda-pagerduty.git"
+integration_target_tailscale = "git@github.com:indentapis/template-aws-lambda-tailscale.git"
 
 core.workflow(
     name = "okta",
