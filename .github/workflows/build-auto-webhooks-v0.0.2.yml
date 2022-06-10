@@ -42,12 +42,13 @@ jobs:
       - name: Create example (${{ matrix.integration }})
         env:
           WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+          INTEGRATION: ${{ matrix.integration }}
         run: |
           mkdir -p $WEBHOOK_DIR
           cp -r utils/. $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/js/writeGithubAction.ts
-          sed -i "s/\@indent\/integration-example/\@indent\/integration-${{ matrix.integration }}/g" $WEBHOOK_DIR/package.json
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
