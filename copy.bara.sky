@@ -2,6 +2,7 @@ author = authoring.overwrite("Indent Bot <indent-bot@indent.com>")
 
 integration_target_okta = "git@github.com:indentapis/template-aws-lambda-okta.git"
 integration_target_pagerduty = "git@github:indentapis/template-aws-lambda-pagerduty.git"
+integration_target_tailscale = "git@github:indentapis/template-aws-lambda-tailscale.git"
 
 core.workflow(
     name = "okta",
@@ -32,5 +33,21 @@ core.workflow(
     transformations = [
       metadata.replace_message("sync(integration): sync aws-lambda-pagerduty-webhook from @indentapis/integrations"),
       core.move("tmp/examples/aws-lambda-pagerduty-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "tailscale",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_tailscale,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-tailscale-webhook", "tmp/examples/aws-lambda-tailscale-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): sync aws-lambda-tailscale-webhook from @indentapis/integrations"),
+      core.move("tmp/examples/aws-lambda-tailscale-webhook", ""),
     ],
 )
