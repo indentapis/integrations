@@ -27,4 +27,14 @@ export const catalogue: CatalogueItem[] = [
     functionKey: 'webhooks/aws/lambda/okta-v0.0.1-canary-function.zip',
     depsKey: 'webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip',
   },
+  {
+    name: 'tailscale',
+    integrations: ['TailscaleGroupIntegration'],
+    environmentVariables: ['TAILSCALE_TAILNET', 'TAILSCALE_API_KEY'],
+    source:
+      'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
+    artifactBucket: 'indent-artifacts-us-west-2',
+    functionKey: 'webhooks/aws/lambda/tailscale-v0.0.1-canary-function.zip',
+    depsKey: 'webhooks/aws/lambda/tailscale-v0.0.1-canary-deps.zip',
+  },
 ]
