@@ -13,5 +13,5 @@
     "outDir": "lib",
     "resolveJsonModule": true
   },
-  "include": ["./*", "js/index.ts", "js/writeIntegration.ts", "js/writeGithubAction.ts", "js/utils.ts", "js/catalogue.ts"]
+  "include": ["index.ts", "./js/*"]
 }

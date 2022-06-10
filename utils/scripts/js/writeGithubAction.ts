@@ -8,12 +8,6 @@ const githubAction = fs.readFileSync(
   'utf-8'
 )
 
-// type this githubActionObject
-// Make this something other than type 'any'
-// Look at YAML parse options
-// End goal is to get an array
-// Google: YAML.parse returns actual object
-// Google: turn 'any' object into an array
 let githubActionObject = YAML.parse(githubAction, { schema: 'core' })
 
 if (githubActionObject?.jobs) {

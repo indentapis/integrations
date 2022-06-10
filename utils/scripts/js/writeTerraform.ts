@@ -1,12 +1,59 @@
-import { arg, TerraformGenerator } from 'terraform-generator'
+import { arg, Map, TerraformGenerator } from 'terraform-generator'
+import { catalogue } from './catalogue'
 import { CatalogueItem } from './format-types'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
-const generateTfVars = (environmentVariables: string[]) => {
-  const tfg = new TerraformGenerator()
+const item = catalogue.filter((c) =>
+  WEBHOOK_DIR.toLowerCase().includes(c.name.toLowerCase())
+)
 
+export const writeTerraformv2 = (catalogueItem: CatalogueItem) => {
+  // destructure catalogue item
+  const {
+    name,
+    source,
+    artifactBucket,
+    functionKey,
+    depsKey,
+    environmentVariables,
+  } = catalogueItem
+
+  const tfg = new TerraformGenerator({
+    backend: {
+      encrypt: true,
+      bucket: '',
+      region: 'us-west-2',
+      key: 'indent/terraform.tfstate',
+    },
+  })
+
+  // create environment variable map for main
+  const envObject = environmentVariables.reduce((obj, envVar) => {
+    if (!obj[envVar]) {
+      obj[envVar.toUpperCase()] = arg(`var.${envVar.toLowerCase()}`)
+    }
+    return obj
+  }, {})
+
+  const envBlock = new Map({
+    ...envObject,
+  })
+  // create modules
+  tfg.module(`idt-${name}-webhook`, {
+    source,
+    name: `idt-${name}-webhook`,
+    indent_webhook_secret: arg('var.indent_webhook_secret'),
+    artifact: new Map({
+      artifactBucket,
+      functionKey,
+      depsKey,
+    }),
+    env: envBlock,
+  })
+
+  // add variables
   tfg.variable('aws_region', {
     type: 'string',
     default: '',
@@ -22,98 +69,21 @@ const generateTfVars = (environmentVariables: string[]) => {
     sensitive: true,
   })
 
-  // please help - map didn't work
-  for (let v = 0; v < environmentVariables.length; v += 1) {
-    tfg.variable(`${environmentVariables[v]}`, {
+  environmentVariables.forEach((env) => {
+    tfg.variable(env, {
       type: 'string',
       default: '',
       sensitive: true,
     })
-  }
+  })
 
-  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'variables' })
-}
-
-const generateTfOutput = (name: string) => {
-  const tfg = new TerraformGenerator()
-
+  // add output
   tfg.output(`idt-${name}-webhook-url`, {
-    value: `module.idt-${name}-webhook-url.function_url`,
+    value: `module.idt-${name}-webhook.function_url`,
     description: 'The URL of the deployed Lambda',
   })
 
-  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'outputs' })
+  return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
-const generateTfMain = ({
-  name,
-  source,
-  artifactBucket,
-  functionKey,
-  depsKey,
-  envVars,
-}: {
-  name: string
-  source: string
-  artifactBucket: string
-  functionKey: string
-  depsKey: string
-  envVars: string[]
-}) => {
-  const tfg = new TerraformGenerator({
-    backend: {
-      encrypt: true,
-      artifactBucket,
-      region: 'us-west-2',
-      key: 'indent/terraform.tfstate',
-    },
-  })
-
-  let mappedVars = {}
-
-  envVars.forEach((e: string) => {
-    mappedVars[e] = arg(`var.${e.toLowerCase()}`)
-  })
-
-  tfg.module(name, {
-    source,
-    name: `idt-${name}-webhook`,
-    indent_webhook_secret: 'var.indent_webhook_secret',
-    artifact: {
-      artifactBucket,
-      functionKey,
-      depsKey,
-    },
-    env: { ...mappedVars },
-  })
-
-  tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
-}
-
-export const writeTerraform = (catalogueItem: CatalogueItem) => {
-  // const integration = data.filter((d: CatalogueItem) => {
-  //   return WEBHOOK_DIR.toLowerCase().includes(d.name.toLowerCase())
-  // })
-
-  const {
-    name,
-    source,
-    environmentVariables,
-    artifactBucket,
-    functionKey,
-    depsKey,
-  } = catalogueItem
-
-  generateTfMain({
-    name,
-    source,
-    envVars: environmentVariables,
-    artifactBucket,
-    functionKey,
-    depsKey,
-  })
-  generateTfOutput(name)
-  generateTfVars(environmentVariables)
-}
-
-//writeTerraform(catalogue)
+writeTerraformv2(item[0])
