@@ -9,7 +9,7 @@ const item = catalogue.filter((c) =>
   WEBHOOK_DIR.toLowerCase().includes(c.name.toLowerCase())
 )
 
-export const writeTerraformv2 = (catalogueItem: CatalogueItem) => {
+export const writeTerraform = (catalogueItem: CatalogueItem) => {
   // destructure catalogue item
   const {
     name,
@@ -86,4 +86,4 @@ export const writeTerraformv2 = (catalogueItem: CatalogueItem) => {
   return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
-writeTerraformv2(item[0])
+writeTerraform(item[0])
