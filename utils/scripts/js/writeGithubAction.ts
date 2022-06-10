@@ -15,7 +15,7 @@ if (githubActionObject?.jobs) {
   if (githubActionObject?.jobs?.terraform) {
     if (githubActionObject?.jobs?.terraform?.steps) {
       const currentItem = catalogue.filter((item) =>
-        'okta'.toLowerCase().includes(item.name.toLowerCase())
+        WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
       )
 
       let { environmentVariables } = currentItem[0]
