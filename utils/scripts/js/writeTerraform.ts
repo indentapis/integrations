@@ -20,14 +20,13 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     environmentVariables,
   } = catalogueItem
 
-  const tfg = new TerraformGenerator({
-    backend: {
-      encrypt: true,
-      type: 's3',
-      bucket: '',
-      region: 'us-west-2',
-      key: 'indent/terraform.tfstate',
-    },
+  const tfg = new TerraformGenerator()
+
+  tfg.backend('s3', {
+    encrypt: true,
+    bucket: '',
+    region: 'us-west-2',
+    key: 'indent/terraform.tfstate',
   })
 
   // create environment variable map for main
@@ -58,12 +57,12 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   // add variables
   tfg2.variable('aws_region', {
     type: 'string',
-    default: '',
+    default: 'us-west-2',
   })
 
   tfg2.variable('aws_profile', {
     type: 'string',
-    default: '',
+    default: 'default',
   })
 
   tfg2.variable('indent_webhook_secret', {
