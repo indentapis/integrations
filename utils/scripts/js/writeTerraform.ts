@@ -47,9 +47,9 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     name: `idt-${name}-webhook`,
     indent_webhook_secret: arg('var.indent_webhook_secret'),
     artifact: new Map({
-      artifactBucket,
-      functionKey,
-      depsKey,
+      artifact_bucket: artifactBucket,
+      function_key: functionKey,
+      deps_key: depsKey,
     }),
     env: envBlock,
   })
@@ -71,7 +71,7 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   })
 
   environmentVariables.forEach((env) => {
-    tfg.variable(env, {
+    tfg.variable(env.toLowerCase(), {
       type: 'string',
       default: '',
       sensitive: true,
