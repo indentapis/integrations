@@ -23,6 +23,7 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   const tfg = new TerraformGenerator({
     backend: {
       encrypt: true,
+      type: 's3',
       bucket: '',
       region: 'us-west-2',
       key: 'indent/terraform.tfstate',
