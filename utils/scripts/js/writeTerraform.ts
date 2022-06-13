@@ -82,7 +82,7 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   const tfg3 = new TerraformGenerator()
 
   tfg3.output(`idt-${name}-webhook-url`, {
-    value: `module.idt-${name}-webhook.function_url`,
+    value: arg(`module.idt-${name}-webhook.function_url`),
     description: 'The URL of the deployed Lambda',
   })
   tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
