@@ -54,35 +54,39 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     env: envBlock,
   })
 
+  const tfg2 = new TerraformGenerator()
   // add variables
-  tfg.variable('aws_region', {
+  tfg2.variable('aws_region', {
     type: 'string',
     default: '',
   })
 
-  tfg.variable('aws_profile', {
+  tfg2.variable('aws_profile', {
     type: 'string',
     default: '',
   })
 
-  tfg.variable('indent_webhook_secret', {
+  tfg2.variable('indent_webhook_secret', {
     type: 'string',
     sensitive: true,
   })
 
   environmentVariables.forEach((env) => {
-    tfg.variable(env.toLowerCase(), {
+    tfg2.variable(env.toLowerCase(), {
       type: 'string',
       default: '',
       sensitive: true,
     })
   })
-
+  tfg2.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'variables' })
   // add output
-  tfg.output(`idt-${name}-webhook-url`, {
+  const tfg3 = new TerraformGenerator()
+
+  tfg3.output(`idt-${name}-webhook-url`, {
     value: `module.idt-${name}-webhook.function_url`,
     description: 'The URL of the deployed Lambda',
   })
+  tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
 
   return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
