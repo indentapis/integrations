@@ -46,7 +46,7 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     name: `idt-${name}-webhook`,
     indent_webhook_secret: arg('var.indent_webhook_secret'),
     artifact: new Map({
-      artifact_bucket: artifactBucket,
+      bucket: artifactBucket,
       function_key: functionKey,
       deps_key: depsKey,
     }),
