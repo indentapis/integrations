@@ -1,16 +1,16 @@
 import { readFile, writeFile } from 'fs/promises'
-import { join } from 'path'
-import { catalogue } from './catalog'
+// import { join } from 'path'
+// import { catalogue } from './catalogue'
 
-const currentItem = catalogue.filter((item) =>
-  process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
-)
+// const currentItem = catalogue.filter((item) =>
+//   process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
+// )
 
-const path = join(process.env.WEBHOOK_DIR, 'src', 'index.ts')
+// const path = join(process.env.WEBHOOK_DIR, 'src', 'index.ts')
 
-const { integrations, name } = currentItem[0]
+// const { integrations, name } = currentItem[0]
 
-const writeIntegration = async ({
+export const writeIntegration = async ({
   functionNames,
   integrationName,
   path,
@@ -37,4 +37,4 @@ const writeIntegration = async ({
   }
 }
 
-writeIntegration({ functionNames: integrations, integrationName: name, path })
+// writeIntegration({ functionNames: integrations, integrationName: name, path })

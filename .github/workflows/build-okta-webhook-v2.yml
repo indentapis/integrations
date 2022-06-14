@@ -1,89 +1,89 @@
-name: build-okta-webhooks-v2
-on:
-  push:
-  pull_request:
+# name: build-okta-webhooks-v2
+# on:
+#   push:
+#   pull_request:
 
-env:
-  AWS_REGION: us-west-2
-  S3_BUCKET: indent-artifacts-us-west-2
-  INDENT_TAG: ${{ github.sha }}
+# env:
+#   AWS_REGION: us-west-2
+#   S3_BUCKET: indent-artifacts-us-west-2
+#   INDENT_TAG: ${{ github.sha }}
 
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
-        workflow: [okta]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest]
+#         node: [14]
+#         workflow: [okta]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
-          aws-region: ${{ env.AWS_REGION }}
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
+#           # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+#           aws-region: ${{ env.AWS_REGION }}
 
-      - name: setup-node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          cache: yarn
+#       - name: setup-node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node }}
+#           cache: yarn
 
-      - name: Create example root directory
-        run: |
-          mkdir -p tmp/examples
+#       - name: Create example root directory
+#         run: |
+#           mkdir -p tmp/examples
 
-      - name: Create example (okta)
-        env:
-          WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
-        run: |
-          mkdir -p $WEBHOOK_DIR
-          cp -r utils/* $WEBHOOK_DIR
-          mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/writeIntegration.ts
-          sed -i "s/\@indent\/integration-example/\@indent\/integration-okta/g" $WEBHOOK_DIR/package.json
+#       - name: Create example (${{ matrix.workflow }})
+#         env:
+#           WEBHOOK_DIR: tmp/examples/aws-lambda-${{ matrix.workflow }}-webhook
+#         run: |
+#           mkdir -p $WEBHOOK_DIR
+#           cp -r utils/. $WEBHOOK_DIR
+#           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
+#           cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/js/writeGithubAction.ts
+#           sed -i "s/\@indent\/integration-example/\@indent\/integration-${{ matrix.workflow }}/g" $WEBHOOK_DIR/package.json
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
-        with:
-          ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }}
+#       - name: Setup SSH
+#         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
+#         with:
+#           ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }}
 
-      - name: Synchronize ${{ matrix.workflow }} using Copybara
-        env:
-          GH_TOKEN: ${{ secrets.IndentBotKey }}
-          WORKFLOW: ${{ matrix.workflow }}
-        run: |
-          git config --global user.name "Indent Bot"
-          git config --global user.email "indent-bot@indent.com"
-          echo "https://indent-bot:${GH_TOKEN}@api.github.com" > ~/.git-credentials
-          echo "Running Copybara..."
-          GITHUB_REF=. make copybara-${WORKFLOW} COPYBARA_FLAGS="--github-destination-pr-branch copybara-integration-sync $([[ $GITHUB_REF == *"pull"* ]] && echo "--dry-run")" 2>&1 | tee /tmp/copybara-logs
-          if [[ -n $(</tmp/copybara-logs grep "make: ***" | grep "Error") ]]; then
-                  if [[ -n $(</tmp/copybara-logs grep "Migration of the revision resulted in an empty change") ]]; then
-                          echo "Already up-to-date, skipping..."
-                          exit 0
-                  fi
-                  echo "Encountered error"
-                  exit 2
-          fi
-          echo "Copybara ran successfully"
+#       - name: Synchronize ${{ matrix.workflow }} using Copybara
+#         env:
+#           GH_TOKEN: ${{ secrets.IndentBotKey }}
+#           WORKFLOW: ${{ matrix.workflow }}
+#         run: |
+#           git config --global user.name "Indent Bot"
+#           git config --global user.email "indent-bot@indent.com"
+#           echo "https://indent-bot:${GH_TOKEN}@api.github.com" > ~/.git-credentials
+#           echo "Running Copybara..."
+#           GITHUB_REF=. make copybara-${WORKFLOW} COPYBARA_FLAGS="--github-destination-pr-branch copybara-integration-sync $([[ $GITHUB_REF == *"pull"* ]] && echo "--dry-run")" 2>&1 | tee /tmp/copybara-logs
+#           if [[ -n $(</tmp/copybara-logs grep "make: ***" | grep "Error") ]]; then
+#                   if [[ -n $(</tmp/copybara-logs grep "Migration of the revision resulted in an empty change") ]]; then
+#                           echo "Already up-to-date, skipping..."
+#                           exit 0
+#                   fi
+#                   echo "Encountered error"
+#                   exit 2
+#           fi
+#           echo "Copybara ran successfully"
 
-      - name: Build example (okta)
-        env:
-          WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
-        run: |
-          cd $WEBHOOK_DIR/
-          yarn build
+#       - name: Build example (okta)
+#         env:
+#           WEBHOOK_DIR: tmp/examples/aws-lambda-${{ matrix.workflow }}-webhook
+#         run: |
+#           cd $WEBHOOK_DIR/
+#           yarn build
 
-      # TODO: add public access
-      - name: Upload to AWS S3
-        env:
-          WEBHOOK_DIR: tmp/examples/aws-lambda-okta-webhook
-        run: |
-          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip --acl public-read
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/okta-v0.0.1-canary-function.zip --acl public-read
+#       # TODO: add public access
+#       - name: Upload to AWS S3
+#         env:
+#           WEBHOOK_DIR: tmp/examples/aws-lambda-${{ matrix.workflow }}-webhook
+#         run: |
+#           cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.workflow }}-v0.0.1-canary-deps.zip --acl public-read
+#           aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.workflow }}-v0.0.1-canary-function.zip --acl public-read
