@@ -41,9 +41,10 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     ...envObject,
   })
   // create modules
-  tfg.module(`idt-${name}-webhook`, {
+  const moduleName = `idt-${name}-webhook`
+  tfg.module(moduleName, {
     source,
-    name: `idt-${name}-webhook`,
+    name: moduleName,
     indent_webhook_secret: arg('var.indent_webhook_secret'),
     artifact: new Map({
       bucket: artifactBucket,
@@ -81,8 +82,8 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   // add output
   const tfg3 = new TerraformGenerator()
 
-  tfg3.output(`idt-${name}-webhook-url`, {
-    value: arg(`module.idt-${name}-webhook.function_url`),
+  tfg3.output(`${moduleName}-url`, {
+    value: arg(`module.${moduleName}.function_url`),
     description: 'The URL of the deployed Lambda',
   })
   tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
