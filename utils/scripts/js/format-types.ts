@@ -1,4 +1,4 @@
-export interface CatalogueItem {
+export interface CatalogItem {
   name: string
   integrations: string[]
   environmentVariables: string[]

@@ -88,5 +88,5 @@ jobs:
         env:
           WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
         run: |
-          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${INDENT_TAG}-canary-deps.zip --acl public-read
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${INDENT_TAG}-canary-function.zip --acl public-read
+          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${INDENT_TAG}-deps.zip --acl public-read
+          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${INDENT_TAG}-function.zip --acl public-read

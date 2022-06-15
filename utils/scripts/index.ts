@@ -1,12 +1,12 @@
 import { join } from 'path'
-import { catalogue } from './js/catalogue'
+import { catalog } from './js/catalog'
 import { writeIntegration } from './js/writeIntegration'
 import { writeTerraform } from './js/writeTerraform'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
-const currentItem = catalogue.filter((item) =>
+const currentItem = catalog.filter((item) =>
   WEBHOOK_DIR.toLowerCase().includes(item.name)
 )
 

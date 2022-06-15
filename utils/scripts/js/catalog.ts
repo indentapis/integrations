@@ -1,8 +1,8 @@
-import { CatalogueItem } from './format-types'
+import { CatalogItem } from './format-types'
 
 const INDENT_TAG = process.env.INDENT_TAG || 'missing_sha'
 
-export const catalogue: CatalogueItem[] = [
+export const catalog: CatalogItem[] = [
   {
     name: 'pagerduty',
     environmentVariables: ['PAGERDUTY_KEY'],
@@ -10,8 +10,8 @@ export const catalogue: CatalogueItem[] = [
     source:
       'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
     artifactBucket: 'indent-artifacts-us-west-2',
-    functionKey: `webhooks/aws/lambda/pagerduty-${INDENT_TAG}-canary-function.zip`,
-    depsKey: `webhooks/aws/lambda/pagerduty-${INDENT_TAG}-canary-deps.zip`,
+    functionKey: `webhooks/aws/lambda/pagerduty-${INDENT_TAG}-function.zip`,
+    depsKey: `webhooks/aws/lambda/pagerduty-${INDENT_TAG}-deps.zip`,
   },
   {
     name: 'okta',
@@ -26,8 +26,8 @@ export const catalogue: CatalogueItem[] = [
     source:
       'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
     artifactBucket: 'indent-artifacts-us-west-2',
-    functionKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-canary-function.zip`,
-    depsKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-canary-deps.zip`,
+    functionKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-function.zip`,
+    depsKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-deps.zip`,
   },
   {
     name: 'tailscale',
@@ -36,7 +36,7 @@ export const catalogue: CatalogueItem[] = [
     source:
       'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
     artifactBucket: 'indent-artifacts-us-west-2',
-    functionKey: `webhooks/aws/lambda/tailscale-${INDENT_TAG}-canary-function.zip`,
-    depsKey: `webhooks/aws/lambda/tailscale-${INDENT_TAG}-canary-deps.zip`,
+    functionKey: `webhooks/aws/lambda/tailscale-${INDENT_TAG}-function.zip`,
+    depsKey: `webhooks/aws/lambda/tailscale-${INDENT_TAG}-deps.zip`,
   },
 ]
