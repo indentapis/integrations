@@ -1,58 +1,65 @@
-// import fs from 'fs'
-// import Mustache from 'mustache'
-// import { CatalogueItem, EnvironmentVariable } from '..'
+import fs from 'fs'
+import Mustache from 'mustache'
+import { CatalogItem, EnvironmentVariable } from '..'
+import { catalog } from './catalog.example'
 
-// // const currentIntegration = catalogue.filter((item) =>
-// //   WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
-// // )
+const WEBHOOK_DIR =
+  process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
 
-// export const writeReadme = (item: CatalogueItem) => {
-//   if (!item.name.includes('okta')) {
-//     return
-//   }
-//   const WEBHOOK_DIR =
-//     process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
-//   // import template from file
-//   const template = fs.readFileSync(WEBHOOK_DIR + '/README.example.md', 'utf-8')
+const currentIntegration = catalog.filter((item) =>
+  WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
+)
 
-//   // destructure catalogueItem
-//   const { name, runtimes, integrations, environmentVariables, readme } = item
+export const writeReadme = (item: CatalogItem) => {
+  // import template from file
+  const template = fs.readFileSync(
+    process.cwd() + '/../../README.example.md',
+    'utf-8'
+  )
 
-//   let formattedConnection = ['']
+  // destructure catalogItem
+  const { name, runtimes, integrations, environmentVariables, readme } = item
 
-//   if (readme?.connection) {
-//     const { connection } = readme
-//     formattedConnection = connection.map((step) => {
-//       return (step = '<li> ' + step + ' </li>')
-//     })
-//   }
+  // join environment variables in HTML
+  // const optionTwoEntries = readme.hasAlternate
+  //   ? {
+  //       name: readme.options.optionTwo.name,
+  //       description: readme.options.optionTwo.description,
+  //       entries: environmentVariables
+  //         .map((e) => `<tr><td>${e.name}</td><td>${e.description}</td></tr>`)
+  //         .join(''),
+  //     }
+  //   : false
+  // render template
+  const rendered = Mustache.render(template, {
+    runtime: runtimes[0],
+    integration: name,
+    numIntegrations: integrations.length,
+    connection: readme?.connection ? readme.connection : '',
+    optionOne: {
+      name: readme.options.optionOne.name,
+      description: readme.options.optionOne.description,
+      environmentVariables: {
+        envVars: environmentVariables.filter(
+          (e: EnvironmentVariable) => !e.alternateValue
+        ),
+        value: () => {
+          return (text: EnvironmentVariable, render) => {
+            return render(
+              '<tr><td>' +
+                text.name +
+                '</td><td>' +
+                text.description +
+                '</td></tr>'
+            )
+          }
+        },
+      },
+    },
+    optionTwo: false,
+  })
 
-//   // join environment variables in HTML
-//   const optionTwoEntries = readme.hasAlternate
-//     ? {
-//         name: readme.options.optionTwo.name,
-//         description: readme.options.optionTwo.description,
-//         entries: environmentVariables
-//           .map((e) => `<tr><td>${e.name}</td><td>${e.description}</td></tr>`)
-//           .join(''),
-//       }
-//     : false
-//   // render template
-//   const rendered = Mustache.render(template, {
-//     runtime: runtimes[0],
-//     integration: name,
-//     numIntegrations: integrations.length,
-//     connection: formattedConnection.join(''),
-//     optionOne: {
-//       name: readme.options.optionOne.name,
-//       description: readme.options.optionOne.description,
-//       entries: environmentVariables
-//         .filter((e: EnvironmentVariable) => !e.alternateValue)
-//         .map((e) => `<tr><td>${e.name}</td><td>${e.description}</td></tr>`)
-//         .join(''),
-//     },
-//     optionTwo: optionTwoEntries,
-//   })
+  fs.writeFileSync('../README.md', rendered, 'utf-8')
+}
 
-//   fs.writeFileSync('../README.md', rendered, 'utf-8')
-// }
+writeReadme(currentIntegration[0])

@@ -1,4 +1,4 @@
-import { CatalogueItem } from '..'
+import { CatalogItem } from '..'
 
 const INDENT_TAG = process.env.INDENT_TAG || 'missing_sha'
 
@@ -17,8 +17,8 @@ export const catalog: CatalogItem[] = [
     source:
       'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda',
     artifactBucket: 'indent-artifacts-us-west-2',
-    functionKey: 'webhooks/aws/lambda/okta-v0.0.1-canary-function.zip',
-    depsKey: 'webhooks/aws/lambda/okta-v0.0.1-canary-deps.zip',
+    functionKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-canary-function.zip`,
+    depsKey: `webhooks/aws/lambda/okta-${INDENT_TAG}-canary-deps.zip`,
   },
   {
     name: 'PagerDuty',

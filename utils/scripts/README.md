@@ -1,6 +1,6 @@
-# Indent + {{ runtime }} and {{ integration }}
+# Indent + AWS Lambda and Okta
 
-This repository contains {{ numIntegrations }} webhooks (AWS Lambdas) to pull and apply updates to Okta Group using [Indent](https://indent.com/docs).
+This repository contains 2 webhooks (AWS Lambdas) to pull and apply updates to Okta Group using [Indent](https://indent.com/docs).
 
 ## Quicklinks
 
@@ -37,13 +37,17 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 </p>
 </details>
 
-<details><summary><strong>3. Connecting to {{ integration }}</strong></summary>
+<details><summary><strong>3. Connecting to Okta</strong></summary>
 
-{{#connection}}
 
-- {{{.}}}
+- <a href="https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token">Go to Okta > Security > API > Tokens</a> and create a new API Token, then give the token a descriptive name like <code>Indent Auto Approvals</code>
 
-{{/connection}}
+
+- Add this as <code>OKTA_TOKEN</code> as a GitHub Secret
+
+
+- Copy your Okta Domain URL and add this as <code>OKTA_DOMAIN</code> as a GitHub Secret
+
 
 </details>
 
@@ -65,12 +69,11 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 Add the credentials for one of the authentication options below to your GitHub Secrets.
 
-{{#optionOne}}
 
-<details open><summary>{{optionOne.name}}</summary>
+<details open><summary>Option 1: Okta Admin API Token</summary>
 <p>
 
-{{ optionOne.description }}
+Add the credentials for one of the authentication options below to your GitHub Secrets.
 
 <table>
   <tr>
@@ -82,7 +85,7 @@ Add the credentials for one of the authentication options below to your GitHub S
     <td>Get this from your <a href="https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/">Indent App</a> or an <a href="https://indent.com/docs/webhooks/deploy/okta-groups" target="_blank">Indent Webhook<a>in the Dashboard</td>
   </tr>
 
-{{#environmentVariables}} {{ envVars }}.{{/environmentVariables}}
+ [object Object],[object Object],[object Object].
 
   <tr>
     <td>AWS_REGION</td>
@@ -99,41 +102,7 @@ Add the credentials for one of the authentication options below to your GitHub S
 </p>
 </details>
 
-{{/optionOne}}
 
-{{#optionTwo}}
-
-<details><summary>{{ optionTwo.name}}</summary>
-<p>
-
-{{{ optionTwo.description }}}
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>INDENT_WEBHOOK_SECRET</td>
-    <td>Get this from your <a href="https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/">Indent App</a> or an <a href="https://indent.com/docs/webhooks/deploy/okta-groups" target="_blank">Indent Webhook<a>in the Dashboard</td>
-  </tr>
-  {{{ optionTwo.entries }}}
-  <tr>
-    <td>AWS_REGION</td>
-    <td>The AWS Region where you want to deploy the webhooks</td>
-  </tr>
-  <tr>
-    <td>AWS_ACCESS_KEY_ID</td>
-    <td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Access Key ID</a></td>
-  </tr>
-  <tr><td>AWS_SECRET_ACCESS_KEY</td><td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Secret Access Key</a></td></tr>
-  <tr><td>AWS_SESSION_TOKEN</td><td>Optional: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli" target="_blank">Your AWS Session Token</a>. <strong>Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires</strong></td></tr>
-</table>
-
-</p>
-</details>
-
-{{/optionTwo}}
 
 ## Deployment
 
