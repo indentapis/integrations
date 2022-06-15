@@ -1,6 +1,7 @@
 import { join } from 'path'
 import { catalog } from './js/catalog'
 import { writeIntegration } from './js/writeIntegration'
+// import { writeReadme } from './js/writeReadme'
 import { writeTerraform } from './js/writeTerraform'
 
 const WEBHOOK_DIR =
@@ -26,3 +27,5 @@ writeIntegration({
 })
 
 writeTerraform(currentItem[0])
+
+// writeReadme(currentItem[0])

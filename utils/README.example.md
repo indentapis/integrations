@@ -39,7 +39,11 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 <details><summary><strong>3. Connecting to {{ integration }}</strong></summary>
 
+<ul>
+
 {{{ connection }}}
+
+</ul>
 
 </details>
 
@@ -61,42 +65,73 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 Add the credentials for one of the authentication options below to your GitHub Secrets.
 
-<details open><summary>Option 1: Okta Admin API Token</summary>
+{{#optionOne}}
+
+<details open><summary>{{optionOne.name}}</summary>
 <p>
 
-| Name                     | Value                                                                                                                                                                                                                                                                |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| INDENT_WEBHOOK_SECRET    | Get this from your [Indent App](https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/) or an [Indent Webhook](https://indent.com/docs/webhooks/deploy/okta-groups) in the Dashboard                                                                        |
-| {{{ secretOne.name}}}    | {{{ secretOne.description}}}                                                                                                                                                                                                                                         |
-| {{{ secretTwo.name }}}   | {{{ secretTwo.description }}}                                                                                                                                                                                                                                        |
-| {{{ secretThree.name }}} | {{{ secretThree.description}}}                                                                                                                                                                                                                                       |
-| AWS_REGION               | The AWS Region where you want to deploy the webhooks                                                                                                                                                                                                                 |
-| AWS_ACCESS_KEY_ID        | [Your Programmatic AWS Access Key ID](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                      |
-| AWS_SECRET_ACCESS_KEY    | [Your Programmatic AWS Secret Access Key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                  |
-| AWS_SESSION_TOKEN        | Optional: [Your AWS Session Token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli). **Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires** |
+{{ optionOne.description}}
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>INDENT_WEBHOOK_SECRET</td>
+    <td>Get this from your <a href="https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/">Indent App</a> or an <a href="https://indent.com/docs/webhooks/deploy/okta-groups" target="_blank">Indent Webhook<a>in the Dashboard</td>
+  </tr>
+  {{{ optionOne.entries }}}
+  <tr>
+    <td>AWS_REGION</td>
+    <td>The AWS Region where you want to deploy the webhooks</td>
+  </tr>
+  <tr>
+    <td>AWS_ACCESS_KEY_ID</td>
+    <td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Access Key ID</a></td>
+  </tr>
+  <tr><td>AWS_SECRET_ACCESS_KEY</td><td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Secret Access Key</a></td></tr>
+  <tr><td>AWS_SESSION_TOKEN</td><td>Optional: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli" target="_blank">Your AWS Session Token</a>. <strong>Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires</strong></td></tr>
+</table>
 
 </p>
 </details>
 
-<details><summary>Option 2: Okta OAuth2.0 Service App</summary>
+{{/optionOne}}
+
+{{#optionTwo}}
+
+<details><summary>{{ optionTwo.name}}</summary>
 <p>
 
-Create an Okta Service App based on our [guide](https://indent.com/docs/integrations/okta#option-2-service-app-with-api-scopes).
+{{{ optionTwo.description }}}
 
-| Name                     | Description                                                                                                                                                                                                                                                          |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| INDENT_WEBHOOK_SECRET    | Get this from your [Indent App](https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/) or an [Indent Webhook](https://indent.com/docs/webhooks/deploy/okta-groups) in the Dashboard                                                                        |
-| {{{ secretOne.name }}}   | {{{ secretOne.description }}}                                                                                                                                                                                                                                        |
-| {{{ secretFour.name }}}  | {{{ secretFour.description }}}                                                                                                                                                                                                                                       |
-| {{{ secretFive.name }}}  | {{{ secretFive.description }}}                                                                                                                                                                                                                                       |
-| {{{ secretThree.name }}} | {{{ secretThree.description }}}                                                                                                                                                                                                                                      |
-| AWS_REGION               | The AWS Region where you want to deploy the webhooks                                                                                                                                                                                                                 |
-| AWS_ACCESS_KEY_ID        | [Your Programmatic AWS Access Key ID](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                      |
-| AWS_SECRET_ACCESS_KEY    | [Your Programmatic AWS Secret Access Key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                  |
-| AWS_SESSION_TOKEN        | Optional: [Your AWS Session Token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli). **Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires** |
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>INDENT_WEBHOOK_SECRET</td>
+    <td>Get this from your <a href="https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/">Indent App</a> or an <a href="https://indent.com/docs/webhooks/deploy/okta-groups" target="_blank">Indent Webhook<a>in the Dashboard</td>
+  </tr>
+  {{{ optionTwo.entries }}}
+  <tr>
+    <td>AWS_REGION</td>
+    <td>The AWS Region where you want to deploy the webhooks</td>
+  </tr>
+  <tr>
+    <td>AWS_ACCESS_KEY_ID</td>
+    <td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Access Key ID</a></td>
+  </tr>
+  <tr><td>AWS_SECRET_ACCESS_KEY</td><td><a href="https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys" target="_blank">Your Programmatic AWS Secret Access Key</a></td></tr>
+  <tr><td>AWS_SESSION_TOKEN</td><td>Optional: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli" target="_blank">Your AWS Session Token</a>. <strong>Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires</strong></td></tr>
+</table>
 
 </p>
 </details>
+
+{{/optionTwo}}
 
 ## Deployment
 

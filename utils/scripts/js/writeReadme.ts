@@ -1,61 +1,58 @@
-import fs from 'fs'
-import Mustache from 'mustache'
-import { CatalogueItem } from '..'
-import { catalogue } from './catalogue'
+// import fs from 'fs'
+// import Mustache from 'mustache'
+// import { CatalogueItem, EnvironmentVariable } from '..'
 
-const WEBHOOK_DIR =
-  process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
+// // const currentIntegration = catalogue.filter((item) =>
+// //   WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
+// // )
 
-const currentIntegration = catalogue.filter((item) =>
-  WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
-)
+// export const writeReadme = (item: CatalogueItem) => {
+//   if (!item.name.includes('okta')) {
+//     return
+//   }
+//   const WEBHOOK_DIR =
+//     process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
+//   // import template from file
+//   const template = fs.readFileSync(WEBHOOK_DIR + '/README.example.md', 'utf-8')
 
-export const renderTemplate = (item: CatalogueItem) => {
-  // import template from file
-  const template = fs.readFileSync('../../README.example.md', 'utf-8')
+//   // destructure catalogueItem
+//   const { name, runtimes, integrations, environmentVariables, readme } = item
 
-  // destructure catalogueItem
-  const { name, runtimes, integrations, readme } = item
+//   let formattedConnection = ['']
 
-  let formattedConnection = ['']
+//   if (readme?.connection) {
+//     const { connection } = readme
+//     formattedConnection = connection.map((step) => {
+//       return (step = '<li> ' + step + ' </li>')
+//     })
+//   }
 
-  if (readme?.connection) {
-    const { connection } = readme
-    formattedConnection = connection.map((step) => {
-      return (step = '<li>' + step + '</li>')
-    })
-  }
+//   // join environment variables in HTML
+//   const optionTwoEntries = readme.hasAlternate
+//     ? {
+//         name: readme.options.optionTwo.name,
+//         description: readme.options.optionTwo.description,
+//         entries: environmentVariables
+//           .map((e) => `<tr><td>${e.name}</td><td>${e.description}</td></tr>`)
+//           .join(''),
+//       }
+//     : false
+//   // render template
+//   const rendered = Mustache.render(template, {
+//     runtime: runtimes[0],
+//     integration: name,
+//     numIntegrations: integrations.length,
+//     connection: formattedConnection.join(''),
+//     optionOne: {
+//       name: readme.options.optionOne.name,
+//       description: readme.options.optionOne.description,
+//       entries: environmentVariables
+//         .filter((e: EnvironmentVariable) => !e.alternateValue)
+//         .map((e) => `<tr><td>${e.name}</td><td>${e.description}</td></tr>`)
+//         .join(''),
+//     },
+//     optionTwo: optionTwoEntries,
+//   })
 
-  // render template
-  const rendered = Mustache.render(template, {
-    runtime: runtimes[0],
-    integration: name,
-    numIntegrations: integrations.length,
-    connection: '<ul>' + formattedConnection.join('') + '</ul>',
-    secretOne: {
-      name: 'OKTA_DOMAIN',
-      description: 'secretOne',
-    },
-    secretTwo: {
-      name: 'OKTA_TOKEN',
-      description: 'secretTwo',
-    },
-    secretThree: {
-      name: 'OKTA_SLACK_APP_ID',
-      description:
-        'Your Okta Slack App ID. Go to _Okta Admin Console_ &rarr; _Applications_ &rarr; Select "Slack" and copy the value from the URL, e.g. `0oabcdefghijklmnop` from `example-admin.okta.com/admin/apps/slack/0oabcdefghijklmnop/`',
-    },
-    secretFour: {
-      name: 'OKTA_CLIENT_ID',
-      description: `Your Service App's Client ID. Get this from the Okta Admin Dashboard or from the Okta API Response value you got when settting up your app.`,
-    },
-    secretFive: {
-      name: 'OKTA_PRIVATE_KEY',
-      description: 'The private RSA key you used to create your Service App',
-    },
-  })
-
-  fs.writeFileSync('../README.md', rendered, 'utf-8')
-}
-
-renderTemplate(currentIntegration[0])
+//   fs.writeFileSync('../README.md', rendered, 'utf-8')
+// }
