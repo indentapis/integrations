@@ -1,6 +1,6 @@
 import { arg, Map, TerraformGenerator } from 'terraform-generator'
-import { catalog } from './catalog'
-import { CatalogItem } from './format-types'
+import { catalogue } from './catalogue'
+import { CatalogueItem } from '..'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'

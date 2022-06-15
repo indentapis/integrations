@@ -1,8 +1,9 @@
 {
   "name": "@indent/utils",
   "version": "0.0.1",
-  "description": "Scripts to automatically generate Indent example webhoks",
+  "description": "Scripts to automatically generate Indent example webhooks",
   "main": "index.ts",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx ts-node ./index.ts"

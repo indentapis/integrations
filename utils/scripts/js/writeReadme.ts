@@ -1,27 +1,44 @@
 import fs from 'fs'
 import Mustache from 'mustache'
-// import { catalogue } from catalogue.ts
+import { CatalogueItem } from '..'
+import { catalogue } from './catalogue'
 
-export const renderTemplate = () => {
+const WEBHOOK_DIR =
+  process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
+
+const currentIntegration = catalogue.filter((item) =>
+  WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
+)
+
+export const renderTemplate = (item: CatalogueItem) => {
+  // import template from file
   const template = fs.readFileSync('../../README.example.md', 'utf-8')
+
+  // destructure catalogueItem
+  const { name, runtimes, integrations, readme } = item
+
+  let formattedConnection = ['']
+
+  if (readme?.connection) {
+    const { connection } = readme
+    formattedConnection = connection.map((step) => {
+      return (step = '<li>' + step + '</li>')
+    })
+  }
+
+  // render template
   const rendered = Mustache.render(template, {
-    runtime: 'AWS Lambda',
-    integration: 'Okta',
-    numIntegrations: '2',
-    connectionToStepOne:
-      '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`',
-    connectionToStepTwo: 'Add this as `OKTA_TOKEN` as a GitHub Secret',
-    connectionToStepThree:
-      'Copy your Okta Domain URL and add this as `OKTA_DOMAIN` as a GitHub Secret',
+    runtime: runtimes[0],
+    integration: name,
+    numIntegrations: integrations.length,
+    connection: '<ul>' + formattedConnection.join('') + '</ul>',
     secretOne: {
       name: 'OKTA_DOMAIN',
-      description:
-        'Your Okta Domain. This is your [Okta URL](https://developer.okta.com/docs/guides/find-your-domain/findorg/) like `example.okta.com`',
+      description: 'secretOne',
     },
     secretTwo: {
       name: 'OKTA_TOKEN',
-      description:
-        'Your [Okta API Token](https://developer.okta.com/docs/guides/create-an-api-token/overview/). Get this from your Administrator. Your token needs the ["Group Administrators"](https://help.okta.com/en/prod/Content/Topics/Security/administrators-group-admin.htm) scope or higher for *every* group you plan to manage with Indent',
+      description: 'secretTwo',
     },
     secretThree: {
       name: 'OKTA_SLACK_APP_ID',
@@ -41,4 +58,4 @@ export const renderTemplate = () => {
   fs.writeFileSync('../README.md', rendered, 'utf-8')
 }
 
-renderTemplate()
+renderTemplate(currentIntegration[0])
