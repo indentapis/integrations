@@ -6,12 +6,15 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node ./index.ts"
+    "start": "npx ts-node ./index.ts",
+    "build": "tsc -p ./tsconfig.json",
+    "generate:readme": "npx ts-node ./js/writeReadme.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "markdown-table": "^3.0.2",
     "mustache": "^4.2.0",
     "terraform-generator": "^5.2.0",
     "ts-node": "^10.7.0",

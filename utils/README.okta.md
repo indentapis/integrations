@@ -1,14 +1,14 @@
-# Indent + AWS Okta Webhooks
+# Indent + AWS Okta Webhooks <!-- title -->
 
-This repository contains two webhooks (AWS Lambdas) to pull and apply updates to Okta Group using [Indent](https://indent.com/docs).
+This repository contains two webhooks <!-- number of webhooks--> (AWS Lambdas) to pull and apply updates to Okta Group using [Indent](https://indent.com/docs).
 
-## Quicklinks
+## Quicklinks <!--reuse-->
 
 - [Indent Support](https://support.indent.com)
 - [GitHub Secrets](./settings/secrets/actions)
 - [GitHub Actions](./actions/workflows/terraform.yml)
 
-## Configuration
+## Configuration <!--reuse-->
 
 Before you deploy these webhooks for the first time, [create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) to store Terraform state, add your credentials as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets), then update the bucket in `main.tf` once you're done.
 
@@ -25,7 +25,7 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 </p>
 </details>
 
-<details><summary><strong>2. Configuring AWS credentials</strong></summary>
+<details><summary><strong>2. Configuring AWS credentials</strong></summary><!--reuse-->
 <p>
 
 - [Go to AWS IAM → New User](https://console.aws.amazon.com/iam/home#/users$new?step=details) and create a new user for deploys, e.g. `indent-terraform-deployer`
@@ -37,7 +37,7 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 </p>
 </details>
 
-<details><summary><strong>3. Connecting to Okta</strong></summary>
+<details><summary><strong>3. Connecting to Okta</strong></summary><!-- create a set of steps for each integration -->
 
 - [Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`
 - Add this as `OKTA_TOKEN` as a GitHub Secret
@@ -45,14 +45,14 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 </details>
 
-<details><summary><strong>4. Connecting to Indent</strong></summary>
+<details><summary><strong>4. Connecting to Indent</strong></summary> <!--reuse-->
 
 - If you're setting up as part of a catalog flow, you should be presented a **Webhook Secret** or [go to your Indent space and create a webhook](https://indent.com/spaces?next=/manage/spaces/[space]/webhooks/new)
 - Add this as `INDENT_WEBHOOK_SECRET` as a GitHub Secret
 
 </details>
 
-<details><summary><strong>5. Deploy</strong></summary>
+<details><summary><strong>5. Deploy</strong></summary> <!--reuse-->
 
 - Enter the bucket you created in `main.tf` in the `backend` configuration
 - This will automatically kick off a deploy, or you can [manually trigger from GitHub Actions](./actions/workflows/terraform.yml)
@@ -63,6 +63,7 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 Add the credentials for one of the authentication options below to your GitHub Secrets.
 
+<!--changes-->
 <details open><summary>Option 1: Okta Admin API Token</summary>
 <p>
 
@@ -77,6 +78,30 @@ Add the credentials for one of the authentication options below to your GitHub S
 | AWS_ACCESS_KEY_ID          | [Your Programmatic AWS Access Key ID](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                                                                                       |
 | AWS_SECRET_ACCESS_KEY      | [Your Programmatic AWS Secret Access Key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                                                                                   |
 | AWS_SESSION_TOKEN          | Optional: [Your AWS Session Token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli). **Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires**                                                                  |
+
+</p>
+</details>
+
+<details><summary>Option 2: Okta OAuth2.0 Service App</summary>
+<p>
+
+Create an Okta Service App based on our [guide](https://indent.com/docs/integrations/okta#option-2-service-app-with-api-scopes).
+
+| Name                       | Description                                                                                                                                                                                                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| INDENT_WEBHOOK_SECRET      | Get this from your [Indent App](https://indent.com/spaces?next=/manage/spaces/%5Bspace%5D/apps/) or an [Indent Webhook](https://indent.com/docs/webhooks/deploy/okta-groups) in the Dashboard                                                                        |
+| INDENT_PULL_WEBHOOK_SECRET | Get this from the [Indent Webhook](https://indent.com/docs/webhooks/deploy/okta-groups#step-1-deploy-the-pull-update-webhook) you created while setting up your space                                                                                                |
+| OKTA_DOMAIN                | Your Okta Domain. This is your [Okta URL](https://developer.okta.com/docs/guides/find-your-domain/findorg/) like `example.okta.com`                                                                                                                                  |
+| OKTA_CLIENT_ID             | Your Service App's Client ID. Get this from the Okta Admin Dashboard or from the Okta API Response value you got when settting up your app                                                                                                                           |
+| OKTA_PRIVATE_KEY           | The private RSA key you used to create your Service App                                                                                                                                                                                                              |
+| OKTA_SLACK_APP_ID          | Your Okta Slack App ID. Go to _Okta Admin Console_ &rarr; _Applications_ &rarr; Select "Slack" and copy the value from the URL, e.g. `0oabcdefghijklmnop` from `example-admin.okta.com/admin/apps/slack/0oabcdefghijklmnop/`                                         |
+| AWS_REGION                 | The AWS Region where you want to deploy the webhooks                                                                                                                                                                                                                 |
+| AWS_ACCESS_KEY_ID          | [Your Programmatic AWS Access Key ID](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                      |
+| AWS_SECRET_ACCESS_KEY      | [Your Programmatic AWS Secret Access Key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)                                                                                                                  |
+| AWS_SESSION_TOKEN          | Optional: [Your AWS Session Token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html#using-temp-creds-sdk-cli). **Note: If you use an AWS Session ID you will need to update it for each deployment once the session expires** |
+
+</p>
+</details>
 
 ## Deployment
 
