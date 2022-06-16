@@ -1,11 +1,11 @@
 import fs from 'fs'
 import YAML from 'yaml'
-import { catalogue } from './catalogue'
+import { catalog } from './catalog'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 const githubAction = fs.readFileSync(
-  WEBHOOK_DIR + '/.github/workflows/deploy.yaml',
+  WEBHOOK_DIR + '/.github/workflows/deploy.example.yaml',
   'utf-8'
 )
 
@@ -14,7 +14,7 @@ let githubActionObject = YAML.parse(githubAction, { schema: 'core' })
 if (githubActionObject?.jobs) {
   if (githubActionObject?.jobs?.terraform) {
     if (githubActionObject?.jobs?.terraform?.steps) {
-      const currentItem = catalogue.filter((item) =>
+      const currentItem = catalog.filter((item) =>
         WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
       )
 

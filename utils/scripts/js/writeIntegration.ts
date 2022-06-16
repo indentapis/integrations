@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'fs/promises'
 // import { join } from 'path'
-// import { catalogue } from './catalogue'
+// import { catalog } from './catalog'
 
-// const currentItem = catalogue.filter((item) =>
+// const currentItem = catalog.filter((item) =>
 //   process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
 // )
 

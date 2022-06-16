@@ -1,16 +1,16 @@
 import { arg, Map, TerraformGenerator } from 'terraform-generator'
-import { catalogue } from './catalogue'
-import { CatalogueItem } from './format-types'
+import { catalog } from './catalog'
+import { CatalogItem } from './format-types'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
-const item = catalogue.filter((c) =>
+const item = catalog.filter((c) =>
   WEBHOOK_DIR.toLowerCase().includes(c.name.toLowerCase())
 )
 
-export const writeTerraform = (catalogueItem: CatalogueItem) => {
-  // destructure catalogue item
+export const writeTerraform = (catalogItem: CatalogItem) => {
+  // destructure catalog item
   const {
     name,
     source,
@@ -18,7 +18,7 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     functionKey,
     depsKey,
     environmentVariables,
-  } = catalogueItem
+  } = catalogItem
 
   const tfg = new TerraformGenerator()
 
@@ -41,9 +41,10 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
     ...envObject,
   })
   // create modules
-  tfg.module(`idt-${name}-webhook`, {
+  const moduleName = `idt-${name}-webhook`
+  tfg.module(moduleName, {
     source,
-    name: `idt-${name}-webhook`,
+    name: moduleName,
     indent_webhook_secret: arg('var.indent_webhook_secret'),
     artifact: new Map({
       bucket: artifactBucket,
@@ -81,8 +82,8 @@ export const writeTerraform = (catalogueItem: CatalogueItem) => {
   // add output
   const tfg3 = new TerraformGenerator()
 
-  tfg3.output(`idt-${name}-webhook-url`, {
-    value: arg(`module.idt-${name}-webhook.function_url`),
+  tfg3.output(`${moduleName}-url`, {
+    value: arg(`module.${moduleName}.function_url`),
     description: 'The URL of the deployed Lambda',
   })
   tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
