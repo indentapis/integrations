@@ -26,7 +26,7 @@ export const catalog: CatalogItem[] = [
         'Copy your Okta Domain URL and add this as `OKTA_DOMAIN` as a GitHub Secret',
       ],
       docsLink:
-        '[this link](https://indent.com/docs/webhooks/deploy/okta-groups#create-a-new-repository)',
+        '<a href="https://indent.com/docs/webhooks/deploy/okta-groups#create-a-new-repository" target="_blank">this link</a>',
     },
   },
   {
@@ -45,7 +45,7 @@ export const catalog: CatalogItem[] = [
         'Add this as `PAGERDUTY_KEY` as a GitHub Secret',
       ],
       docsLink:
-        '[this link](https://indent.com/docs/webhooks/deploy/pagerduty#actions-secrets)',
+        '<a href="https://indent.com/docs/webhooks/deploy/pagerduty#actions-secrets" target="_blank">this link</a>',
     },
   },
   {
@@ -64,7 +64,7 @@ export const catalog: CatalogItem[] = [
         'Add this as` TAILSCALE_KEY` as a GitHub Secret.',
       ],
       docsLink:
-        '[this link](https://indent.com/docs/webhooks/deploy/tailscale#step-1-configure-the-github-repo)',
+        '<a href="https://indent.com/docs/webhooks/deploy/tailscale#step-1-configure-the-github-repo" target="_blank">this link</a>',
     },
   },
 ]
