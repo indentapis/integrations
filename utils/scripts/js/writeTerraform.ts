@@ -41,7 +41,7 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
     ...envObject,
   })
   // create modules
-  const moduleName = `idt-${name}-webhook`
+  const moduleName = `idt-${name.toLowerCase()}-webhook`
   tfg.module(moduleName, {
     source,
     name: moduleName,
@@ -88,7 +88,7 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
   })
   tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
 
-  return tfg.write({ dir:  WEBHOOK_DIR, format: true, tfFilename: 'main' })
+  return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
 
 writeTerraform(item[0])
