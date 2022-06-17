@@ -61,7 +61,7 @@ export const catalog: CatalogItem[] = [
     readme: {
       connection: [
         '[Go to Tailscale Personal Settings](https://login.tailscale.com/admin/settings/keys) and create a new API key.',
-        'Add this as` TAILSCALE_KEY` as a GitHub Secret.',
+        'Add this as `TAILSCALE_KEY` as a GitHub Secret.',
       ],
       docsLink:
         '<a href="https://indent.com/docs/webhooks/deploy/tailscale#step-1-configure-the-github-repo" target="_blank">this link</a>',

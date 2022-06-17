@@ -1,6 +1,6 @@
 # Indent + {{ runtime }} and {{ integration }}
 
-This repository contains {{ numIntegrations }} integrations ({{runtime}}) to pull and apply updates to {{integration}} using [Indent](https://indent.com/docs).
+This repository contains {{ numIntegrations }} integration(s) ({{runtime}}) to pull and apply updates to {{integration}} using [Indent](https://indent.com/docs).
 
 ## Quicklinks
 
@@ -40,9 +40,8 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 <details><summary><strong>3. Connecting to {{ integration }}</strong></summary>
 
 {{#connection}}
-
 - {{{.}}}
-  {{/connection}}
+{{/connection}}
 
 </details>
 
