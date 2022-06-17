@@ -1,4 +1,5 @@
-import { readFile, writeFile } from 'fs/promises'
+
+import { readFile, writeFile, unlink } from 'fs/promises'
 import { CatalogItem } from '..'
 
 export default async function writeIntegration(item: CatalogItem, path) {
@@ -7,12 +8,16 @@ export default async function writeIntegration(item: CatalogItem, path) {
     const { integrations, name } = item
     const newIntegration = data
       .replace('ExampleIntegration', integrations.join(', '))
-      .replace('@indent/integration-example', `@indent/integration-${name}`)
+      .replace(
+        '@indent/integration-example',
+        `@indent/integration-${name.toLowerCase()}`
+      )
       .replace(
         '[new ExampleIntegration()]',
         `[${integrations.map((i) => `new ${i}()`).join(', ')}]`
       )
     await writeFile(path + '/src/index.ts', newIntegration, 'utf8')
+    await unlink(path + '/src/index.example.ts')
   } catch (err) {
     console.log(err)
   }
