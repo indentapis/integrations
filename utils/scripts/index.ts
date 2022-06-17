@@ -8,7 +8,7 @@ export default function createGitHubTemplate() {
     process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
   const currentItem = catalog.filter((item) =>
-    WEBHOOK_DIR.toLowerCase().includes(item.name)
+    WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
   )
 
   writeIntegration(currentItem[0], WEBHOOK_DIR)
