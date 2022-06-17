@@ -6,7 +6,7 @@ This repository contains {{ numIntegrations }} integration(s) ({{runtime}}) to p
 
 - [Indent Support](https://support.indent.com)
 - [GitHub Secrets](./settings/secrets/actions)
-- [GitHub Actions](./actions/workflows/terraform.yml)
+- [GitHub Actions](./actions/workflows/deploy.yaml)
 
 ## Configuration
 
