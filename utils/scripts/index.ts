@@ -11,8 +11,6 @@ export default function createGitHubTemplate() {
     WEBHOOK_DIR.toLowerCase().includes(item.name)
   )
 
-  const { integrations, name } = currentItem[0]
-
   writeIntegration(currentItem[0], WEBHOOK_DIR)
 
   writeTerraform(currentItem[0])
