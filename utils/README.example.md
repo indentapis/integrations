@@ -1,6 +1,6 @@
 # Indent + {{ runtime }} and {{ integration }}
 
-This repository contains {{ numIntegrations }} webhooks (AWS Lambdas) to pull and apply updates to Okta Group using [Indent](https://indent.com/docs).
+This repository contains {{ numIntegrations }} integrations ({{runtime}}) to pull and apply updates to {{integration}} using [Indent](https://indent.com/docs).
 
 ## Quicklinks
 
@@ -62,14 +62,8 @@ Before you deploy these webhooks for the first time, [create an S3 bucket](https
 
 ### Actions secrets
 
-Add the credentials for one of the authentication options below to your GitHub Secrets.
-
-{{#options}}
-
-{{{.}}}
-
-{{/options}}
+Visit {{{docsLink}}} to our documentation for information on setting up GitHub Secrets in this repository.
 
 ## Deployment
 
-This repository auto-deploys to AWS when you push or merge PRs to the `main` branch. You can manually redeploy the webhooks by re-running the [latest GitHub Action job](https://docs.github.com/en/actions/managing-workflow-runs/re-running-workflows-and-jobs).
+This repository auto-deploys to {{runtime}} when you push or merge PRs to the `main` branch. You can manually redeploy the webhooks by re-running the [latest GitHub Action job](https://docs.github.com/en/actions/managing-workflow-runs/re-running-workflows-and-jobs).

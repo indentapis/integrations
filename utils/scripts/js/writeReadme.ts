@@ -1,50 +1,23 @@
-const { readFileSync, writeFileSync } = require('fs')
-const { markdownTable } = require('markdown-table')
-const Mustache = require('mustache')
-const { catalog } = require('./catalog.example')
+import { readFileSync, writeFileSync } from 'fs'
+import Mustache from 'mustache'
 import type { CatalogItem } from '..'
 
-const WEBHOOK_DIR =
-  process.env.WEBHOOK_DIR || 'tmp/examples/indent-example-webhook'
-
-const currentIntegration = catalog.filter((item) =>
-  WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
-)
-
-const writeReadme = (item: CatalogItem) => {
+export default function writeReadme(item: CatalogItem, path) {
   // import template from file
-  const template = readFileSync('../README.example.md', 'utf-8')
+  const template = readFileSync(path + '/README.example.md', 'utf-8')
 
   // destructure catalogItem
   const { name, runtimes, integrations, readme } = item
 
-  const { connection, tables } = readme
-  const formattedTables = tables.map((t) => {
-    return {
-      title: t.title,
-      table: markdownTable(t.table),
-    }
-  })
-
-  const textTables = formattedTables.map(
-    (t) => `<details><summary>${t.title}</summary><p>
-
-    ${t.table.toString()}
-
-    </p></details>`
-  )
-
-  console.log(textTables)
+  const { connection, docsLink } = readme
   // render template
   const rendered = Mustache.render(template, {
     runtime: runtimes[0],
     integration: name,
     numIntegrations: integrations.length,
     connection,
-    options: textTables,
+    docsLink,
   })
 
-  writeFileSync('../README.md', rendered, 'utf-8')
+  writeFileSync(path + '/README.md', rendered, 'utf-8')
 }
-
-writeReadme(currentIntegration[0])

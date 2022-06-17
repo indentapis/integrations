@@ -8,7 +8,7 @@ export interface CatalogItem {
   functionKey: string
   depsKey: string
   readme: {
-    connection: string[],
-    tables: { title: string; table: [string, string][] }[]
+    connection: string[]
+    docsLink: string
   }
 }

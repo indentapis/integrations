@@ -1,40 +1,19 @@
 import { readFile, writeFile } from 'fs/promises'
-// import { join } from 'path'
-// import { catalog } from './catalog'
+import { CatalogItem } from '..'
 
-// const currentItem = catalog.filter((item) =>
-//   process.env.WEBHOOK_DIR.toLowerCase().includes(item.name)
-// )
-
-// const path = join(process.env.WEBHOOK_DIR, 'src', 'index.ts')
-
-// const { integrations, name } = currentItem[0]
-
-export const writeIntegration = async ({
-  functionNames,
-  integrationName,
-  path,
-}: {
-  functionNames: string[]
-  integrationName: string
-  path: string
-}) => {
+export default async function writeIntegration(item: CatalogItem, path) {
   try {
-    const data = await await readFile(path, 'utf8')
+    const data = await readFile(path + '/src/index.example.ts', 'utf8')
+    const { integrations, name } = item
     const newIntegration = data
-      .replace('ExampleIntegration', functionNames.join(', '))
-      .replace(
-        '@indent/integration-example',
-        `@indent/integration-${integrationName}`
-      )
+      .replace('ExampleIntegration', integrations.join(', '))
+      .replace('@indent/integration-example', `@indent/integration-${name}`)
       .replace(
         '[new ExampleIntegration()]',
-        `[${functionNames.map((i) => `new ${i}()`).join(', ')}]`
+        `[${integrations.map((i) => `new ${i}()`).join(', ')}]`
       )
-    await writeFile(path, newIntegration, 'utf8')
+    await writeFile(path + '/src/index.ts', newIntegration, 'utf8')
   } catch (err) {
     console.log(err)
   }
 }
-
-// writeIntegration({ functionNames: integrations, integrationName: name, path })
