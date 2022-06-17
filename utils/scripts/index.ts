@@ -11,11 +11,11 @@ export default function createGitHubTemplate() {
     WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
   )
 
-  writeIntegration(currentItem[0], `~/${WEBHOOK_DIR}`)
+  writeIntegration(currentItem[0], WEBHOOK_DIR)
 
   writeTerraform(currentItem[0])
 
-  writeReadme(currentItem[0],  `~/${WEBHOOK_DIR}`)
+  writeReadme(currentItem[0], WEBHOOK_DIR)
 }
 
 createGitHubTemplate()

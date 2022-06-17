@@ -47,7 +47,7 @@ jobs:
           mkdir -p $WEBHOOK_DIR
           cp -r utils/. $WEBHOOK_DIR && cp -r utils/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          cd utils/scripts && yarn && yarn run generate:template && yarn run generate:action
+          cd utils/scripts && yarn && cd ../../ && npx ts-node ./scripts/index.ts && npx ts-node ./scripts/js/writeGithubAction.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
           rm -r $WEBHOOK_DIR/scripts/*.ts && rm -r $WEBHOOK_DIR/scripts/js
 
