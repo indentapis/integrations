@@ -78,7 +78,7 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
       sensitive: true,
     })
   })
-  tfg2.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'variables' })
+  tfg2.write({ dir: `~/${WEBHOOK_DIR}`, format: true, tfFilename: 'variables' })
   // add output
   const tfg3 = new TerraformGenerator()
 
@@ -86,9 +86,9 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
     value: arg(`module.${moduleName}.function_url`),
     description: 'The URL of the deployed Lambda',
   })
-  tfg3.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'output' })
+  tfg3.write({ dir: `~/${WEBHOOK_DIR}`, format: true, tfFilename: 'output' })
 
-  return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
+  return tfg.write({ dir:  `~/${WEBHOOK_DIR}`, format: true, tfFilename: 'main' })
 }
 
 writeTerraform(item[0])
