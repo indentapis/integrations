@@ -4,6 +4,7 @@ import { catalog } from './catalog'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
+
 const githubAction = fs.readFileSync(
   WEBHOOK_DIR + '/.github/workflows/deploy.example.yaml',
   'utf-8'
@@ -46,6 +47,7 @@ if (githubActionObject?.jobs) {
         aliasDuplicateObjects: false,
         lineWidth: 0,
       })
+      fs.unlinkSync(WEBHOOK_DIR + '/.github/workflows/deploy.example.yaml')
       fs.writeFileSync(
         WEBHOOK_DIR + '/.github/workflows/deploy.yaml',
         updatedGithubAction,

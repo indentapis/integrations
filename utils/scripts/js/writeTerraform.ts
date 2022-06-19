@@ -1,6 +1,6 @@
 import { arg, Map, TerraformGenerator } from 'terraform-generator'
+import { CatalogItem } from '..'
 import { catalog } from './catalog'
-import { CatalogItem } from './format-types'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
@@ -41,7 +41,7 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
     ...envObject,
   })
   // create modules
-  const moduleName = `idt-${name}-webhook`
+  const moduleName = `idt-${name.toLowerCase()}-webhook`
   tfg.module(moduleName, {
     source,
     name: moduleName,

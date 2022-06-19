@@ -1,28 +1,21 @@
-import { join } from 'path'
 import { catalog } from './js/catalog'
-import { writeIntegration } from './js/writeIntegration'
+import writeIntegration from './js/writeIntegration'
+import writeReadme from './js/writeReadme'
 import { writeTerraform } from './js/writeTerraform'
 
-const WEBHOOK_DIR =
-  process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
+export default function createGitHubTemplate() {
+  const WEBHOOK_DIR =
+    process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
-const currentItem = catalog.filter((item) =>
-  WEBHOOK_DIR.toLowerCase().includes(item.name)
-)
+  const currentItem = catalog.filter((item) =>
+    WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
+  )
 
-const { integrations, name } = currentItem[0]
+  writeIntegration(currentItem[0], WEBHOOK_DIR)
 
-const integrationPath = join(
-  process.cwd(),
-  process.env.WEBHOOK_DIR,
-  'src',
-  'index.ts'
-)
+  writeTerraform(currentItem[0])
 
-writeIntegration({
-  functionNames: integrations,
-  integrationName: name,
-  path: integrationPath,
-})
+  writeReadme(currentItem[0], WEBHOOK_DIR)
+}
 
-writeTerraform(currentItem[0])
+createGitHubTemplate()
