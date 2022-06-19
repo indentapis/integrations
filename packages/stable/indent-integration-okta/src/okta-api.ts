@@ -19,8 +19,11 @@ export async function callOktaAPI(
   response: BaseHttpResponse
 }> {
   const { Authorization } = await getToken()
+  const baseURL = /http/.test(OKTA_DOMAIN)
+    ? OKTA_DOMAIN
+    : `https://${OKTA_DOMAIN}`
   const response = await scope.Fetch({
-    baseURL: /http/.test(OKTA_DOMAIN) ? OKTA_DOMAIN : `https://${OKTA_DOMAIN}`,
+    baseURL,
     method,
     url,
     headers: {
@@ -61,6 +64,16 @@ export async function callOktaAPI(
 
   console.log('@indent/okta-webhook: linkInfo')
   console.log({ linkInfo })
+
+  if (linkInfo.next) {
+    const { response } = await callOktaAPI(scope, {
+      method: 'get',
+      url: linkInfo.next.replace(baseURL, ''),
+    })
+    if (response.data) {
+      resData = resData.concat(response.data)
+    }
+  }
 
   if (resData && transform) {
     resData = resData.map(transform)

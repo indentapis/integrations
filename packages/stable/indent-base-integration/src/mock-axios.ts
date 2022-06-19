@@ -3,7 +3,9 @@ import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 const mocks = {}
 
 export function addMock(config: AxiosRequestConfig, res: AxiosResponse): any {
-  mocks[getConfigKey(config)] = res
+  const configKey = getConfigKey(config)
+  console.log('[MOCK:ADD]', configKey)
+  mocks[configKey] = res
   return mocks
 }
 
