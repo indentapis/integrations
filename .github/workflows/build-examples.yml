@@ -1,6 +1,8 @@
 name: build-examples
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 env:
