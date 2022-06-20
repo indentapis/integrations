@@ -44,7 +44,7 @@ jobs:
           INTEGRATION: ${{ matrix.integration }}
         run: |
           mkdir -p $WEBHOOK_DIR
-          cp -r templates/example $WEBHOOK_DIR && cp -r templates/example/* $WEBHOOK_DIR
+          cp -r templates/example/. $WEBHOOK_DIR && cp -r templates/example/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd templates/scripts && yarn && cd ../../ && \
             npx ts-node ./templates/scripts/generate.ts && \
