@@ -17,4 +17,4 @@ _out/copybara: _out/copybara.jar _out
 	chmod +x $@
 
 _out/copybara.jar:
-	./utils/scripts/download.sh $(COPYBARA_JAR_URL) $@ $(COPYBARA_JAR_SHA)
+	./templates/scripts/download.sh $(COPYBARA_JAR_URL) $@ $(COPYBARA_JAR_SHA)

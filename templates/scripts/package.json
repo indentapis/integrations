@@ -1,5 +1,6 @@
 {
-  "name": "@indent/utils",
+  "private": true,
+  "name": "@indent/integrations-templates-scripts",
   "version": "0.0.1",
   "description": "Scripts to automatically generate Indent example webhooks",
   "main": "index.ts",
@@ -8,8 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx ts-node ./index.ts",
     "build": "tsc -p ./tsconfig.json",
-    "generate:template": "npx ts-node index.ts",
-    "generate:action": "npx ts-node ./js/writeGithubAction.ts"
+    "generate:template": "npx ts-node index.ts"
   },
   "keywords": [],
   "author": "",

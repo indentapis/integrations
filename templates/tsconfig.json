@@ -1,4 +1,5 @@
 {
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
@@ -11,6 +12,5 @@
     "target": "esnext",
     "outDir": "lib"
   },
-  "include": ["./js/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["scripts", "example"]
 }

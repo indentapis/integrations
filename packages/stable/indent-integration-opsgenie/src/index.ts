@@ -5,24 +5,34 @@ import {
   GetDecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
+  PullIntegration,
+  PullUpdateRequest,
   StatusCode,
   WriteRequest,
 } from '@indent/base-integration'
-import { Event } from '@indent/types'
+import { Event, PullUpdateResponse, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const version = require('../package.json').version
 
 const OPSGENIE_KEY = process.env.OPSGENIE_KEY || ''
+const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
 
 export type OpsgenieDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedSchedules?: string[]
   getApprovalEvent?: Event
 }
 
+export const OPSGENIE_ACTOR: Resource = {
+  displayName: 'OpsGenie Approval Bot',
+  email: 'bot@indent.com',
+  id: 'opsgenie-approval-bot',
+  kind: 'indent.v1.Bot',
+}
+
 export class OpsgenieDecisionIntegration
   extends BaseHttpIntegration
-  implements DecisionIntegration
+  implements DecisionIntegration, PullIntegration
 {
   _name?: string
   _autoApprovedSchedules?: string[]
@@ -49,8 +59,11 @@ export class OpsgenieDecisionIntegration
     return { status: { code: 0 } }
   }
 
-  MatchDecision(_req: WriteRequest): boolean {
-    return true
+  async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    return {
+      status: { code: StatusCode.OK },
+      resources: [OPSGENIE_ACTOR],
+    }
   }
 
   FetchOpsgenie(config: AxiosRequestConfig): Promise<AxiosResponse<any>> {
@@ -144,18 +157,13 @@ function walk(o: any, f: Function) {
 }
 
 export function getDefaultApprovalEvent(reqEvent: Event): Event {
-  let expireTime = new Date()
-  let hours = 1
+  const expireTime = new Date()
+  const hours = parseInt(AUTO_APPROVAL_DURATION, 10)
 
-  expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
+  expireTime.setTime(expireTime.getTime() + hours * 60 * 60 * 1000)
 
   return {
-    actor: {
-      displayName: 'OpsGenie Approval Bot',
-      email: 'bot@indent.com',
-      id: 'opsgenie-approval-bot',
-      kind: 'indent.v1.Bot',
-    },
+    actor: OPSGENIE_ACTOR,
     event: 'access/approve',
     meta: {
       labels: {

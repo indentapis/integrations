@@ -52,7 +52,7 @@ export interface ApplyIntegration extends BaseIntegration {
 }
 
 export interface DecisionIntegration extends BaseIntegration {
-  MatchDecision(req: GetDecisionRequest): boolean
+  MatchDecision?(req: GetDecisionRequest): boolean
   GetDecision(req: GetDecisionRequest): Promise<GetDecisionResponse>
 }
 

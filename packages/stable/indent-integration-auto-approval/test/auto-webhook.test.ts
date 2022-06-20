@@ -19,7 +19,6 @@ describe('AutoApproveIntegration', () => {
   const date = new Date().toISOString()
   const options = {
     name: 'indent-auto-webhook',
-    autoApprovedEmails: ['john.requester@example.com'],
   }
 
   const autoApproveInput = {
