@@ -90,6 +90,7 @@ jobs:
         run: |
           cd $WEBHOOK_DIR
           yarn clean
+          rm -rf src && rm -rf scripts && rm *.json
 
       - name: Sync ${{ matrix.integration }} using Copybara
         env:
