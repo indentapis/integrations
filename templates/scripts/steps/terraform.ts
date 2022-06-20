@@ -1,21 +1,20 @@
 import { arg, Map, TerraformGenerator } from 'terraform-generator'
 import { CatalogItem } from './catalog'
 
+const INDENT_TAG = process.env.INDENT_TAG || 'unknown'
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
 export const writeTerraform = (catalogItem: CatalogItem) => {
-  // destructure catalog item
-  const {
-    name,
-    source,
-    artifactBucket,
-    functionKey,
-    depsKey,
-    environmentVariables,
-  } = catalogItem
-
+  const { name, environmentVariables } = catalogItem
   const tfg = new TerraformGenerator()
+
+  const artifactBucket = 'indent-artifacts-us-west-2'
+  const artifactPrefix = 'webhooks/aws/lambda/'
+  const functionKey = `${artifactPrefix}${name}-${INDENT_TAG}-function.zip`
+  const depsKey = `${artifactPrefix}${name}-${INDENT_TAG}-deps.zip`
+  const moduleSource =
+    'git::https://github.com/indentapis/integrations//terraform/modules/indent_runtime_aws_lambda'
 
   tfg.backend('s3', {
     encrypt: true,
@@ -35,10 +34,14 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
   const envBlock = new Map({
     ...envObject,
   })
+
   // create modules
   const moduleName = `idt-${name.toLowerCase()}-webhook`
+
+  tfg.comment(`${name} integration module`)
+  tfg.comment(`https://github.com/indentapis/integrations/commit/${INDENT_TAG}`)
   tfg.module(moduleName, {
-    source,
+    source: moduleSource,
     name: moduleName,
     indent_webhook_secret: arg('var.indent_webhook_secret'),
     artifact: new Map({
