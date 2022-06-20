@@ -76,7 +76,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request' && ${{ needs.check.outputs.ready }}
+        if: github.event_name == 'pull_request' && needs.check.outputs.ready
         run: terraform plan -input=false -no-color
         continue-on-error: true
         env:
@@ -84,7 +84,7 @@ jobs:
           TF_VAR_example_api_key: ${{ secrets.EXAMPLE_API_KEY}}
 
       - uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request' && ${{ needs.check.outputs.ready }}
+        if: github.event_name == 'pull_request' && needs.check.outputs.ready
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
@@ -104,11 +104,11 @@ jobs:
               body: output
             })
       - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure' && ${{ needs.check.outputs.ready }}
+        if: steps.plan.outcome == 'failure' && needs.check.outputs.ready
         run: exit 1
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && ${{ needs.check.outputs.ready }}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.check.outputs.ready
         run: terraform apply -input=false -auto-approve
         env:
           TF_VAR_indent_webhook_secret: ${{ secrets.INDENT_WEBHOOK_SECRET }}
