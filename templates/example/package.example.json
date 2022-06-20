@@ -9,7 +9,7 @@
     "build:deps": "npm install --production && ./scripts/build-layers.sh",
     "build:function": "npm install && npm run build:src && ./scripts/build-function.sh",
     "build": "npm run build:deps && npm run build:function",
-    "clean": "rm -rf dist && rm -rf node_modules"
+    "clean": "rm -rf dist && rm -rf lib && rm -rf node_modules"
   },
   "author": "Indent Inc <open@indent.com>",
   "license": "Apache-2.0",
