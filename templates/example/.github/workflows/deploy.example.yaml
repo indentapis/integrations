@@ -33,6 +33,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile default
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default
+          aws configure set aws_region ${{ env.AWS_REGION }} --profile default
 
       - name: Terraform Format
         id: fmt

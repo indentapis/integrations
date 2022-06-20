@@ -1,10 +1,18 @@
 # Indent + {{ runtime }} and {{ integration }}
 
-This repository contains {{ numIntegrations }} integration(s) ({{runtime}}) to pull and apply updates to {{integration}} using [Indent](https://indent.com/docs).
+This repository contains an integration between {{integration}} and [Indent](https://indent.com). Once deployed, you will be able to use this integration with Indent to:
+
+{{#capabilities}}
+- {{{.}}}
+{{/capabilities}}
 
 ## Quicklinks
 
+- [Indent Documentation](https://indent.com/docs)
 - [Indent Support](https://support.indent.com)
+
+**In this repo**
+
 - [GitHub Secrets](./settings/secrets/actions)
 - [GitHub Actions](./actions/workflows/deploy.yaml)
 

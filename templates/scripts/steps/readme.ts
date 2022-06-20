@@ -7,16 +7,17 @@ export async function writeReadme(item: CatalogItem, path) {
   const template = await readFile(path + '/README.example.md', 'utf-8')
 
   // destructure catalogItem
-  const { name, runtimes, integrations, readme } = item
+  const { displayName, runtimes, integrations, readme, capabilities } = item
 
   const { connection, docsLink } = readme
   // render template
   const rendered = Mustache.render(template, {
     runtime: runtimes[0],
-    integration: name,
+    integration: displayName,
     numIntegrations: integrations.length,
     connection,
     docsLink,
+    capabilities,
   })
   await unlink(path + '/README.example.md')
   return await writeFile(path + '/README.md', rendered, 'utf-8')

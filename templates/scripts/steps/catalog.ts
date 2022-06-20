@@ -4,6 +4,7 @@ export interface CatalogItem {
   runtimes: string[]
   integrations: string[]
   environmentVariables: string[]
+  capabilities: string[]
   links: {
     repoSource: string
   }
@@ -29,6 +30,7 @@ export const catalog: CatalogItem[] = [
       'OKTA_CLIENT_ID',
       'OKTA_PRIVATE_KEY',
     ],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
     readme: {
       connection: [
         '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`',
@@ -45,6 +47,7 @@ export const catalog: CatalogItem[] = [
     runtimes: ['AWS Lambda'],
     integrations: ['PagerdutyDecisionIntegration'],
     environmentVariables: ['PAGERDUTY_KEY'],
+    capabilities: ['GetDecision'],
     links: {
       repoSource: 'packages/stable/indent-integration-pagerduty',
     },
@@ -63,6 +66,7 @@ export const catalog: CatalogItem[] = [
     integrations: ['TailscaleGroupIntegration'],
     runtimes: ['AWS Lambda'],
     environmentVariables: ['TAILSCALE_TAILNET', 'TAILSCALE_API_KEY'],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
     links: {
       repoSource: 'packages/stable/indent-integration-tailscale',
     },
