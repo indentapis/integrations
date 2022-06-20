@@ -6,7 +6,7 @@ const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
 export const writeTerraform = (catalogItem: CatalogItem) => {
-  const { name, environmentVariables } = catalogItem
+  const { name, displayName, environmentVariables, links } = catalogItem
   const tfg = new TerraformGenerator()
 
   const artifactBucket = 'indent-artifacts-us-west-2'
@@ -38,8 +38,10 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
   // create modules
   const moduleName = `idt-${name.toLowerCase()}-webhook`
 
-  tfg.comment(`Indent + ${name} Integration
-Details: https://github.com/indentapis/integrations/commit/${INDENT_TAG}`)
+  tfg.comment(`Indent + ${displayName} Integration
+
+Details: https://github.com/indentapis/integrations/tree/${INDENT_TAG}/${links.repoSource}
+Last Change: https://github.com/indentapis/integrations/commit/${INDENT_TAG}`)
   tfg.module(moduleName, {
     source: moduleSource,
     name: moduleName,

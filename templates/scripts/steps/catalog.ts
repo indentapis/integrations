@@ -1,8 +1,12 @@
 export interface CatalogItem {
   name: string
+  displayName: string
   runtimes: string[]
   integrations: string[]
   environmentVariables: string[]
+  links: {
+    repoSource: string
+  }
   readme: {
     connection: string[]
     docsLink: string
@@ -11,9 +15,13 @@ export interface CatalogItem {
 
 export const catalog: CatalogItem[] = [
   {
-    name: 'Okta',
+    name: 'okta',
+    displayName: 'Okta',
     integrations: ['OktaGroupIntegration', 'OktaUserIntegration'],
     runtimes: ['AWS Lambda'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-okta',
+    },
     environmentVariables: [
       'OKTA_DOMAIN',
       'OKTA_TOKEN',
@@ -32,10 +40,14 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
-    name: 'PagerDuty',
+    name: 'pagerduty',
+    displayName: 'PagerDuty',
     runtimes: ['AWS Lambda'],
     integrations: ['PagerdutyDecisionIntegration'],
     environmentVariables: ['PAGERDUTY_KEY'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-pagerduty',
+    },
     readme: {
       connection: [
         '[Go to PagerDuty > Integrations > API Access Keys](https://support.pagerduty.com/docs/api-access-keys#section-generate-a-general-access-rest-api-key) and create a new API key, then give the key a descriptive name like Indent Auto Approvals',
@@ -46,10 +58,14 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
-    name: 'Tailscale',
+    name: 'tailscale',
+    displayName: 'Tailscale',
     integrations: ['TailscaleGroupIntegration'],
     runtimes: ['AWS Lambda'],
     environmentVariables: ['TAILSCALE_TAILNET', 'TAILSCALE_API_KEY'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-tailscale',
+    },
     readme: {
       connection: [
         '[Go to Tailscale Personal Settings](https://login.tailscale.com/admin/settings/keys) and create a new API key.',
