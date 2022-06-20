@@ -84,6 +84,13 @@ jobs:
             s3://${{ env.ARTIFACT_S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${{ env.INDENT_TAG }}-function.zip \
             --acl public-read
 
+      - name: Clean example (${{ matrix.integration }})
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          cd $WEBHOOK_DIR
+          yarn clean
+
       - name: Sync ${{ matrix.integration }} using Copybara
         env:
           GH_TOKEN: ${{ secrets.IndentBotKey }}
