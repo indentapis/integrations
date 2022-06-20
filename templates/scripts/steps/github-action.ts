@@ -43,9 +43,9 @@ if (githubActionObject?.jobs) {
       })
 
       const updatedGithubAction = YAML.stringify(githubActionObject, {
-        nullStr: '',
-        aliasDuplicateObjects: false,
-        lineWidth: 0,
+        // nullStr: '',
+        // aliasDuplicateObjects: false,
+        // lineWidth: 0,
       })
       fs.unlinkSync(WEBHOOK_DIR + '/.github/workflows/deploy.example.yaml')
       fs.writeFileSync(
