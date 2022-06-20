@@ -1,8 +1,7 @@
+import { readFile, unlink, writeFile } from 'fs/promises'
+import { CatalogItem } from './catalog'
 
-import { readFile, writeFile, unlink } from 'fs/promises'
-import { CatalogItem } from '..'
-
-export default async function writeIntegration(item: CatalogItem, path) {
+export async function writeIntegration(item: CatalogItem, path) {
   try {
     const data = await readFile(path + '/src/index.example.ts', 'utf8')
     const { integrations, name } = item

@@ -1,8 +1,8 @@
 import { readFile, unlink, writeFile } from 'fs/promises'
 import Mustache from 'mustache'
-import type { CatalogItem } from '..'
+import { CatalogItem } from './catalog'
 
-export default async function writeReadme(item: CatalogItem, path) {
+export async function writeReadme(item: CatalogItem, path) {
   // import template from file
   const template = await readFile(path + '/README.example.md', 'utf-8')
 

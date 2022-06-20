@@ -1,6 +1,19 @@
-import { CatalogItem } from '..'
+const INDENT_TAG = process.env.INDENT_TAG || 'unknown'
 
-const INDENT_TAG = process.env.INDENT_TAG || 'missing_sha'
+export interface CatalogItem {
+  name: string
+  runtimes: string[]
+  integrations: string[]
+  environmentVariables: string[]
+  source: string
+  artifactBucket: string
+  functionKey: string
+  depsKey: string
+  readme: {
+    connection: string[]
+    docsLink: string
+  }
+}
 
 export const catalog: CatalogItem[] = [
   {

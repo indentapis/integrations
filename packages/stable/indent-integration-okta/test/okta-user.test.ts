@@ -21,7 +21,7 @@ describe('OktaUserIntegration', () => {
   describe('PullUpdate', () => {
     beforeEach(() => setupMocks())
 
-    it('should respond with a list of 1 resources (from mock)', () => {
+    it('should respond with a list of 2 resources (paginated from mock)', () => {
       const integration = new OktaUserIntegration()
       return integration.PullUpdate({ kinds: ['okta.v1.User'] }).then((res) =>
         expect(res.resources).toStrictEqual([
@@ -37,12 +37,33 @@ describe('OktaUserIntegration', () => {
             },
           },
           {
+            displayName: 'Example User2',
+            email: 'user2@example.com',
+            id: 'okta.example.com/users/2345',
+            kind: 'okta.v1.User',
+            labels: {
+              oktaId: '2345',
+              managerId: 'm123',
+              timestamp: res.resources[0].labels.timestamp,
+            },
+          },
+          {
             displayName: 'Example User',
             email: 'user@example.com',
             kind: 'slack/user',
             labels: {
               managerId: 'm123',
               oktaId: '0123',
+              timestamp: res.resources[0].labels.timestamp,
+            },
+          },
+          {
+            displayName: 'Example User2',
+            email: 'user2@example.com',
+            kind: 'slack/user',
+            labels: {
+              managerId: 'm123',
+              oktaId: '2345',
               timestamp: res.resources[0].labels.timestamp,
             },
           },
@@ -61,7 +82,9 @@ function setupMocks() {
     },
     {
       config: {},
-      headers: {},
+      headers: {
+        link: `<https://${OKTA_DOMAIN}/api/v1/users?limit=1&after=0123>; rel="next"`,
+      },
       status: 200,
       statusText: '200',
       data: [
@@ -71,6 +94,30 @@ function setupMocks() {
             email: 'user@example.com',
             firstName: 'Example',
             lastName: 'User',
+            managerId: 'm123',
+          },
+        },
+      ],
+    }
+  )
+  addMock(
+    {
+      method: 'get',
+      url: '/api/v1/users?limit=1&after=0123',
+      baseURL: `https://${OKTA_DOMAIN}`,
+    },
+    {
+      config: {},
+      headers: {},
+      status: 200,
+      statusText: '200',
+      data: [
+        {
+          id: '2345',
+          profile: {
+            email: 'user2@example.com',
+            firstName: 'Example',
+            lastName: 'User2',
             managerId: 'm123',
           },
         },

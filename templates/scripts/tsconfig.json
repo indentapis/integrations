@@ -11,6 +11,6 @@
     "target": "esnext",
     "outDir": "lib"
   },
-  "include": ["./js/**/*"],
+  "include": ["steps/**/*"],
   "exclude": ["node_modules"]
 }

@@ -12,5 +12,5 @@
     "target": "esnext",
     "outDir": "lib"
   },
-  "include": ["./src/**/*"]
+  "include": ["src"]
 }

@@ -15,7 +15,7 @@ core.workflow(
     destination_files = glob(["**"]),
     authoring = author,
     transformations = [
-      metadata.replace_message("sync(integration): sync aws-lambda-okta-webhook from @indentapis/integrations"),
+      metadata.replace_message("sync(integration): aws-lambda-okta"),
       core.move("tmp/examples/aws-lambda-okta-webhook", ""),
     ],
 )
@@ -31,7 +31,7 @@ core.workflow(
     destination_files = glob(["**"]),
     authoring = author,
     transformations = [
-      metadata.replace_message("sync(integration): sync aws-lambda-pagerduty-webhook from @indentapis/integrations"),
+      metadata.replace_message("sync(integration): aws-lambda-pagerduty"),
       core.move("tmp/examples/aws-lambda-pagerduty-webhook", ""),
     ],
 )
@@ -47,7 +47,7 @@ core.workflow(
     destination_files = glob(["**"]),
     authoring = author,
     transformations = [
-      metadata.replace_message("sync(integration): sync aws-lambda-tailscale-webhook from @indentapis/integrations"),
+      metadata.replace_message("sync(integration): aws-lambda-tailscale"),
       core.move("tmp/examples/aws-lambda-tailscale-webhook", ""),
     ],
 )

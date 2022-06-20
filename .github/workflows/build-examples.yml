@@ -1,11 +1,12 @@
-name: build-auto-webhooks-v0.0.2
+name: build-examples
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 env:
   AWS_REGION: us-west-2
-  S3_BUCKET: indent-artifacts-us-west-2
   INDENT_TAG: ${{ github.sha }}
 
 jobs:
@@ -26,7 +27,6 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.ARTIFACT_BUILD_TESTING_AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
           aws-region: ${{ env.AWS_REGION }}
 
       - name: setup-node
@@ -36,8 +36,7 @@ jobs:
           cache: yarn
 
       - name: Create example root directory
-        run: |
-          mkdir -p tmp/examples
+        run: mkdir -p tmp/examples
 
       - name: Create example (${{ matrix.integration }})
         env:
@@ -45,18 +44,47 @@ jobs:
           INTEGRATION: ${{ matrix.integration }}
         run: |
           mkdir -p $WEBHOOK_DIR
-          cp -r utils/. $WEBHOOK_DIR && cp -r utils/* $WEBHOOK_DIR
+          cp -r templates/example/. $WEBHOOK_DIR && cp -r templates/example/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
-          cd utils/scripts && yarn && cd ../../ && npx ts-node ./utils/scripts/index.ts && npx ts-node ./utils/scripts/js/writeGithubAction.ts
+          cd templates/scripts && yarn && cd ../../ && \
+            npx ts-node ./templates/scripts/generate.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
-          rm -r $WEBHOOK_DIR/scripts/*.ts && rm -r $WEBHOOK_DIR/scripts/js
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
         with:
           ssh-private-key: ${{ secrets.INDENT_BOT_SSH_PRIVATE_KEY }}
 
-      - name: Synchronize ${{ matrix.integration }} using Copybara
+      - name: Build example (${{ matrix.integration }})
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          cd $WEBHOOK_DIR
+          yarn build
+
+      - name: Set env (ARTIFACT_S3_BUCKET + dev)
+        if: endsWith(github.ref, '/main') != true
+        run: |
+          echo "ARTIFACT_S3_BUCKET=indent-artifacts-us-west-2/dev" >> $GITHUB_ENV
+
+      - name: Set env (ARTIFACT_S3_BUCKET)
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "ARTIFACT_S3_BUCKET=indent-artifacts-us-west-2" >> $GITHUB_ENV
+
+      - name: Upload to AWS S3
+        env:
+          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+        run: |
+          cd $WEBHOOK_DIR
+          aws s3 cp ./dist/layers/layers.zip \
+            s3://${{ env.ARTIFACT_S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${{ env.INDENT_TAG }}-deps.zip \
+            --acl public-read
+          aws s3 cp ./dist/function.zip \
+            s3://${{ env.ARTIFACT_S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${{ env.INDENT_TAG }}-function.zip \
+            --acl public-read
+
+      - name: Sync ${{ matrix.integration }} using Copybara
         env:
           GH_TOKEN: ${{ secrets.IndentBotKey }}
           WORKFLOW: ${{ matrix.integration }}
@@ -75,18 +103,3 @@ jobs:
                   exit 2
           fi
           echo "Copybara ran successfully"
-
-      - name: Build example (${{ matrix.integration }})
-        env:
-          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
-        run: |
-          cd $WEBHOOK_DIR/
-          yarn build
-
-      # TODO: add public access
-      - name: Upload to AWS S3
-        env:
-          WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
-        run: |
-          cd $WEBHOOK_DIR && aws s3 cp ./dist/layers/layers.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${{ env.INDENT_TAG }}-deps.zip --acl public-read
-          aws s3 cp ./dist/function.zip s3://${{ env.S3_BUCKET }}/webhooks/aws/lambda/${{ matrix.integration }}-${{ env.INDENT_TAG }}-function.zip --acl public-read

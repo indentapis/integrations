@@ -1,13 +1,8 @@
 import { arg, Map, TerraformGenerator } from 'terraform-generator'
-import { CatalogItem } from '..'
-import { catalog } from './catalog'
+import { CatalogItem } from './catalog'
 
 const WEBHOOK_DIR =
   process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
-
-const item = catalog.filter((c) =>
-  WEBHOOK_DIR.toLowerCase().includes(c.name.toLowerCase())
-)
 
 export const writeTerraform = (catalogItem: CatalogItem) => {
   // destructure catalog item
@@ -90,5 +85,3 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
 
   return tfg.write({ dir: WEBHOOK_DIR, format: true, tfFilename: 'main' })
 }
-
-writeTerraform(item[0])

@@ -8,15 +8,23 @@ import {
   StatusCode,
   WriteRequest,
 } from '@indent/base-integration'
-import { Event } from '@indent/types'
+import { Event, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
 const PAGERDUTY_KEY = process.env.PAGERDUTY_KEY || ''
+const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
 
 export type PagerdutyDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedSchedules?: string[]
   getApprovalEvent?: Event
+}
+
+export const PAGERDUTY_ACTOR: Resource = {
+  displayName: 'PagerDuty Approval Bot',
+  email: 'bot@indent.com',
+  id: 'pagerduty-approval-bot',
+  kind: 'indent.v1.Bot',
 }
 
 export class PagerdutyDecisionIntegration
@@ -122,18 +130,13 @@ export class PagerdutyDecisionIntegration
 }
 
 export function getDefaultApprovalEvent(reqEvent: Event): Event {
-  let expireTime = new Date()
-  let hours = 1
+  const expireTime = new Date()
+  const hours = parseInt(AUTO_APPROVAL_DURATION, 10)
 
-  expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
+  expireTime.setTime(expireTime.getTime() + hours * 60 * 60 * 1000)
 
   return {
-    actor: {
-      displayName: 'PagerDuty Approval Bot',
-      email: 'bot@indent.com',
-      id: 'pagerduty-approval-bot',
-      kind: 'indent.v1.Bot',
-    },
+    actor: PAGERDUTY_ACTOR,
     event: 'access/approve',
     meta: {
       labels: {
