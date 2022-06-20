@@ -47,8 +47,7 @@ jobs:
           cp -r templates/example/. $WEBHOOK_DIR && cp -r templates/example/* $WEBHOOK_DIR
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd templates/scripts && yarn && cd ../../ && \
-            npx ts-node ./templates/scripts/generate.ts && \
-            npx ts-node ./templates/scripts/steps/github-action.ts
+            npx ts-node ./templates/scripts/generate.ts
           sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
