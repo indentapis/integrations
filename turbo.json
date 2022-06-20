@@ -1,0 +1,32 @@
+{
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "outputs": [
+        "lib/**"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "lib/**"
+      ]
+    },
+    "compile": {
+      "dependsOn": [
+        "^compile"
+      ],
+      "outputs": [
+        "lib/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": []
+    }
+  }
+}
