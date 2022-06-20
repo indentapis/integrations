@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.9](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.8...@indent/integration-opsgenie@0.0.1-canary.9) (2022-06-20)
+
+
+### Bug Fixes
+
+* **.github:** workflows ([#34](https://github.com/indentapis/integrations/issues/34)) ([d32ed3d](https://github.com/indentapis/integrations/commit/d32ed3d7f538fbb23a91465cbd04a3d7f7d75f60))
+
+
+
+
+
 ## [0.0.1-canary.8](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.7...@indent/integration-opsgenie@0.0.1-canary.8) (2022-06-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.27](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.26...@indent/integration-okta@0.0.1-canary.27) (2022-06-20)
+
+
+### Bug Fixes
+
+* **.github:** workflows ([#34](https://github.com/indentapis/integrations/issues/34)) ([d32ed3d](https://github.com/indentapis/integrations/commit/d32ed3d7f538fbb23a91465cbd04a3d7f7d75f60))
+
+
+
+
+
 ## [0.0.1-canary.26](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.25...@indent/integration-okta@0.0.1-canary.26) (2022-06-07)
 
 

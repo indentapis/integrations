@@ -2,7 +2,7 @@
   "name": "@indent/integration-github",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.8",
+  "version": "0.0.1-canary.9",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.21"
+    "@indent/base-integration": "^0.0.1-canary.22"
   },
   "publishConfig": {
     "access": "public"
