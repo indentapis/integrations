@@ -38,8 +38,8 @@ export const writeTerraform = (catalogItem: CatalogItem) => {
   // create modules
   const moduleName = `idt-${name.toLowerCase()}-webhook`
 
-  tfg.comment(`${name} integration module`)
-  tfg.comment(`https://github.com/indentapis/integrations/commit/${INDENT_TAG}`)
+  tfg.comment(`Indent + ${name} Integration
+Details: https://github.com/indentapis/integrations/commit/${INDENT_TAG}`)
   tfg.module(moduleName, {
     source: moduleSource,
     name: moduleName,
