@@ -1,4 +1,4 @@
-import { AutoApproveIntegration } from '..'
+import { AutoApproveIntegration } from '../lib'
 
 describe('AutoApproveIntegration', () => {
   describe('Base functionality', () => {
@@ -11,7 +11,7 @@ describe('AutoApproveIntegration', () => {
     it('should respond with a valid integration info', () => {
       const integration = new AutoApproveIntegration()
       const res = integration.GetInfo()
-      expect(res.name).toBe('indent-auto-webhook')
+      expect(res.name).toBe('indent-auto-approvals')
       expect(res.capabilities).toContain('GetDecision')
     })
   })
