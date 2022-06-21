@@ -1,6 +1,6 @@
 {
   "name": "@indent/integration-google-groups",
-  "version": "0.0.1-canary.22",
+  "version": "0.0.1-canary.23",
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "jest --config ../../../jest.config.js example.test.*"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.22",
+    "@indent/base-integration": "^0.0.1-canary.23",
     "googleapis": "^92.0.0",
     "njwt": "^1.2.0"
   },
