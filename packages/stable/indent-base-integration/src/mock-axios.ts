@@ -52,7 +52,6 @@ export function attachMockInterceptors(client: AxiosInstance) {
   client.interceptors.request.use(
     (config) => {
       const configKey = getConfigKey(config)
-
       if (isMocked(config)) {
         console.log('[REQ:MOCK] ' + configKey)
         return getMockErrorWithResponse(config)
