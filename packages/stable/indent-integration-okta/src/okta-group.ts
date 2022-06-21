@@ -117,6 +117,11 @@ export class OktaGroupIntegration
       })
     )
 
+    console.log('@indent/integration-okta: pulled groups')
+    console.log({
+      resources,
+    })
+
     return { status, resources }
   }
 }

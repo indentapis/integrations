@@ -137,6 +137,7 @@ export class OktaUserIntegration
       ...slackUserResources,
     ]
 
+    console.log('@indent/integration-okta: pulled users')
     console.log({
       resources,
     })

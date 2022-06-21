@@ -113,7 +113,7 @@ export async function handleRequest(
     }
 
     const results = await Promise.all(
-      matchedIntegrations.map((ign) => {
+      matchedIntegrations.map((ign): any => {
         switch (callName) {
           case 'ApplyUpdate':
             return (ign as ApplyIntegration).ApplyUpdate(
@@ -134,14 +134,39 @@ export async function handleRequest(
       })
     )
 
-    if (results.length > 0) {
-      // TODO: Figure something out for multiple results
+    // Only handle multiple results from pull update
+    if (
+      results.length > 0 &&
+      results.filter((r) => !r.resources).length === 0
+    ) {
+      const { status = {} } = results[0]
+      const resources = results.map((r) => r.resources).flat()
+
+      console.log(
+        `@indent/base-integration: handleRequest: [RES] { code: ${
+          status.code || 0
+        }, resourceCount: ${resources.length} }`
+      )
+      if (status.details) {
+        console.log(
+          `@indent/base-integration: handleRequest: [RES] — { details: ${JSON.stringify(
+            status.details
+          )} }`
+        )
+      }
+
+      return {
+        status,
+        response: toResponse(status, { resources }),
+      }
     }
 
     const { status = {}, ...rest } = results[0]
 
     console.log(
-      `@indent/base-integration: handleRequest: [RES] { code: ${status.code} }`
+      `@indent/base-integration: handleRequest: [RES] { code: ${
+        status.code || 0
+      } }`
     )
     if (status.details) {
       console.log(
