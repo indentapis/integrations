@@ -15,7 +15,7 @@ jobs:
     name: Check if ready
     runs-on: ubuntu-latest
     outputs:
-      ready: ${{ steps.aws.oututs.ready }}
+      ready: ${{ steps.aws.outputs.ready }}
     steps:
       - id: aws
         name: Check AWS Credentials
