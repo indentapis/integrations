@@ -3,6 +3,7 @@ author = authoring.overwrite("Indent Bot <indent-bot@indent.com>")
 integration_target_okta = "git@github.com:indentapis/template-aws-lambda-okta.git"
 integration_target_pagerduty = "git@github.com:indentapis/template-aws-lambda-pagerduty.git"
 integration_target_tailscale = "git@github.com:indentapis/template-aws-lambda-tailscale.git"
+integration_target_auto_approval = "git@github.com:indentapis/template-aws-lambda-auto-approval.git"
 
 core.workflow(
     name = "okta",
@@ -49,5 +50,21 @@ core.workflow(
     transformations = [
       metadata.replace_message("sync(integration): aws-lambda-tailscale"),
       core.move("tmp/examples/aws-lambda-tailscale-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "auto-approval",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_auto_approval,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-auto-approval-webhook", "tmp/examples/aws-lambda-auto-approval-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-auto-approval"),
+      core.move("tmp/examples/aws-lambda-auto-approval-webhook", ""),
     ],
 )
