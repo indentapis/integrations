@@ -79,4 +79,22 @@ export const catalog: CatalogItem[] = [
         '<a href="https://indent.com/docs/webhooks/deploy/tailscale#step-1-configure-the-github-repo" target="_blank">this link</a>',
     },
   },
+  {
+    name: 'auto-approval',
+    displayName: 'Auto-approval',
+    integrations: ['AutoApproveIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: ['AUTO_APPROVAL_DURATION'],
+    capabilities: ['PullUpdate', 'GetDecision'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-auto-approval',
+    },
+    readme: {
+      connection: [
+        'Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret.',
+      ],
+      docsLink:
+        '<a href="https://indent.com/docs/policies/auto-approvals" target="_blank">this link</a>',
+    },
+  },
 ]
