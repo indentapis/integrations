@@ -2,7 +2,7 @@
   "name": "@indent/integration-jira",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.24",
+  "version": "0.0.1-canary.25",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.23"
+    "@indent/base-integration": "^0.0.1-canary.24"
   },
   "publishConfig": {
     "access": "public"

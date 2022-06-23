@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.20](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.19...@indent/integration-aws-iam@0.0.1-canary.20) (2022-06-23)
+
+**Note:** Version bump only for package @indent/integration-aws-iam
+
+
+
+
+
 ## [0.0.1-canary.19](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.18...@indent/integration-aws-iam@0.0.1-canary.19) (2022-06-21)
 
 **Note:** Version bump only for package @indent/integration-aws-iam

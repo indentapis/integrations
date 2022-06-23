@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.28...@indent/integration-okta@0.0.1-canary.29) (2022-06-23)
+
+
+### Features
+
+* **integrations:** okta-profile-webhook ([#10](https://github.com/indentapis/integrations/issues/10)) ([6578b6b](https://github.com/indentapis/integrations/commit/6578b6b0fe624b3b56cae5b80d70e6ca2578c1b3))
+
+
+
+
+
 ## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.27...@indent/integration-okta@0.0.1-canary.28) (2022-06-21)
 
 
