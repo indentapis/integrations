@@ -16,7 +16,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [14]
-        integration: [okta, pagerduty, tailscale, auto-approval]
+        integration: [okta, pagerduty, tailscale, auto-approval, aws-iam]
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout
