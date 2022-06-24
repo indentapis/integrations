@@ -1,5 +1,8 @@
 import {
   AddUserToGroupCommand,
+  CreateLoginProfileCommand,
+  CreateUserCommand,
+  GetUserCommand,
   IAMClient,
   ListGroupsCommand,
   RemoveUserFromGroupCommand,
@@ -107,9 +110,36 @@ export class awsIamIntegration
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
-    const user = getUserNameFromResources(resources, 'user')
-    const group = getGroupFromResources(resources, 'group')
-    const options = { GroupName: group, UserName: user }
+    const GroupName = getGroupFromResources(resources, 'group')
+    const UserName = getUserNameFromResources(resources, 'user')
+    const options = { GroupName, UserName }
+
+    try {
+      const user = await iamClient.send(
+        new GetUserCommand({
+          UserName,
+        })
+      )
+
+      user.User
+    } catch (err) {
+      // handle error
+    }
+
+    if (user) {
+      // Create user
+      const grantee = getUserFromResources(resources, 'user')
+      const granteeUser = new CreateUserCommand({ UserName: grantee.email })
+      const newUser = await iamClient.send(granteeUser)
+      options.UserName = newUser.User.UserName
+      const newLogin = new CreateLoginProfileCommand({
+        UserName: options.UserName,
+        Password: 'access4goldnow',
+        PasswordResetRequired: false,
+      })
+      const p = await iamClient.send(newLogin)
+    }
+
     const method =
       event === 'access/grant'
         ? new AddUserToGroupCommand(options)
@@ -127,6 +157,15 @@ export class awsIamIntegration
   }
 }
 
+const getUserFromResources = (
+  resources: Resource[],
+  kind: string
+): Resource => {
+  return resources.filter(
+    (r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase())
+  )[0]
+}
+
 const getUserNameFromResources = (
   resources: Resource[],
   kind: string
@@ -137,8 +176,7 @@ const getUserNameFromResources = (
       if (r.labels && r.labels['aws/username']) {
         return r.labels['aws/username']
       }
-
-      return r.displayName
+      return r.email
     })[0]
 }
 
