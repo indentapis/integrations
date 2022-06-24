@@ -135,7 +135,7 @@ export class AWSIAMGroupIntegration
       console.error(err)
     }
 
-    if (user) {
+    if (!user) {
       // Create user
       const grantee = getUserFromResources(resources, 'user')
       const granteeUser = new CreateUserCommand({ UserName: grantee.email })
@@ -147,6 +147,9 @@ export class AWSIAMGroupIntegration
         PasswordResetRequired: true,
       })
       await iamClient.send(newLogin)
+      console.error(
+        `@indent/aws-iam-integration: ApplyUpdate: [OK] CreateUserCommand { UserName: ${UserName} }`
+      )
     }
 
     const method =
