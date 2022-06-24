@@ -96,6 +96,7 @@ export class AWSIAMGroupIntegration
     const kind = 'aws.iam.v1.group'
 
     return {
+      status: { code: 0 },
       resources: Groups.map((g) => ({
         id: g.Arn.toString(),
         kind,

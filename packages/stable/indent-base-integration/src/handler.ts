@@ -143,8 +143,8 @@ export async function handleRequest(
       results.forEach((result) =>
         console.log(
           `@indent/base-integration: handleRequest: [result] { code: ${
-            result.status.code || 0
-          }, resourceCount: ${result.resources.length} }`
+            result.status?.code || 0
+          }, resourceCount: ${result.resources?.length} }`
         )
       )
       console.log(
