@@ -13,12 +13,16 @@ export async function callOktaAPI(
     url,
     data,
     transform,
-  }: AxiosRequestConfig & { transform?: (props: any) => Resource }
+    scope: tokenScope,
+  }: AxiosRequestConfig & {
+    transform?: (props: any) => Resource
+    scope: string
+  }
 ): Promise<{
   status: Status
   response: BaseHttpResponse
 }> {
-  const { Authorization } = await getToken()
+  const { Authorization } = await getToken(tokenScope)
   const baseURL = /http/.test(OKTA_DOMAIN)
     ? OKTA_DOMAIN
     : `https://${OKTA_DOMAIN}`
@@ -68,6 +72,7 @@ export async function callOktaAPI(
   if (linkInfo.next) {
     const { response } = await callOktaAPI(scope, {
       method: 'get',
+      scope: tokenScope,
       url: linkInfo.next.replace(baseURL, ''),
     })
     if (response.data) {
