@@ -99,8 +99,8 @@ export const catalog: CatalogItem[] = [
   },
   ,
   {
-    name: 'aws-iam-group',
-    displayName: 'AWS IAM Group',
+    name: 'aws-iam',
+    displayName: 'AWS IAM',
     integrations: ['AWSIAMGroupIntegration'],
     runtimes: ['AWS Lambda'],
     environmentVariables: ['DEFAULT_USER_PW'],
