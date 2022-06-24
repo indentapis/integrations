@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.22](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.21...@indent/integration-aws-iam@0.0.1-canary.22) (2022-06-24)
+
+
+### Features
+
+* **aws-iam:** create user ([#36](https://github.com/indentapis/integrations/issues/36)) ([c381d9a](https://github.com/indentapis/integrations/commit/c381d9a166f4af7df1844be54385c1f66119ee69))
+
+
+
+
+
 ## [0.0.1-canary.21](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.20...@indent/integration-aws-iam@0.0.1-canary.21) (2022-06-24)
 
 **Note:** Version bump only for package @indent/integration-aws-iam
