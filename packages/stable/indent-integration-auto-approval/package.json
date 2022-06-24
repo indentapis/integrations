@@ -2,7 +2,7 @@
   "name": "@indent/integration-auto-approval",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.3",
+  "version": "0.0.1-canary.4",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.25",
+    "@indent/base-integration": "^0.0.1-canary.26",
     "@indent/types": "^0.2.1"
   },
   "publishConfig": {
