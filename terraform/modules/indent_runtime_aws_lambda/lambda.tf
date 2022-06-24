@@ -13,7 +13,7 @@ resource "aws_lambda_function" "lambda" {
   memory_size   = local.lambda_memory
   handler       = "index.handle"
   runtime       = "nodejs14.x"
-  timeout       = "30"
+  timeout       = var.timeout
 
   layers = [aws_lambda_layer_version.deps.arn]
 
