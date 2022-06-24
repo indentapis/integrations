@@ -21,6 +21,7 @@ export async function handleRequest(
   try {
     const { body, secret, headers } = req
     console.log('@indent/base-integration: handleRequest: [REQ]')
+    console.log({ body })
     try {
       await verify({
         body,
@@ -135,13 +136,17 @@ export async function handleRequest(
     )
 
     // Only handle multiple results from pull update
-    if (
-      results.length > 0 &&
-      results.filter((r) => !r.resources).length === 0
-    ) {
+    if (results.length > 0) {
       const { status = {} } = results[0]
-      const resources = results.map((r) => r.resources).flat()
+      const resources = results.map((r) => r.resources || []).flat()
 
+      results.forEach((result) =>
+        console.log(
+          `@indent/base-integration: handleRequest: [result] { code: ${
+            result.status.code || 0
+          }, resourceCount: ${result.resources.length} }`
+        )
+      )
       console.log(
         `@indent/base-integration: handleRequest: [RES] { code: ${
           status.code || 0
@@ -228,6 +233,10 @@ function getWebhookCallName(data: any): string {
   return 'Unrecognized'
 }
 function toResponse(status: Status, rest?: any): BaseHttpResponse {
+  if (process.env.DEBUG) {
+    console.log('@indent/base-integration: [RES]')
+    console.log({ status, ...(rest || {}) })
+  }
   return {
     statusCode: !status.code ? 200 : 500,
     body: JSON.stringify({ status, ...(rest || {}) }),
