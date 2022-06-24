@@ -6,6 +6,7 @@ import {
   IAMClient,
   ListGroupsCommand,
   RemoveUserFromGroupCommand,
+  User,
 } from '@aws-sdk/client-iam'
 import {
   ApplyUpdateRequest,
@@ -27,9 +28,11 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const version = require('../package.json').version
 
-const iamClient = new IAMClient({ region: `${process.env.AWS_REGION}` })
+const iamClient = new IAMClient({ region: process.env.AWS_REGION })
+const DEFAULT_USER_PW =
+  process.env.DEFAULT_USER_PW || '2B0p6z79PFgt2DgApV8nKWIcnVm'
 
-export class awsIamIntegration
+export class AWSIAMGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
@@ -114,16 +117,21 @@ export class awsIamIntegration
     const UserName = getUserNameFromResources(resources, 'user')
     const options = { GroupName, UserName }
 
+    let user: User
+
     try {
-      const user = await iamClient.send(
+      const out = await iamClient.send(
         new GetUserCommand({
           UserName,
         })
       )
-
-      user.User
+      user = out.User
     } catch (err) {
       // handle error
+      console.error(
+        `@indent/aws-iam-integration: ApplyUpdate: [ERR] GetUserCommand { UserName: ${UserName} }`
+      )
+      console.error(err)
     }
 
     if (user) {
@@ -134,10 +142,10 @@ export class awsIamIntegration
       options.UserName = newUser.User.UserName
       const newLogin = new CreateLoginProfileCommand({
         UserName: options.UserName,
-        Password: 'access4goldnow',
-        PasswordResetRequired: false,
+        Password: DEFAULT_USER_PW,
+        PasswordResetRequired: true,
       })
-      const p = await iamClient.send(newLogin)
+      await iamClient.send(newLogin)
     }
 
     const method =
@@ -149,10 +157,9 @@ export class awsIamIntegration
       await iamClient.send(method)
       return { status: { code: 0 } }
     } catch (err) {
-      console.error({
-        status: { code: 2, message: err.message, details: err.stack },
-      })
-      return { status: { code: 2, message: err.message, details: err.stack } }
+      console.error({ status: { code: 2, message: err.message } })
+      console.error(err)
+      return { status: { code: 2, message: err.message } }
     }
   }
 }
