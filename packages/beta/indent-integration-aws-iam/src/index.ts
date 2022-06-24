@@ -1,8 +1,12 @@
 import {
   AddUserToGroupCommand,
+  CreateLoginProfileCommand,
+  CreateUserCommand,
+  GetUserCommand,
   IAMClient,
   ListGroupsCommand,
   RemoveUserFromGroupCommand,
+  User,
 } from '@aws-sdk/client-iam'
 import {
   ApplyUpdateRequest,
@@ -24,9 +28,11 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const version = require('../package.json').version
 
-const iamClient = new IAMClient({ region: `${process.env.AWS_REGION}` })
+const iamClient = new IAMClient({ region: process.env.AWS_REGION })
+const DEFAULT_USER_PW =
+  process.env.DEFAULT_USER_PW || '2B0p6z79PFgt2DgApV8nKWIcnVm'
 
-export class awsIamIntegration
+export class AWSIAMGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
@@ -107,9 +113,41 @@ export class awsIamIntegration
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
-    const user = getUserNameFromResources(resources, 'user')
-    const group = getGroupFromResources(resources, 'group')
-    const options = { GroupName: group, UserName: user }
+    const GroupName = getGroupFromResources(resources, 'group')
+    const UserName = getUserNameFromResources(resources, 'user')
+    const options = { GroupName, UserName }
+
+    let user: User
+
+    try {
+      const out = await iamClient.send(
+        new GetUserCommand({
+          UserName,
+        })
+      )
+      user = out.User
+    } catch (err) {
+      // handle error
+      console.error(
+        `@indent/aws-iam-integration: ApplyUpdate: [ERR] GetUserCommand { UserName: ${UserName} }`
+      )
+      console.error(err)
+    }
+
+    if (user) {
+      // Create user
+      const grantee = getUserFromResources(resources, 'user')
+      const granteeUser = new CreateUserCommand({ UserName: grantee.email })
+      const newUser = await iamClient.send(granteeUser)
+      options.UserName = newUser.User.UserName
+      const newLogin = new CreateLoginProfileCommand({
+        UserName: options.UserName,
+        Password: DEFAULT_USER_PW,
+        PasswordResetRequired: true,
+      })
+      await iamClient.send(newLogin)
+    }
+
     const method =
       event === 'access/grant'
         ? new AddUserToGroupCommand(options)
@@ -119,12 +157,20 @@ export class awsIamIntegration
       await iamClient.send(method)
       return { status: { code: 0 } }
     } catch (err) {
-      console.error({
-        status: { code: 2, message: err.message, details: err.stack },
-      })
-      return { status: { code: 2, message: err.message, details: err.stack } }
+      console.error({ status: { code: 2, message: err.message } })
+      console.error(err)
+      return { status: { code: 2, message: err.message } }
     }
   }
+}
+
+const getUserFromResources = (
+  resources: Resource[],
+  kind: string
+): Resource => {
+  return resources.filter(
+    (r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase())
+  )[0]
 }
 
 const getUserNameFromResources = (
@@ -137,8 +183,7 @@ const getUserNameFromResources = (
       if (r.labels && r.labels['aws/username']) {
         return r.labels['aws/username']
       }
-
-      return r.displayName
+      return r.email
     })[0]
 }
 
