@@ -1,6 +1,6 @@
 {
   "name": "@indent/integration-okta",
-  "version": "0.0.1-canary.33",
+  "version": "0.0.1-canary.34",
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "OKTA_DOMAIN=okta.example.com OKTA_TOKEN=exampleToken jest --config ../../../jest.config.js okta.*"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.24",
+    "@indent/base-integration": "^0.0.1-canary.25",
     "njwt": "^1.2.0"
   },
   "publishConfig": {
