@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.33](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.32...@indent/integration-okta@0.0.1-canary.33) (2022-06-24)
+
+
+### Bug Fixes
+
+* **okta:** okta-auth scopes ([9ef5fa0](https://github.com/indentapis/integrations/commit/9ef5fa0d01226690121a5dcfe2dbcdd59069fd23))
+
+
+
+
+
 ## [0.0.1-canary.32](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.31...@indent/integration-okta@0.0.1-canary.32) (2022-06-23)
 
 
