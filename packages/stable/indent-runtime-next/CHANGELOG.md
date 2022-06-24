@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.26](https://github.com/indentapis/integrations/compare/@indent/runtime-next@0.0.1-canary.25...@indent/runtime-next@0.0.1-canary.26) (2022-06-24)
+
+**Note:** Version bump only for package @indent/runtime-next
+
+
+
+
+
+## [0.0.1-canary.25](https://github.com/indentapis/integrations/compare/@indent/runtime-next@0.0.1-canary.24...@indent/runtime-next@0.0.1-canary.25) (2022-06-24)
+
+**Note:** Version bump only for package @indent/runtime-next
+
+
+
+
+
 ## [0.0.1-canary.24](https://github.com/indentapis/integrations/compare/@indent/runtime-next@0.0.1-canary.23...@indent/runtime-next@0.0.1-canary.24) (2022-06-23)
 
 **Note:** Version bump only for package @indent/runtime-next

@@ -11,6 +11,7 @@ import {
 } from '@indent/base-integration'
 import {
   ApplyUpdateResponse,
+  Event,
   PullUpdateResponse,
   Resource,
 } from '@indent/types'
@@ -129,7 +130,9 @@ export class HerokuTeamsIntegration
   }
 
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
-    const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
+    const auditEvent: Event = req.events.find((e) =>
+      /grant|revoke/.test(e.event)
+    )
     const { event, resources } = auditEvent
     const { email } = getResourceByKind(resources, 'user')
     const { id } = getResourceByKind(resources, 'heroku.v1.team')

@@ -48,7 +48,7 @@ export class OktaProfileIntegration
   async FetchOkta(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    const { Authorization } = await getToken()
+    const { Authorization } = await getToken('okta.users.manage')
     config.baseURL = /http/.test(OKTA_DOMAIN)
       ? OKTA_DOMAIN
       : `https://${OKTA_DOMAIN}`

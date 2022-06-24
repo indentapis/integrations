@@ -60,6 +60,7 @@ export class OktaDecisionIntegration
     // get grouplist
     const { response } = await callOktaAPI(this, {
       method: 'get',
+      scope: 'okta.users.manage',
       url: `/api/v1/users/${
         reqEvent.actor.labels.oktaId || reqEvent.actor.id
       }/groups`,

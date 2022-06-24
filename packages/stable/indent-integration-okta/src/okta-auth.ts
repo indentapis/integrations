@@ -16,7 +16,7 @@ type TokenResponse = {
   token: string
 }
 
-export async function getToken(): Promise<TokenResponse> {
+export async function getToken(scope: string): Promise<TokenResponse> {
   if (OKTA_TOKEN) {
     return {
       Authorization: `SSWS ${OKTA_TOKEN}`,
@@ -27,7 +27,7 @@ export async function getToken(): Promise<TokenResponse> {
   }
 
   const signingToken = await getOktaSigningToken()
-  const token = await getOktaAccessToken(signingToken)
+  const token = await getOktaAccessToken(signingToken, scope)
 
   return {
     Authorization: `Bearer ${token}`,
@@ -47,13 +47,18 @@ async function getOktaSigningToken(): Promise<string> {
   return jwt.compact()
 }
 
-async function getOktaAccessToken(signingToken: string): Promise<string> {
+async function getOktaAccessToken(
+  signingToken: string,
+  scope: string
+): Promise<string> {
   const urlParams = new URLSearchParams({
     grant_type: 'client_credentials',
-    scope: 'okta.groups.manage',
+    scope:
+      scope ||
+      'okta.groups.manage okta.users.manage okta.users.read okta.apps.read',
     client_assertion_type:
       'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-    client_assertion: `${signingToken}`, // bearer token
+    client_assertion: `${signingToken}`,
   })
   const res = await axios({
     url: `https://${OKTA_DOMAIN}/oauth2/v1/token`,

@@ -3,6 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.36](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.35...@indent/integration-okta@0.0.1-canary.36) (2022-06-24)
+
+**Note:** Version bump only for package @indent/integration-okta
+
+
+
+
+
+## [0.0.1-canary.35](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.34...@indent/integration-okta@0.0.1-canary.35) (2022-06-24)
+
+
+### Bug Fixes
+
+* **okta:** okta-auth scope ([d065ca5](https://github.com/indentapis/integrations/commit/d065ca5f4f5b7dd3ccf808135f3c589513fd2bd8))
+
+
+
+
+
+## [0.0.1-canary.34](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.33...@indent/integration-okta@0.0.1-canary.34) (2022-06-24)
+
+**Note:** Version bump only for package @indent/integration-okta
+
+
+
+
+
+## [0.0.1-canary.33](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.32...@indent/integration-okta@0.0.1-canary.33) (2022-06-24)
+
+
+### Bug Fixes
+
+* **okta:** okta-auth scopes ([9ef5fa0](https://github.com/indentapis/integrations/commit/9ef5fa0d01226690121a5dcfe2dbcdd59069fd23))
+
+
+
+
+
+## [0.0.1-canary.32](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.31...@indent/integration-okta@0.0.1-canary.32) (2022-06-23)
+
+
+### Bug Fixes
+
+* **okta:** okta-auth scopes ([ac96324](https://github.com/indentapis/integrations/commit/ac963246821cc1f9f67dba16761543248725756c))
+
+
+
+
+
+## [0.0.1-canary.31](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.30...@indent/integration-okta@0.0.1-canary.31) (2022-06-23)
+
+
+### Bug Fixes
+
+* **okta:** okta-auth scopes ([97477ac](https://github.com/indentapis/integrations/commit/97477ac96b54ebdfc6ff3c5d878e59daf991e83a))
+
+
+
+
+
 ## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.29...@indent/integration-okta@0.0.1-canary.30) (2022-06-23)
 
 

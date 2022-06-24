@@ -31,3 +31,8 @@ variable "artifact" {
     deps_key     = string
   })
 }
+
+variable "timeout" {
+  type    = number
+  default = 120
+}

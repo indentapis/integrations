@@ -71,6 +71,7 @@ export class OktaGroupIntegration
           'DELETE'
     const { status } = await callOktaAPI(this, {
       method,
+      scope: 'okta.groups.manage',
       url: `/api/v1/groups/${group}/users/${user}`,
     })
 
@@ -99,6 +100,7 @@ export class OktaGroupIntegration
     const { status, response } = await callOktaAPI(this, {
       method: 'GET',
       url: '/api/v1/groups',
+      scope: 'okta.groups.manage',
     })
 
     const timestamp = new Date().toISOString()

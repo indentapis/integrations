@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.26](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.25...@indent/base-integration@0.0.1-canary.26) (2022-06-24)
+
+
+### Bug Fixes
+
+* optional status ([b8aea54](https://github.com/indentapis/integrations/commit/b8aea54147dca9620d0d96cc4da3a1c1de1879c7))
+
+
+
+
+
+## [0.0.1-canary.25](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.24...@indent/base-integration@0.0.1-canary.25) (2022-06-24)
+
+
+### Bug Fixes
+
+* **base:** logging ([417595d](https://github.com/indentapis/integrations/commit/417595df14a2259dd73d330fb4aaab06b8b7733f))
+
+
+
+
+
 ## [0.0.1-canary.24](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.23...@indent/base-integration@0.0.1-canary.24) (2022-06-23)
 
 

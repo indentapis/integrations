@@ -97,4 +97,18 @@ export const catalog: CatalogItem[] = [
         '<a href="https://indent.com/docs/policies/auto-approvals" target="_blank">this link</a>',
     },
   },
+  {
+    name: 'aws-iam',
+    displayName: 'AWS IAM',
+    integrations: ['AWSIAMGroupIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: ['DEFAULT_USER_PW'],
+    capabilities: ['PullUpdate', 'ApplyPullUpdate'],
+    links: { repoSource: 'packages/beta/indent-integration-aws-iam' },
+    readme: {
+      connection: [],
+      docsLink:
+        '<a href="https://indent.com/docs" target="_blank">this link</a>',
+    },
+  },
 ]

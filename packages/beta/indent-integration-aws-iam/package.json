@@ -2,7 +2,7 @@
   "name": "@indent/integration-aws-iam",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.20",
+  "version": "0.0.1-canary.24",
   "files": [
     "lib"
   ],
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-iam": "^3.46.0",
-    "@indent/base-integration": "^0.0.1-canary.24"
+    "@indent/base-integration": "^0.0.1-canary.26"
   },
   "publishConfig": {
     "access": "public"

@@ -57,6 +57,7 @@ export class OktaUserIntegration
       status,
       response: { data: oktaUserResources },
     } = await callOktaAPI(this, {
+      scope: 'okta.users.manage',
       url: '/api/v1/users',
       transform: (user) => ({
         id: [OKTA_DOMAIN, user.id].join('/users/'),
@@ -94,6 +95,7 @@ export class OktaUserIntegration
     } = !APP_ID
       ? { response: { data: [] } }
       : await callOktaAPI(this, {
+          scope: 'okta.apps.read',
           url: `/api/v1/apps/${APP_ID}/users`,
           transform: (appuser) => ({
             id: [OKTA_DOMAIN, appuser.id].join(`/api/v1/apps/${APP_ID}/users/`),
