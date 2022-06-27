@@ -32,6 +32,8 @@ export async function writeGithubAction(currentItem: CatalogItem, WEBHOOK_DIR) {
               step.name === 'Terraform Apply'
             ) {
               step.env = githubSecrets
+            } else if (step.name === 'Terraform Output') {
+              step.env = githubSecrets
             }
           }
         })
