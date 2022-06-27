@@ -111,4 +111,18 @@ export const catalog: CatalogItem[] = [
         '<a href="https://indent.com/docs" target="_blank">this link</a>',
     },
   },
+  {
+    name: 'heroku',
+    displayName: 'Heroku',
+    integrations: ['HerokuTeamsIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: ['HEROKU_KEY'],
+    capabilities: ['PullUpdate', 'ApplyPullUpdate'],
+    links: { repoSource: 'packages/beta/indent-integration-heroku' },
+    readme: {
+      connection: [],
+      docsLink:
+        '<a href="https://indent.com/docs" target="_blank">this link</a>',
+    },
+  },
 ]
