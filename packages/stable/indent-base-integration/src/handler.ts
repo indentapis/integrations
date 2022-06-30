@@ -136,7 +136,7 @@ export async function handleRequest(
     )
 
     // Only handle multiple results from pull update
-    if (results.length > 0) {
+    if (results.length > 1) {
       const { status = {} } = results[0]
       const resources = results.map((r) => r.resources || []).flat()
 

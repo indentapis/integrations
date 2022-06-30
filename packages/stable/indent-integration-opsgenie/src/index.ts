@@ -51,7 +51,7 @@ export class OpsgenieDecisionIntegration
     return {
       version,
       name: 'indent-integration-opsgenie-decision',
-      capabilities: ['GetDecision'],
+      capabilities: ['GetDecision', 'PullUpdate'],
     }
   }
 
@@ -119,6 +119,7 @@ export class OpsgenieDecisionIntegration
       log('skipping, email not found in on-calls')
     }
 
+    log('GetDecision.result:', res)
     return res
   }
 }

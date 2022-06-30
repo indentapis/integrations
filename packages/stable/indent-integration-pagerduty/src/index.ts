@@ -5,15 +5,19 @@ import {
   GetDecisionResponse,
   HealthCheckResponse,
   IntegrationInfoResponse,
+  PullIntegration,
+  PullUpdateRequest,
   StatusCode,
   WriteRequest,
 } from '@indent/base-integration'
-import { Event, Resource } from '@indent/types'
+import { Event, PullUpdateResponse, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
 const PAGERDUTY_KEY = process.env.PAGERDUTY_KEY || ''
 const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
+const AUTO_APPROVAL_PAGERDUTY_SCHEDULES =
+  process.env.AUTO_APPROVAL_PAGERDUTY_SCHEDULES || ''
 
 export type PagerdutyDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedSchedules?: string[]
@@ -29,7 +33,7 @@ export const PAGERDUTY_ACTOR: Resource = {
 
 export class PagerdutyDecisionIntegration
   extends BaseHttpIntegration
-  implements DecisionIntegration
+  implements DecisionIntegration, PullIntegration
 {
   _name?: string
   _autoApprovedSchedules?: string[]
@@ -42,6 +46,12 @@ export class PagerdutyDecisionIntegration
       this._autoApprovedSchedules = opts.autoApprovedSchedules
       this._getApprovalEvent = opts.getApprovalEvent
     }
+    if (!this._autoApprovedSchedules) {
+      if (AUTO_APPROVAL_PAGERDUTY_SCHEDULES !== '') {
+        this._autoApprovedSchedules =
+          AUTO_APPROVAL_PAGERDUTY_SCHEDULES.split(',')
+      }
+    }
   }
 
   HealthCheck(): HealthCheckResponse {
@@ -53,7 +63,7 @@ export class PagerdutyDecisionIntegration
       name: ['indent-integration-pagerduty-decision', this._name]
         .filter(Boolean)
         .join('#'),
-      capabilities: ['GetDecision'],
+      capabilities: ['GetDecision', 'PullUpdate'],
       version,
     }
   }
@@ -70,6 +80,21 @@ export class PagerdutyDecisionIntegration
       },
       ...config,
     })
+  }
+
+  MatchPull(req: PullUpdateRequest): boolean {
+    return (
+      req.kinds.filter((k) =>
+        k.toLowerCase().includes(PAGERDUTY_ACTOR.kind.toLowerCase())
+      ).length > 0
+    )
+  }
+
+  async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    return {
+      status: { code: StatusCode.OK },
+      resources: [PAGERDUTY_ACTOR],
+    }
   }
 
   MatchDecision(_req: WriteRequest): boolean {
