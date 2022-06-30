@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.14](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.13...@indent/integration-opsgenie@0.0.1-canary.14) (2022-06-30)
+
+
+### Bug Fixes
+
+* **auto-approvals:** pull bot actor ([2735cb0](https://github.com/indentapis/integrations/commit/2735cb000d3b5f4c25b0d3acaee0b5ab4e773c0b))
+
+
+
+
+
 ## [0.0.1-canary.13](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.12...@indent/integration-opsgenie@0.0.1-canary.13) (2022-06-24)
 
 **Note:** Version bump only for package @indent/integration-opsgenie

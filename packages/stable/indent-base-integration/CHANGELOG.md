@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.27](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.26...@indent/base-integration@0.0.1-canary.27) (2022-06-30)
+
+
+### Bug Fixes
+
+* **auto-approvals:** pull bot actor ([2735cb0](https://github.com/indentapis/integrations/commit/2735cb000d3b5f4c25b0d3acaee0b5ab4e773c0b))
+
+
+
+
+
 ## [0.0.1-canary.26](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.25...@indent/base-integration@0.0.1-canary.26) (2022-06-24)
 
 
