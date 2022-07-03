@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@aws-sdk/client-iam": "^3.46.0",
+    "@aws-sdk/client-iam": "3.46.0",
     "@indent/base-integration": "^0.0.1-canary.27"
   },
   "publishConfig": {
