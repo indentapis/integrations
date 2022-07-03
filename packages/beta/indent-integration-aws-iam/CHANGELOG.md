@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.26](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.25...@indent/integration-aws-iam@0.0.1-canary.26) (2022-07-03)
+
+
+### Bug Fixes
+
+* **aws-iam:** pin client-iam ([f24076c](https://github.com/indentapis/integrations/commit/f24076cb54feeaa0f2c74c8764eac88b16b20ec4))
+
+
+
+
+
 ## [0.0.1-canary.25](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.24...@indent/integration-aws-iam@0.0.1-canary.25) (2022-06-30)
 
 **Note:** Version bump only for package @indent/integration-aws-iam
