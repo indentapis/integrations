@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.38](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.37...@indent/integration-okta@0.0.1-canary.38) (2022-07-19)
+
+
+### Bug Fixes
+
+* **okta:** use credentials.userName fallback ([724a267](https://github.com/indentapis/integrations/commit/724a267b3866d90009dec4541b0b0ccd96ed12b8))
+
+
+
+
+
 ## [0.0.1-canary.37](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.36...@indent/integration-okta@0.0.1-canary.37) (2022-06-30)
 
 **Note:** Version bump only for package @indent/integration-okta
