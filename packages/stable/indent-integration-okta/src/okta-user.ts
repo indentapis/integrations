@@ -136,7 +136,7 @@ export class OktaUserIntegration
     let resources = [
       ...oktaUserResources,
       ...appUserResources,
-      ...slackUserResources.filter((u) => !(u.id || u.email)),
+      ...slackUserResources.filter((u) => u.id || u.email),
     ]
 
     console.log('@indent/integration-okta: pulled users')
