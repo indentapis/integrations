@@ -9,6 +9,10 @@ export interface OktaGroup {
   _links: Links
 }
 
+export interface OktaApp {
+  // ...
+}
+
 export interface PartialOktaGroup {
   id: string
   profile: Profile
