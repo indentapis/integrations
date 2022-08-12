@@ -1,3 +1,13 @@
+export interface OktaApp {
+  id: string
+  name: string
+  label: string
+  _links: {
+    logo: Link[]
+    appLinks: Link[]
+  }
+}
+
 export interface OktaGroup {
   id: string
   created: string
@@ -6,14 +16,11 @@ export interface OktaGroup {
   objectClass: string[]
   type: string
   profile: Profile
-  _links: Links
-}
-
-export interface OktaApp {
-  id: string
-  name: string
-  label: string
-  _links: Links
+  _links: {
+    logo: Link[]
+    users: Link
+    apps: Link
+  }
 }
 
 export interface PartialOktaGroup {
@@ -26,22 +33,8 @@ export interface Profile {
   description: string
 }
 
-export interface Links {
-  logo: Logo[]
-  users: Users
-  apps: Apps
-}
-
-export interface Logo {
-  name: string
+export interface Link {
   href: string
-  type: string
-}
-
-export interface Users {
-  href: string
-}
-
-export interface Apps {
-  href: string
+  name?: string
+  type?: string
 }
