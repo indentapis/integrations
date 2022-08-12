@@ -10,7 +10,10 @@ export interface OktaGroup {
 }
 
 export interface OktaApp {
-  // ...
+  id: string
+  name: string
+  label: string
+  _links: Links
 }
 
 export interface PartialOktaGroup {
