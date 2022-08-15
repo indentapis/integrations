@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.40](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.39...@indent/integration-okta@0.0.1-canary.40) (2022-08-15)
+
+
+### Features
+
+* **okta:** add `PullUpdate` capability for apps [ID-1674] ([#40](https://github.com/indentapis/integrations/issues/40)) ([2345aa2](https://github.com/indentapis/integrations/commit/2345aa2fcf750ae87405170178e7dfebbdc17976))
+
+
+
+
+
 ## [0.0.1-canary.39](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.38...@indent/integration-okta@0.0.1-canary.39) (2022-07-19)
 
 
