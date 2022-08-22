@@ -62,3 +62,19 @@ Or for a specific integration:
 ```bash
 yarn test --scope='@indent/<integration>-webhook'
 ```
+
+### Releasing
+
+When releasing a new package/integration, you will first need to create a PR from your branch:
+
+```bash
+git checkout -b add-feature
+# or 
+gh pr create <ID-num>
+```
+
+And then publish the canary packages, which will build and test the integrations before releasing:
+
+```
+make version-canary
+```

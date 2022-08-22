@@ -5,6 +5,7 @@ integration_target_pagerduty = "git@github.com:indentapis/template-aws-lambda-pa
 integration_target_tailscale = "git@github.com:indentapis/template-aws-lambda-tailscale.git"
 integration_target_auto_approval = "git@github.com:indentapis/template-aws-lambda-auto-approval.git"
 integration_target_aws_iam = "git@github.com:indentapis/template-aws-lambda-aws-iam.git"
+integration_target_incidentio = "git@github.com:indentapis/template-aws-lambda-incidentio.git"
 
 core.workflow(
     name = "okta",
@@ -83,5 +84,21 @@ core.workflow(
     transformations = [
       metadata.replace_message("sync(integration): aws-lambda-aws-iam"),
       core.move("tmp/examples/aws-lambda-aws-iam-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "incidentio",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_incidentio,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-incidentio-webhook", "tmp/examples/aws-lambda-incidentio-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-incidentio"),
+      core.move("tmp/examples/aws-lambda-incidentio-webhook", ""),
     ],
 )

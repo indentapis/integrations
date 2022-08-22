@@ -46,7 +46,10 @@ export const catalog: CatalogItem[] = [
     displayName: 'PagerDuty',
     runtimes: ['AWS Lambda'],
     integrations: ['PagerdutyDecisionIntegration'],
-    environmentVariables: ['PAGERDUTY_KEY'],
+    environmentVariables: [
+      'PAGERDUTY_KEY',
+      'AUTO_APPROVAL_PAGERDUTY_SCHEDULES',
+    ],
     capabilities: ['GetDecision'],
     links: {
       repoSource: 'packages/stable/indent-integration-pagerduty',
@@ -55,6 +58,7 @@ export const catalog: CatalogItem[] = [
       connection: [
         '[Go to PagerDuty > Integrations > API Access Keys](https://support.pagerduty.com/docs/api-access-keys#section-generate-a-general-access-rest-api-key) and create a new API key, then give the key a descriptive name like Indent Auto Approvals',
         'Add this as `PAGERDUTY_KEY` as a GitHub Secret',
+        'Optional: select which on-call schedules get auto-approval by setting `AUTO_APPROVAL_PAGERDUTY_SCHEDULES` as a GitHub Secret',
       ],
       docsLink:
         '<a href="https://indent.com/docs/webhooks/deploy/pagerduty#actions-secrets" target="_blank">this link</a>',
@@ -93,6 +97,28 @@ export const catalog: CatalogItem[] = [
     readme: {
       connection: [
         'Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret.',
+      ],
+      docsLink:
+        '<a href="https://indent.com/docs/policies/auto-approvals" target="_blank">this link</a>',
+    },
+  },
+  {
+    name: 'incidentio',
+    displayName: 'Incident.io',
+    integrations: ['IncidentioDecisionIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: [
+      'AUTO_APPROVAL_DURATION',
+      'AUTO_APPROVAL_INCIDENTIO_ROLES',
+    ],
+    capabilities: ['PullUpdate', 'GetDecision'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-incidentio',
+    },
+    readme: {
+      connection: [
+        'Optional: Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret.',
+        'Optional: Select which role assignments receiving auto approval by setting `AUTO_APPROVAL_INCIDENTIO_ROLES` as a GitHub Secret.',
       ],
       docsLink:
         '<a href="https://indent.com/docs/policies/auto-approvals" target="_blank">this link</a>',
