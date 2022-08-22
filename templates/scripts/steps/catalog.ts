@@ -104,7 +104,7 @@ export const catalog: CatalogItem[] = [
     integrations: ['AWSIAMGroupIntegration'],
     runtimes: ['AWS Lambda'],
     environmentVariables: ['DEFAULT_USER_PW'],
-    capabilities: ['PullUpdate', 'ApplyPullUpdate'],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
     links: { repoSource: 'packages/beta/indent-integration-aws-iam' },
     readme: {
       connection: [],
