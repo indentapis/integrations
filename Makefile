@@ -23,4 +23,4 @@ test:
 	yarn test
 
 version-canary:
-	yarn version-canary --yes && yarn  publish-git-canary --yes
+	yarn version-canary --yes && yarn publish-git-canary --yes
