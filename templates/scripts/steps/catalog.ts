@@ -120,7 +120,7 @@ export const catalog: CatalogItem[] = [
       connection: [
         '[Go to Incident.io\'s dashboard](https://app.incident.io/login) and click **API Keys → + Add new**',
         'Copy the key that appears as a GitHub Secret named `INCIDENTIO_API_KEY`',
-        'Add this as `TAILSCALE_API_KEY` as a GitHub Secret.',
+        'Add this as `INCIDENTIO_API_KEY` as a GitHub Secret.',
         'Optional: Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret.',
         'Optional: Select which role assignments receiving auto approval by setting `AUTO_APPROVAL_INCIDENTIO_ROLES` as a GitHub Secret.',
       ],
