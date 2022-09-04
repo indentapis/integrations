@@ -5,7 +5,7 @@ const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY || ''
 const TAILNET = process.env.TAILSCALE_TAILNET || ''
 
 describe('TailscaleGroupIntegration', () => {
-  describe.skip('Base functionality', () => {
+  describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
       const integration = new TailscaleGroupIntegration()
       const res = integration.HealthCheck()
