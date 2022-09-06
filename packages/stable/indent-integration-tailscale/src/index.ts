@@ -15,10 +15,20 @@ import {
   Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import tailscale from '../lib/tailscale'
 
 const { version } = require('../package.json')
 const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY
 const TAILNET = process.env.TAILSCALE_TAILNET
+
+// Optional arguments
+const TAILSCALE_ALLOW_COMMENTS = process.env.TAILSCALE_ALLOW_COMMENTS
+
+type JSONPatch = {
+  op: string
+  path: string
+  value?: string
+}
 
 export class TailscaleGroupIntegration
   extends BaseHttpIntegration
@@ -58,14 +68,18 @@ export class TailscaleGroupIntegration
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
     config.baseURL = `https://api.tailscale.com/api/v2`
-    config.headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }
+    config.headers = TAILSCALE_ALLOW_COMMENTS
+      ? {}
+      : {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        }
     config.auth = {
       username: TAILSCALE_API_KEY,
       password: '',
     }
+
+    config.responseType = TAILSCALE_ALLOW_COMMENTS ? 'text' : 'json'
 
     return this.Fetch(config)
   }
@@ -88,29 +102,91 @@ export class TailscaleGroupIntegration
     const { id } = getResourceByKind(resources, 'tailscale.v1.group')
 
     // get the tailscale acl from remote
-    const response = (await this.FetchTailscale({
+    const resData = await this.FetchTailscale({
       method: 'get',
       url: `/tailnet/${TAILNET}/acl`,
-    }).then((r) => r.data)) as TailscaleACL
-    // transform it
-    let aclGroup = response.groups[id]
-    if (aclGroup) {
-      aclGroup = aclGroup.filter((e: string) => e !== email)
-      if (event === 'access/grant') {
-        aclGroup.push(email)
+    }).then((r) => r.data)
+
+    let updateResponse: AxiosResponse
+
+    if (TAILSCALE_ALLOW_COMMENTS) {
+      try {
+        // JWCC = JSON with comments and trailing comments
+        const aclJWCC = resData as string
+        const [json, err] = tailscale.ParseToJSON(aclJWCC)
+        if (err) {
+          throw err
+        }
+
+        const acl = JSON.parse(json)
+
+        let patch: JSONPatch[]
+
+        if (event === 'access/grant') {
+          patch = [{ op: 'add', path: `/groups/${id}/0`, value: email }]
+        } else {
+          const index = acl.groups[id].findIndex((e: string) => e === email)
+          if (index >= 0) {
+            patch = [{ op: 'remove', path: `/groups/${id}/${index}` }]
+          }
+          // If the index is -1, the user already isn't a member of the group
+        }
+        if (patch && patch.length > 0) {
+          const [data, err] = tailscale.Patch(aclJWCC, JSON.stringify(patch))
+          if (err) {
+            return {
+              status: { code: StatusCode.UNKNOWN, details: err },
+            }
+          }
+          updateResponse = await this.FetchTailscale({
+            method: 'post',
+            url: `/tailnet/${TAILNET}/acl`,
+            data,
+          })
+          return { status: {} }
+        } else {
+          return {
+            status: {
+              code: 0,
+              details: [
+                {
+                  '@type': 'type.googleapis.com/google.rpc.DebugInfo',
+                  detail: 'no-op - user was not member of group',
+                },
+              ],
+            },
+          }
+        }
+      } catch (err) {
+        console.error('Failed to apply update to Tailscale ACL')
+        console.error(err)
+        return { status: { code: StatusCode.UNKNOWN, message: err.toString() } }
       }
     } else {
-      if (event === 'access/grant') {
-        aclGroup = [email]
-      }
-    }
-    response.groups[id] = aclGroup
+      // !!! Warning !!!
+      // By using `application/json` updating ACLs will erase all the comments
+      // and formatting of the ACL definition.
 
-    const updateResponse = await this.FetchTailscale({
-      method: 'post',
-      url: `/tailnet/${TAILNET}/acl`,
-      data: JSON.stringify(response, null, 2),
-    })
+      const acl = resData as TailscaleACL
+      // transform it
+      let aclGroup = acl.groups[id]
+      if (aclGroup) {
+        aclGroup = aclGroup.filter((e: string) => e !== email)
+        if (event === 'access/grant') {
+          aclGroup.push(email)
+        }
+      } else {
+        if (event === 'access/grant') {
+          aclGroup = [email]
+        }
+      }
+      acl.groups[id] = aclGroup
+      updateResponse = await this.FetchTailscale({
+        method: 'post',
+        url: `/tailnet/${TAILNET}/acl`,
+        data: JSON.stringify(acl, null, 2),
+      })
+    }
 
     if (updateResponse.status > 201) {
       return {
