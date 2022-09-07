@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.21](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.20...@indent/integration-tailscale@0.0.1-canary.21) (2022-09-07)
+
+
+### Bug Fixes
+
+* gopherjs ([3856db9](https://github.com/indentapis/integrations/commit/3856db9f702edecd61404d0611445f98e5584ff0))
+* **tailscale:** go pkg ([#42](https://github.com/indentapis/integrations/issues/42)) ([72931d9](https://github.com/indentapis/integrations/commit/72931d98a1ac910755b8bc998284097683668a16))
+
+
+
+
+
 ## [0.0.1-canary.20](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.19...@indent/integration-tailscale@0.0.1-canary.20) (2022-06-07)
 
 
