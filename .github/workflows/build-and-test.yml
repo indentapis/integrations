@@ -32,16 +32,16 @@ jobs:
           go install github.com/gopherjs/gopherjs
       - name: deps
         env:
-          GOPATH: "$HOME/go"
+          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn
       - name: bootstrap + build
         env:
-          GOPATH: "$HOME/go"
+          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn bootstrap
       - name: test
         env:
-          GOPATH: "$HOME/go"
+          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn test
