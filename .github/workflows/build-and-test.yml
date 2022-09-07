@@ -31,6 +31,8 @@ jobs:
           go mod download
           go install github.com/gopherjs/gopherjs
       - name: deps
+        env:
+          GOPATH: "$HOME/go"
         run: |
           yarn
       - name: bootstrap + build
