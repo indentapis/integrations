@@ -34,8 +34,12 @@ jobs:
         run: |
           yarn
       - name: bootstrap + build
+        env:
+          GOPATH: "$HOME/go"
         run: |
           yarn bootstrap
       - name: test
+        env:
+          GOPATH: "$HOME/go"
         run: |
           yarn test
