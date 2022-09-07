@@ -18,6 +18,14 @@ git clone https://github.com/indentapis/integrations && cd integrations
 yarn
 ```
 
+Install Go `v1.18` and GopherJS:
+
+```
+brew install go@1.18
+brew link go@1.18
+go install github.com/gopherjs/gopherjs
+```
+
 To configure your project, by linking all the modules together:
 
 ```bash

@@ -22,5 +22,8 @@ _out/copybara.jar:
 test:
 	yarn test
 
+build:
+	yarn build
+
 version-canary:
 	yarn version-canary --yes && yarn publish-git-canary --yes
