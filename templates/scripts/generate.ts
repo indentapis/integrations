@@ -1,6 +1,7 @@
 import { catalog } from './steps/catalog'
 import { writeGithubAction } from './steps/github-action'
 import { writeIntegration } from './steps/integration'
+import { writeLicense } from './steps/license'
 import { writeReadme } from './steps/readme'
 import { writeTerraform } from './steps/terraform'
 
@@ -18,6 +19,7 @@ export default function createGitHubTemplate() {
 
   writeTerraform(currentItem)
   writeReadme(currentItem, WEBHOOK_DIR)
+  writeLicense(currentItem, WEBHOOK_DIR)
   writeIntegration(currentItem, WEBHOOK_DIR)
   writeGithubAction(currentItem, WEBHOOK_DIR)
 }
