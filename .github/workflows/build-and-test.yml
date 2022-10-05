@@ -34,16 +34,13 @@ jobs:
       - name: go.deps
         run: |
           go mod download
+          go install github.com/gopherjs/gopherjs
       - name: deps
         run: |
           yarn
       - name: bootstrap + build
-        env:
-          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn bootstrap
       - name: test
-        env:
-          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn test
