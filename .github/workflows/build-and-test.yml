@@ -26,13 +26,15 @@ jobs:
         with:
           go-version: '1.18.5'
           cache: true
+      - name: go.env
+        shell: bash
+        run: |
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
       - name: go.deps
         run: |
           go mod download
-          go install github.com/gopherjs/gopherjs
       - name: deps
-        env:
-          GOPATH: "/home/runner/work/integrations/go"
         run: |
           yarn
       - name: bootstrap + build
