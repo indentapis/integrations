@@ -18,7 +18,7 @@ export const catalog: CatalogItem[] = [
   {
     name: 'okta',
     displayName: 'Okta',
-    integrations: ['OktaGroupIntegration', 'OktaUserIntegration'],
+    integrations: ['OktaGroupIntegration', 'OktaUserIntegration', 'OktaAppIntegration'],
     runtimes: ['AWS Lambda'],
     links: {
       repoSource: 'packages/stable/indent-integration-okta',
