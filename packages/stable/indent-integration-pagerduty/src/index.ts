@@ -121,11 +121,19 @@ export class PagerdutyDecisionIntegration
         : true
     )
 
+    const sinceMs = Date.parse(req.events[0].timestamp) || Date.now()
+    const before = new Date(sinceMs)
+    before.setSeconds(before.getSeconds() - 30)
+    const since = before.toISOString()
+    const later = new Date(sinceMs)
+    later.setMinutes(later.getMinutes() + 5)
+    const until = later.toISOString()
+
     const onCallResponses = await Promise.all(
       approvedSchedules.map((sched) =>
         this.FetchPagerduty({
           method: 'get',
-          url: `/schedules/${sched.id}/users`,
+          url: `/schedules/${sched.id}/users?since=${since}&until=${until}`,
         })
       )
     )
@@ -134,6 +142,7 @@ export class PagerdutyDecisionIntegration
       .map((s) => s.data.users)
       .flat()
       .map((u) => u.email)
+      .filter(Boolean)
       .reduce((acc, email) => ({ ...acc, [email]: true }), {})
 
     // get approved on call emails
