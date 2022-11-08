@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.33](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.32...@indent/integration-pagerduty@0.0.1-canary.33) (2022-11-08)
+
+
+### Bug Fixes
+
+* **pagerduty:** param window ([97e4018](https://github.com/indentapis/integrations/commit/97e401898ccbd347f7b21c4ebf549a457ec41986))
+
+
+
+
+
 ## [0.0.1-canary.32](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.31...@indent/integration-pagerduty@0.0.1-canary.32) (2022-11-07)
 
 
