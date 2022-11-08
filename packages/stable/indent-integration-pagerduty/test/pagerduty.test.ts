@@ -5,11 +5,11 @@ import { PagerdutyDecisionIntegration } from '..'
 
 const now = new Date()
 const before = new Date(now.getTime())
-before.setSeconds(before.getSeconds() - 30)
+before.setMinutes(before.getMinutes() - 1)
 const since = before.toISOString()
-const later = new Date(now.getTime())
-later.setMinutes(later.getMinutes() + 5)
-const until = later.toISOString()
+const after = new Date(now.getTime())
+after.setMinutes(after.getMinutes() + 5)
+const until = after.toISOString()
 const date = now.toISOString()
 const autoApproveInput = {
   events: [

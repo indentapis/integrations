@@ -15,7 +15,10 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
 const PAGERDUTY_KEY = process.env.PAGERDUTY_KEY || ''
-const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
+const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6' // hours
+const AUTO_APPROVAL_WINDOW_BEFORE =
+  process.env.AUTO_APPROVAL_WINDOW_BEFORE || '1' // minutes
+const AUTO_APPROVAL_WINDOW_AFTER = process.env.AUTO_APPROVAL_WINDOW_AFTER || '5' // minutes
 const AUTO_APPROVAL_PAGERDUTY_SCHEDULES =
   process.env.AUTO_APPROVAL_PAGERDUTY_SCHEDULES || ''
 
@@ -123,11 +126,15 @@ export class PagerdutyDecisionIntegration
 
     const sinceMs = Date.parse(req.events[0].timestamp) || Date.now()
     const before = new Date(sinceMs)
-    before.setSeconds(before.getSeconds() - 30)
+    before.setMinutes(
+      before.getMinutes() - parseInt(AUTO_APPROVAL_WINDOW_BEFORE, 10)
+    )
     const since = before.toISOString()
-    const later = new Date(sinceMs)
-    later.setMinutes(later.getMinutes() + 5)
-    const until = later.toISOString()
+    const after = new Date(sinceMs)
+    after.setMinutes(
+      after.getMinutes() + parseInt(AUTO_APPROVAL_WINDOW_AFTER, 10)
+    )
+    const until = after.toISOString()
 
     const onCallResponses = await Promise.all(
       approvedSchedules.map((sched) =>
