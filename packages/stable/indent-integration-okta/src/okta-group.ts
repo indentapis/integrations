@@ -7,23 +7,29 @@ import {
   IntegrationInfoResponse,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest,
+  WriteRequest
 } from '@indent/base-integration'
 import {
   ApplyUpdateResponse,
   PullUpdateResponse,
-  Resource,
+  Resource
 } from '@indent/types'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export class OktaGroupIntegration
   extends BaseHttpIntegration
-  implements FullIntegration
-{
+  implements FullIntegration {
   _name?: string
+
+  secretNames: string[] = [
+    "OKTA_DOMAIN",
+    "OKTA_TOKEN",
+    "OKTA_SLACK_APP_ID",
+    "OKTA_CLIENT_ID",
+    "OKTA_PRIVATE_KEY"
+  ]
 
   constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
@@ -66,9 +72,9 @@ export class OktaGroupIntegration
     const method =
       event === 'access/grant'
         ? // If it's a grant event, add the user
-          'PUT'
+        'PUT'
         : // Otherwise it's a revoke event, remove the user
-          'DELETE'
+        'DELETE'
     const { status } = await callOktaAPI(this, {
       method,
       scope: 'okta.groups.manage',
@@ -83,6 +89,8 @@ export class OktaGroupIntegration
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
     if (!this.MatchPull(req)) {
       return {
         status: {

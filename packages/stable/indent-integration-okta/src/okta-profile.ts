@@ -6,14 +6,13 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   StatusCode,
-  WriteRequest,
+  WriteRequest
 } from '@indent/base-integration'
 import { ApplyUpdateResponse, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { getToken } from './okta-auth'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 const OKTA_PROFILE_RESOURCE_KIND =
   process.env.OKTA_PROFILE_RESOURCE_KIND || 'ProfileAttribute'
 const OKTA_PROFILE_ATTRIBUTE =
@@ -23,8 +22,7 @@ const OKTA_PROFILE_ATTRIBUTE_VALUE =
 
 export class OktaProfileIntegration
   extends BaseHttpIntegration
-  implements ApplyIntegration
-{
+  implements ApplyIntegration {
   _name?: string
 
   constructor(opts?: BaseHttpIntegrationOpts) {
@@ -48,6 +46,8 @@ export class OktaProfileIntegration
   async FetchOkta(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
     const { Authorization } = await getToken('okta.users.manage')
     config.baseURL = /http/.test(OKTA_DOMAIN)
       ? OKTA_DOMAIN

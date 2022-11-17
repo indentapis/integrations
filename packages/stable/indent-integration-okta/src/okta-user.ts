@@ -4,21 +4,25 @@ import {
   IntegrationInfoResponse,
   PullIntegration,
   PullUpdateRequest,
-  StatusCode,
+  StatusCode
 } from '@indent/base-integration'
 import { PullUpdateResponse, Resource } from '@indent/types'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
-
-// Okta Slack App ID - used to more accurately link okta users to slack users
-const APP_ID = process.env.OKTA_SLACK_APP_ID || ''
 
 export class OktaUserIntegration
   extends BaseHttpIntegration
-  implements PullIntegration
-{
+  implements PullIntegration {
+
+  secretNames: string[] = [
+    "OKTA_DOMAIN",
+    "OKTA_TOKEN",
+    "OKTA_SLACK_APP_ID",
+    "OKTA_CLIENT_ID",
+    "OKTA_PRIVATE_KEY"
+  ]
+
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
@@ -36,6 +40,10 @@ export class OktaUserIntegration
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+    // Okta Slack App ID - used to more accurately link okta users to slack users
+    const APP_ID = process.env.OKTA_SLACK_APP_ID || ''
+
     if (!this.MatchPull(req)) {
       return {
         status: {
@@ -93,8 +101,8 @@ export class OktaUserIntegration
     const {
       response: { data: appUserResources },
     } = !APP_ID
-      ? { response: { data: [] } }
-      : await callOktaAPI(this, {
+        ? { response: { data: [] } }
+        : await callOktaAPI(this, {
           scope: 'okta.apps.read',
           url: `/api/v1/apps/${APP_ID}/users`,
           transform: (appuser) => ({

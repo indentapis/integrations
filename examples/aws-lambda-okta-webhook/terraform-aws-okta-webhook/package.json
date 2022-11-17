@@ -30,14 +30,14 @@
     "@types/node": "^13.9.8",
     "@types/node-fetch": "^2.5.5",
     "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.10",
     "webpack": "^4.42.1"
   },
   "dependencies": {
     "@indent/okta-webhook": "latest",
     "@indent/runtime-aws-lambda": "latest",
-    "@indent/webhook": "latest",
     "@indent/types": "latest",
+    "@indent/webhook": "latest",
     "aws-lambda": "^1.0.6",
     "axios": "^0.21.1",
     "env-cmd": "^10.1.0",
