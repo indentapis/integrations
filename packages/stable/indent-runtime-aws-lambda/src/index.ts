@@ -13,8 +13,9 @@ export function getLambdaHandler({
   ): Promise<APIGatewayProxyResult> => {
     const { headers, multiValueHeaders, body } = event
 
-    await loadSecrets(integrations)
+    await loadSecrets(integrations) // TODO: not here
 
+    console.log("webhook secret: ", process.env.INDENT_WEBHOOK_SECRET)
     const { response } = await handleRequest(
       {
         body: body || '',
@@ -43,17 +44,31 @@ async function getSecret(secretName) {
       // When using Secrets Manager, store the AWS Secret name in the env var, and
       // use the integration secret name as a key inside of that.
 
+      if (process.env[secretName] == undefined) {
+        // this secret is not in use for this configuration
+        // ex: OKTA_TOKEN when using JWK
+        return
+      }
+
       // Call the secrets manager sidecar to get the secret
       const res = await axios.get(
         `http://localhost:2773/secretsmanager/get?secretId=${process.env[secretName]}`,
         { headers: { 'X-Aws-Parameters-Secrets-Token': process.env.AWS_SESSION_TOKEN } }
       )
-      return res.data[secretName]
+      const awsSecret = JSON.parse(res.data.SecretString)
+      console.log("got secret: ", secretName, awsSecret[secretName])
+      return awsSecret[secretName]
     }
   }
 }
 
 async function loadSecrets(integrations) {
+  // gross hack TODO: fix this??
+  if (process.env['ALREADY_LOADED'] != undefined) {
+    return // already processed
+  }
+  process.env['ALREADY_LOADED'] = "true"
+
   const secretNames = integrations.map(i => i.secretNames).flat().filter(Boolean)
   secretNames.push('INDENT_WEBHOOK_SECRET')
   const secrets = await Promise.all(secretNames.map(getSecret))

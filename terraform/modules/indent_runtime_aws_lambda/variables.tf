@@ -10,7 +10,7 @@ variable "aws_profile" {
 
 variable "secrets_prefix" {
   type    = string
-  default = ""
+  default = "idt-"
 }
 
 variable "secrets_backend" {
