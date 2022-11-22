@@ -6,7 +6,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   StatusCode,
-  WriteRequest
+  WriteRequest,
 } from '@indent/base-integration'
 import { ApplyUpdateResponse, Resource } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -22,7 +22,8 @@ const OKTA_PROFILE_ATTRIBUTE_VALUE =
 
 export class OktaProfileIntegration
   extends BaseHttpIntegration
-  implements ApplyIntegration {
+  implements ApplyIntegration
+{
   _name?: string
 
   constructor(opts?: BaseHttpIntegrationOpts) {

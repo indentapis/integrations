@@ -6,7 +6,7 @@ import {
   PullIntegration,
   PullUpdateRequest,
   StatusCode,
-  WriteRequest
+  WriteRequest,
 } from '@indent/base-integration'
 import { PullUpdateResponse } from '@indent/types'
 import { callOktaAPI } from './okta-api'
@@ -15,7 +15,8 @@ const version = require('../package.json').version
 
 export class OktaAppIntegration
   extends BaseHttpIntegration
-  implements PullIntegration {
+  implements PullIntegration
+{
   _name?: string
 
   constructor(opts?: BaseHttpIntegrationOpts) {
