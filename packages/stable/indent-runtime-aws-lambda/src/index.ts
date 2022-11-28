@@ -88,6 +88,7 @@ async function getSecret(secretName: string): Promise<string> {
         return process.env[secretName]
     }
   } catch (err) {
+    console.error(`Failed to retrieve secret: ${secretName}`)
     console.error(err)
     return ''
   }
