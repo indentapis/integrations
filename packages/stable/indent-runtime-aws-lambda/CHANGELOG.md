@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.28...@indent/runtime-aws-lambda@0.0.1-canary.29) (2022-11-28)
+
+
+### Bug Fixes
+
+* **aws-lambda:** empty secret value ([#48](https://github.com/indentapis/integrations/issues/48)) ([bf6ddef](https://github.com/indentapis/integrations/commit/bf6ddeff96d488c478092058ecd18cbeab31b90f))
+* **aws-lambda:** get secret failure log ([201ff61](https://github.com/indentapis/integrations/commit/201ff610ca14b921e3a247559815eb261985f60b))
+
+
+
+
+
 ## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.27...@indent/runtime-aws-lambda@0.0.1-canary.28) (2022-11-28)
 
 
