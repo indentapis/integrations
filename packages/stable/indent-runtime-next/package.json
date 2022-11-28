@@ -2,7 +2,7 @@
   "name": "@indent/runtime-next",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.27",
+  "version": "0.0.1-canary.28",
   "files": [
     "lib"
   ],
@@ -14,7 +14,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.27"
+    "@indent/base-integration": "^0.0.1-canary.28"
   },
   "peerDependencies": {
     "next": "*"

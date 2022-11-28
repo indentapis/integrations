@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.27...@indent/runtime-aws-lambda@0.0.1-canary.28) (2022-11-28)
+
+
+### Features
+
+* **aws-lambda:** add AWS Secrets Manager support ([#47](https://github.com/indentapis/integrations/issues/47)) ([82dc091](https://github.com/indentapis/integrations/commit/82dc0913c905743abfe8aa752350fcb79f62a354))
+
+
+
+
+
 ## [0.0.1-canary.27](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.26...@indent/runtime-aws-lambda@0.0.1-canary.27) (2022-06-30)
 
 **Note:** Version bump only for package @indent/runtime-aws-lambda
