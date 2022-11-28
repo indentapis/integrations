@@ -12,7 +12,6 @@ import { PullUpdateResponse } from '@indent/types'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export class OktaAppIntegration
   extends BaseHttpIntegration
@@ -56,6 +55,8 @@ export class OktaAppIntegration
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
     if (!this.MatchPull(req)) {
       return {
         status: {

@@ -17,13 +17,20 @@ import {
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 
 export class OktaGroupIntegration
   extends BaseHttpIntegration
   implements FullIntegration
 {
   _name?: string
+
+  secretNames: string[] = [
+    'OKTA_DOMAIN',
+    'OKTA_TOKEN',
+    'OKTA_SLACK_APP_ID',
+    'OKTA_CLIENT_ID',
+    'OKTA_PRIVATE_KEY',
+  ]
 
   constructor(opts?: BaseHttpIntegrationOpts) {
     super(opts)
@@ -83,6 +90,8 @@ export class OktaGroupIntegration
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
     if (!this.MatchPull(req)) {
       return {
         status: {

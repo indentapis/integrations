@@ -3,9 +3,6 @@ import { Resource, Status } from '@indent/types'
 import { AxiosRequestConfig } from 'axios'
 import { getToken } from './okta-auth'
 
-// Required for all authentication
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
-
 export async function callOktaAPI(
   scope: BaseHttpIntegration,
   {
@@ -22,6 +19,9 @@ export async function callOktaAPI(
   status: Status
   response: BaseHttpResponse
 }> {
+  // Required for all authentication
+  const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
   const { Authorization } = await getToken(tokenScope)
   const baseURL = /http/.test(OKTA_DOMAIN)
     ? OKTA_DOMAIN
@@ -53,8 +53,7 @@ export async function callOktaAPI(
     parseInt(headers['x-rate-limit-reset'] || '0', 10)
   )
   console.log(
-    `  → ${oktaRateLimitRemaining} / ${oktaRateLimitMax} requests to Okta left ${
-      oktaRateLimitReset ? `until ${oktaRateLimitReset.toLocaleString()}` : ''
+    `  → ${oktaRateLimitRemaining} / ${oktaRateLimitMax} requests to Okta left ${oktaRateLimitReset ? `until ${oktaRateLimitReset.toLocaleString()}` : ''
     }`
   )
 
