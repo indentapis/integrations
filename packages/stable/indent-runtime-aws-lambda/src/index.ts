@@ -15,6 +15,9 @@ export function getLambdaHandler({
     event
   ): Promise<APIGatewayProxyResult> => {
     try {
+      if (process.env.SECRETS_BACKEND) {
+        console.log(`secrets backend: ${process.env.SECRETS_BACKEND}`)
+      }
       await loadSecrets(integrations)
       const { headers, multiValueHeaders, body } = event
       const { response } = await handleRequest(
@@ -59,9 +62,12 @@ async function getSecret(secretName) {
       // use the integration secret name as a key inside of that.
 
       if (!process.env[secretName]) {
-        // if using backend, secretName should be set to secretId
-        // this secret is not in use for this configuration
-        // ex: OKTA_TOKEN when using JWK
+        // if the secret is not in the process' env vars, ignore it.
+        // Not all secrets a given integration supports (and therefore pulls in
+        // upon instantiation) are used in all configurations.
+
+        // for example, when configuring the Okta integration to use app/JWKS
+        // authentication, the OKTA_TOKEN variable is unused.
         return
       }
 
@@ -89,11 +95,12 @@ async function loadSecrets(integrations) {
 
   hasLoadedSecrets = true
 
-  const secretNames = [...integrations, 'INDENT_WEBHOOK_SECRET']
+  const secretNames = integrations
     .map((i) => i.secretNames || [])
     .flat()
     .filter(Boolean)
     .filter(uniq)
+  secretNames.push('INDENT_WEBHOOK_SECRET')
 
   const secrets = await Promise.all(secretNames.map(getSecret))
 
