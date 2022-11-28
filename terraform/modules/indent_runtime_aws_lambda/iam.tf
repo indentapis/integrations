@@ -48,6 +48,7 @@ resource "aws_iam_policy" "lambda_policy" {
 }
 
 resource "aws_iam_policy" "lambda_secrets_manager_policy" {
+  count  = var.secrets_backend == "aws-secrets-manager" ? 1 : 0
   policy = data.aws_iam_policy_document.lambda_secrets_manager_document.json
 }
 
@@ -73,5 +74,5 @@ resource "aws_iam_policy_attachment" "lambda_secrets_manager_attachment" {
 
   roles = [aws_iam_role.lambda_role.name]
 
-  policy_arn = aws_iam_policy.lambda_secrets_manager_policy.arn
+  policy_arn = aws_iam_policy.lambda_secrets_manager_policy[0].arn
 }
