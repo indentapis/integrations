@@ -89,6 +89,22 @@ async function getSecret(secretName: string): Promise<string> {
     }
   } catch (err) {
     console.error(`Failed to retrieve secret: ${secretName}`)
+    if (err.response) {
+      // secrets server responded but failed to return secret
+      if (err.response.status >= 400 && err.response.status < 500) {
+        console.error(
+          `Secrets sidecar responded with ${err.response.status}, does it have sufficient permissions and is the secret name correct?`
+        )
+        console.error(err)
+      }
+    } else if (err.code === 'ECONNREFUSED') {
+      console.error(
+        'Could not connect to secrets layer on port 2773, is it running?'
+      )
+      console.error(
+        'see https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html'
+      )
+    }
     console.error(err)
     return ''
   }
