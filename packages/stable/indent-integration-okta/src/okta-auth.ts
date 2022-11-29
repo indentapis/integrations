@@ -47,6 +47,7 @@ async function getOktaSigningToken(): Promise<string> {
 
   if (OKTA_PRIVATE_KEY.charAt(0) !== '-') {
     // private keys must be stored base64 encoded on certain backends
+    // checks if private key starts with "-----BEGIN RSA PRIVATE KEY-----"
     OKTA_PRIVATE_KEY = Buffer.from(OKTA_PRIVATE_KEY, 'base64').toString()
   }
   const signingKey = OKTA_PRIVATE_KEY.toString()
