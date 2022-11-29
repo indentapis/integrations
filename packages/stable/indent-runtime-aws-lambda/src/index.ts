@@ -136,9 +136,7 @@ async function loadSecrets(integrations) {
   const zippedSecrets = secretNames.map((k, i) => [k, secrets[i]])
 
   zippedSecrets.forEach((secret) => {
-    if (secret[1]) {
-      process.env[secret[0]] = secret[1]
-    }
+    process.env[secret[0]] = secret[1]
   })
 }
 
