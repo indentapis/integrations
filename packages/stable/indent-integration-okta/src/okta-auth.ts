@@ -37,12 +37,17 @@ async function getOktaSigningToken(): Promise<string> {
 
   // App-based auOktaGroupthentication
   const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID || ''
-  const OKTA_PRIVATE_KEY = process.env.OKTA_PRIVATE_KEY || ''
+  let OKTA_PRIVATE_KEY = process.env.OKTA_PRIVATE_KEY || ''
 
   const claims = {
     iss: `${OKTA_CLIENT_ID}`,
     sub: `${OKTA_CLIENT_ID}`,
     aud: `https://${OKTA_DOMAIN}/oauth2/v1/token`,
+  }
+
+  if (OKTA_PRIVATE_KEY.charAt(0) !== '-') {
+    // private keys must be stored base64 encoded on certain backends
+    OKTA_PRIVATE_KEY = Buffer.from(OKTA_PRIVATE_KEY, 'base64').toString()
   }
   const signingKey = OKTA_PRIVATE_KEY.toString()
 
