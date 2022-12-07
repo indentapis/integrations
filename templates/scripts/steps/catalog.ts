@@ -38,7 +38,7 @@ export const catalog: CatalogItem[] = [
     capabilities: ['PullUpdate', 'ApplyUpdate'],
     readme: {
       connection: [
-        '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`',
+        '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `indent-integration-okta`',
         'Add this as `OKTA_TOKEN` as a GitHub Secret',
         'Copy your Okta Domain URL and add this as `OKTA_DOMAIN` as a GitHub Secret',
       ],
@@ -65,7 +65,7 @@ export const catalog: CatalogItem[] = [
     capabilities: ['GetDecision'],
     readme: {
       connection: [
-        '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`',
+        '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `indent-integration-okta-approval`',
         'Add this as `OKTA_TOKEN` as a GitHub Secret',
         'Copy your Okta Domain URL and add this as `OKTA_DOMAIN` as a GitHub Secret',
         'Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret (1 hour by default)',

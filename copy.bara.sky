@@ -35,7 +35,7 @@ core.workflow(
     destination_files = glob(["**"]),
     authoring = author,
     transformations = [
-      metadata.replace_message("sync(integration): aws-lambda-okta"),
+      metadata.replace_message("sync(integration): aws-lambda-okta-auto-approval"),
       core.move("tmp/examples/aws-lambda-okta-auto-approval-webhook", ""),
     ],
 )

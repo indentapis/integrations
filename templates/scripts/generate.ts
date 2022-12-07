@@ -9,9 +9,11 @@ export default function createGitHubTemplate() {
   const WEBHOOK_DIR =
     process.env.WEBHOOK_DIR || 'tmp/examples/aws-lambda-example-webhook'
 
-  const currentItem = catalog.find((item) =>
+  const matchedItems = catalog.filter((item) =>
     WEBHOOK_DIR.toLowerCase().includes(item.name.toLowerCase())
   )
+  // Get whatever the last match is (e.g. for Okta + Okta Auto Approval)
+  const currentItem = matchedItems[matchedItems.length - 1]
 
   if (!currentItem) {
     throw new Error(`not found WEBHOOK_DIR: ${WEBHOOK_DIR}`)
