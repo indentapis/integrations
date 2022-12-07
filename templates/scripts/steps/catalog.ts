@@ -1,5 +1,6 @@
 export interface CatalogItem {
   name: string
+  pkg?: string // e.g. `okta` for `okta-auto-approval` integration
   displayName: string
   runtimes: string[]
   integrations: string[]

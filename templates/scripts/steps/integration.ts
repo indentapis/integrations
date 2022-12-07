@@ -4,12 +4,12 @@ import { CatalogItem } from './catalog'
 export async function writeIntegration(item: CatalogItem, path) {
   try {
     const data = await readFile(path + '/src/index.example.ts', 'utf8')
-    const { integrations, name } = item
+    const { integrations, name, pkg } = item
     const newIntegration = data
       .replace('ExampleIntegration', integrations.join(', '))
       .replace(
         '@indent/integration-example',
-        `@indent/integration-${name.toLowerCase()}`
+        `@indent/integration-${pkg || name.toLowerCase()}`
       )
       .replace(
         '[new ExampleIntegration()]',
