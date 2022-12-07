@@ -28,7 +28,7 @@ core.workflow(
     name = "okta-auto-approval",
     origin = folder.origin(),
     destination = git.github_pr_destination(
-      url = integration_target_okta,
+      url = integration_target_okta_auto_approval,
       destination_ref = "main"
     ),
     origin_files = glob(["tmp/examples/aws-lambda-okta-auto-approval-webhook", "tmp/examples/aws-lambda-okta-auto-approval-webhook/**"]),
