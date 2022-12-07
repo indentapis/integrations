@@ -54,7 +54,16 @@ jobs:
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd templates/scripts && yarn && cd ../../ && \
             npx ts-node ./templates/scripts/generate.ts
-          sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
+          declare -a INTEGRATION_PKG
+          case $INTEGRATION in
+            "okta-auto-approval")
+              INTEGRATION_PKG="okta"
+              ;;
+            *)
+              INTEGRATION_PKG=$INTEGRATION
+              ;;
+          esac
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION_PKG}/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
