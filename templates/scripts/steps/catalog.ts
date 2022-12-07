@@ -47,6 +47,7 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
+    pkg: 'okta',
     name: 'okta-auto-approval',
     displayName: 'Okta Auto Approval',
     integrations: ['OktaDecisionIntegration'],
