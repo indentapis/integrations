@@ -74,6 +74,7 @@ jobs:
       - name: Build example (${{ matrix.integration }})
         env:
           WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+          INTEGRATION: ${{ matrix.integration }}
         run: |
           cd $WEBHOOK_DIR
           yarn build
