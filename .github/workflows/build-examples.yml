@@ -22,6 +22,7 @@ jobs:
           - pagerduty
           - incidentio
           - auto-approval
+          - okta-auto-approval
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout
