@@ -63,6 +63,7 @@ jobs:
               INTEGRATION_PKG=$INTEGRATION
               ;;
           esac
+          echo $INTEGRATION_PKG
           sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION_PKG}/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
