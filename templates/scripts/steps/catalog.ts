@@ -18,7 +18,11 @@ export const catalog: CatalogItem[] = [
   {
     name: 'okta',
     displayName: 'Okta',
-    integrations: ['OktaGroupIntegration', 'OktaUserIntegration', 'OktaAppIntegration'],
+    integrations: [
+      'OktaGroupIntegration',
+      'OktaUserIntegration',
+      'OktaAppIntegration',
+    ],
     runtimes: ['AWS Lambda'],
     links: {
       repoSource: 'packages/stable/indent-integration-okta',
@@ -39,6 +43,33 @@ export const catalog: CatalogItem[] = [
       ],
       docsLink:
         '<a href="https://indent.com/docs/webhooks/deploy/okta-groups#create-a-new-repository" target="_blank">this link</a>',
+    },
+  },
+  {
+    name: 'okta-auto-approval',
+    displayName: 'Okta Auto Approval',
+    integrations: ['OktaDecisionIntegration'],
+    runtimes: ['AWS Lambda'],
+    links: { repoSource: 'packages/stable/indent-integration-okta' },
+    environmentVariables: [
+      'OKTA_DOMAIN',
+      'OKTA_TOKEN',
+      'OKTA_SLACK_APP_ID',
+      'OKTA_CLIENT_ID',
+      'OKTA_PRIVATE_KEY',
+      'AUTO_APPROVAL_OKTA_GROUPS',
+      'AUTO_APPROVAL_DURATION',
+    ],
+    capabilities: ['GetDecision'],
+    readme: {
+      connection: [
+        '[Go to Okta > Security > API > Tokens](https://help.okta.com/en-us/Content/Topics/Security/API.htm#create-okta-api-token) and create a new API Token, then give the token a descriptive name like `Indent Auto Approvals`',
+        'Add this as `OKTA_TOKEN` as a GitHub Secret',
+        'Copy your Okta Domain URL and add this as `OKTA_DOMAIN` as a GitHub Secret',
+        'Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret (1 hour by default)',
+      ],
+      docsLink:
+        '<a href="https://indent.com/docs/integrations/okta-groups" target="_blank">this link</a>',
     },
   },
   {
@@ -118,7 +149,7 @@ export const catalog: CatalogItem[] = [
     },
     readme: {
       connection: [
-        '[Go to Incident.io\'s dashboard](https://app.incident.io/login) and click **API Keys → + Add new**',
+        "[Go to Incident.io's dashboard](https://app.incident.io/login) and click **API Keys → + Add new**",
         'Copy the key that appears as a GitHub Secret named `INCIDENTIO_API_KEY`',
         'Add this as `INCIDENTIO_API_KEY` as a GitHub Secret.',
         'Optional: Add the number of hours you want users to retain access for under `AUTO_APPROVAL_DURATION` as a GitHub Secret.',
@@ -139,7 +170,7 @@ export const catalog: CatalogItem[] = [
     readme: {
       connection: [],
       docsLink:
-        '<a href="https://indent.com/docs" target="_blank">this link</a>',
+        '<a href="https://indent.com/docs/integrations/aws-iam" target="_blank">this link</a>',
     },
   },
 ]
