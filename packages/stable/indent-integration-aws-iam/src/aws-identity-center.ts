@@ -20,6 +20,7 @@ const version = require('../package.json').version
 
 import {
   CreateGroupMembershipCommand,
+  CreateUserCommand,
   DeleteGroupMembershipCommand,
   GetUserIdCommand,
   IdentitystoreClient,
@@ -178,8 +179,19 @@ export class AWSIdentityCenterIntegration
 
     if (!userId) {
       // Create user
-      // const granteeUser = new CreateUserCommand({ UserName: grantee.email })
-      // const newUser = await iamClient.send(granteeUser)
+      const granteeUser = new CreateUserCommand({
+        IdentityStoreId,
+        DisplayName: grantee.displayName,
+        UserName: grantee.email,
+        Emails: [
+          {
+            Type: 'work',
+            Primary: true,
+            Value: grantee.email,
+          },
+        ],
+      })
+      // const newUser = await idstore.send(granteeUser)
       // options.UserName = newUser.User.UserName
       // const newLogin = new CreateLoginProfileCommand({
       //   UserName: options.UserName,
@@ -187,9 +199,9 @@ export class AWSIdentityCenterIntegration
       //   PasswordResetRequired: true,
       // })
       // await iamClient.send(newLogin)
-      // console.error(
-      //   `@indent/aws-iam-integration: ApplyUpdate: [OK] CreateUserCommand { UserName: ${UserName} }`
-      // )
+      console.error(
+        `@indent/aws-iam-integration: ApplyUpdate: [OK] CreateUserCommand { UserName: ${granteeUser.input.UserName} }`
+      )
     }
 
     try {
