@@ -25,6 +25,7 @@ import {
   GetUserIdCommand,
   IdentitystoreClient,
   IdentitystoreClientConfig,
+  ListGroupMembershipsCommand,
   ListGroupsCommand,
 } from '@aws-sdk/client-identitystore'
 import { ListInstancesCommand, SSOAdminClient } from '@aws-sdk/client-sso-admin'
@@ -162,13 +163,16 @@ export class AWSIdentityCenterIntegration
           IdentityStoreId,
           AlternateIdentifier: {
             UniqueAttribute: {
-              AttributePath: 'email',
+              AttributePath: 'UserName',
               AttributeValue: grantee.email,
             },
           },
         })
       )
       userId = out.UserId
+      console.error(
+        `@indent/aws-iam-integration: ApplyUpdate: [OK] GetUserIdCommand { UserName: ${grantee.email}, UserId: ${userId} }`
+      )
     } catch (err) {
       // handle error
       console.error(
@@ -191,6 +195,9 @@ export class AWSIdentityCenterIntegration
           },
         ],
       })
+
+      // TODO: implement new user creation
+      //
       // const newUser = await idstore.send(granteeUser)
       // options.UserName = newUser.User.UserName
       // const newLogin = new CreateLoginProfileCommand({
@@ -199,6 +206,7 @@ export class AWSIdentityCenterIntegration
       //   PasswordResetRequired: true,
       // })
       // await iamClient.send(newLogin)
+
       console.error(
         `@indent/aws-iam-integration: ApplyUpdate: [OK] CreateUserCommand { UserName: ${granteeUser.input.UserName} }`
       )
@@ -215,11 +223,26 @@ export class AWSIdentityCenterIntegration
         })
         await idstore.send(cmd)
       } else {
-        const cmd = new DeleteGroupMembershipCommand({
-          MembershipId: '123', // todo: lookup membership
+        const listCmd = new ListGroupMembershipsCommand({
           IdentityStoreId,
+          GroupId,
         })
-        await idstore.send(cmd)
+        const memberList = await idstore.send(listCmd)
+        const membership = memberList.GroupMemberships.find(
+          (g) => g.MemberId.UserId === userId
+        )
+
+        if (membership) {
+          const cmd = new DeleteGroupMembershipCommand({
+            MembershipId: membership.MembershipId,
+            IdentityStoreId,
+          })
+          await idstore.send(cmd)
+        } else {
+          console.warn(
+            `@indent/aws-iam-integration: ApplyUpdate: [OK] member already removed { GroupId: ${GroupId}, UserId: ${userId} }`
+          )
+        }
       }
       return { status: { code: 0 } }
     } catch (err) {
