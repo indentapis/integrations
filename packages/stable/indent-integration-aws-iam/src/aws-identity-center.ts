@@ -282,10 +282,10 @@ const getGroupFromResources = (resources: Resource[], kind: string): string => {
   return resources
     .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
     .map((r) => {
-      if (r.labels && r.labels['aws/group']) {
-        return r.labels['aws/group']
+      if (r.labels && r.labels['aws/id']) {
+        return r.labels['aws/id']
       }
 
-      return r.displayName
+      return r.id
     })[0]
 }
