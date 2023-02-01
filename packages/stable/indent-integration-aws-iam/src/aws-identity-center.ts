@@ -88,7 +88,9 @@ export class AWSIdentityCenterIntegration
   }
 
   MatchPull(req: PullUpdateRequest): boolean {
-    return req.kinds.map((k) => k.toLowerCase()).includes(kindIdentityGroup)
+    return req.kinds
+      .map((k) => k.toLowerCase())
+      .includes(kindIdentityGroup.toLowerCase())
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {

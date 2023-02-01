@@ -164,7 +164,7 @@ export const catalog: CatalogItem[] = [
   {
     name: 'aws-iam',
     displayName: 'AWS IAM',
-    integrations: ['AWSIAMGroupIntegration'],
+    integrations: ['AWSIAMGroupIntegration', 'AWSIdentityCenterIntegration'],
     runtimes: ['AWS Lambda'],
     environmentVariables: ['DEFAULT_USER_PW'],
     capabilities: ['PullUpdate', 'ApplyUpdate'],
