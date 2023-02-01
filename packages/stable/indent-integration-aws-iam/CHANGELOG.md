@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.28...@indent/integration-aws-iam@0.0.1-canary.29) (2023-02-01)
+
+
+### Bug Fixes
+
+* **integrations:** identity center ([39e3250](https://github.com/indentapis/integrations/commit/39e3250f0a373dbe9782db9b1be995e8a2547e6d))
+
+
+
+
+
 ## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.27...@indent/integration-aws-iam@0.0.1-canary.28) (2023-01-31)
 
 **Note:** Version bump only for package @indent/integration-aws-iam

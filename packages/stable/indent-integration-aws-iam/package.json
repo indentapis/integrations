@@ -2,7 +2,7 @@
   "name": "@indent/integration-aws-iam",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.28",
+  "version": "0.0.1-canary.29",
   "files": [
     "lib"
   ],
