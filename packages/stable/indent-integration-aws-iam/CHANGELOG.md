@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.31](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.30...@indent/integration-aws-iam@0.0.1-canary.31) (2023-02-01)
+
+
+### Bug Fixes
+
+* **aws-iam:** support account assignment ([db5e3bf](https://github.com/indentapis/integrations/commit/db5e3bffda84aec8baedf0e97faebcd4dd6be6fb))
+
+
+
+
+
 ## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.29...@indent/integration-aws-iam@0.0.1-canary.30) (2023-02-01)
 
 
