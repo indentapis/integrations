@@ -28,10 +28,25 @@ import {
   ListGroupMembershipsCommand,
   ListGroupsCommand,
 } from '@aws-sdk/client-identitystore'
-import { ListInstancesCommand, SSOAdminClient } from '@aws-sdk/client-sso-admin'
+import {
+  ListAccountsCommand,
+  OrganizationsClient,
+} from '@aws-sdk/client-organizations'
+import {
+  CreateAccountAssignmentCommand,
+  DeleteAccountAssignmentCommand,
+  DescribePermissionSetCommand,
+  ListInstancesCommand,
+  ListPermissionSetsCommand,
+  SSOAdminClient,
+} from '@aws-sdk/client-sso-admin'
 
 const kindIdentityUser = 'aws.identitystore.v1.User'
 const kindIdentityGroup = 'aws.identitystore.v1.Group'
+const kindIdentityAccountRole = 'aws.v1beta1.AccountRole'
+
+const INDENT_AWS_DIRECT_ASSIGNMENT =
+  process.env.INDENT_AWS_DIRECT_ASSIGNMENT || ''
 
 export class AWSIdentityCenterIntegration
   extends BaseHttpIntegration
@@ -59,9 +74,13 @@ export class AWSIdentityCenterIntegration
 
   _idClient: IdentitystoreClient
   _ssoClient: SSOAdminClient
+  _orgClient: OrganizationsClient
 
-  private async GetClients(): Promise<[IdentitystoreClient, SSOAdminClient]> {
-    if (this._idClient) return [this._idClient, this._ssoClient]
+  private async GetClients(): Promise<
+    [IdentitystoreClient, SSOAdminClient, OrganizationsClient]
+  > {
+    if (this._idClient)
+      return [this._idClient, this._ssoClient, this._orgClient]
 
     const cfg: IdentitystoreClientConfig = { region: process.env.AWS_REGION }
 
@@ -83,14 +102,18 @@ export class AWSIdentityCenterIntegration
 
     this._idClient = new IdentitystoreClient(cfg)
     this._ssoClient = new SSOAdminClient(cfg)
+    this._orgClient = new OrganizationsClient(cfg)
 
-    return [this._idClient, this._ssoClient]
+    return [this._idClient, this._ssoClient, this._orgClient]
   }
 
   MatchPull(req: PullUpdateRequest): boolean {
-    return req.kinds
-      .map((k) => k.toLowerCase())
-      .includes(kindIdentityGroup.toLowerCase())
+    const kinds = req.kinds.map((k) => k.toLowerCase())
+
+    return (
+      kinds.includes(kindIdentityGroup.toLowerCase()) ||
+      kinds.includes(kindIdentityAccountRole.toLowerCase())
+    )
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
@@ -106,30 +129,78 @@ export class AWSIdentityCenterIntegration
       }
     }
 
-    const [idstore, ssoadmin] = await this.GetClients()
+    const [idstore, ssoadmin, orgClient] = await this.GetClients()
     const listInstances = new ListInstancesCommand({ MaxResults: 5 })
     const { Instances } = await ssoadmin.send(listInstances)
+    const { IdentityStoreId, InstanceArn } = Instances[0]
     const listGroupItems = new ListGroupsCommand({
-      IdentityStoreId: Instances[0].IdentityStoreId,
+      IdentityStoreId,
       MaxResults: 100,
     })
     const { Groups } = await idstore.send(listGroupItems)
     const timestamp = new Date().toISOString()
 
+    const resources = Groups.map((g) => ({
+      id: g.GroupId,
+      kind: kindIdentityGroup,
+      displayName: g.DisplayName,
+      altIds: g.ExternalIds?.map((id) => `${id.Issuer}::${id.Id}`),
+      labels: {
+        'aws/id': g.GroupId,
+        'aws/identityStoreId': g.IdentityStoreId,
+        description: g.Description,
+        timestamp,
+      },
+    })) as Resource[]
+
+    if (INDENT_AWS_DIRECT_ASSIGNMENT) {
+      // TODO: Loop with max results / next token
+      const { Accounts, NextToken } = await orgClient.send(
+        new ListAccountsCommand({})
+      )
+
+      // TODO: Loop with max results / next token
+      const { PermissionSets } = await ssoadmin.send(
+        new ListPermissionSetsCommand({
+          InstanceArn,
+        })
+      )
+
+      const perms = await Promise.all(
+        PermissionSets.map((parm) =>
+          ssoadmin.send(
+            new DescribePermissionSetCommand({
+              InstanceArn,
+              PermissionSetArn: parm,
+            })
+          )
+        )
+      )
+
+      Accounts.forEach((account) => {
+        perms.forEach((perm) => {
+          resources.push({
+            id: [InstanceArn, account.Id, perm.PermissionSet.Name].join('/'),
+            kind: kindIdentityAccountRole,
+            displayName: `${account.Name} - ${perm.PermissionSet.Name}`,
+            labels: {
+              'aws/accountId': account.Id,
+              'aws/accountArn': account.Arn,
+              'aws/permissionName': perm.PermissionSet.Name,
+              'aws/permissionArn': perm.PermissionSet.PermissionSetArn,
+              'aws/instanceArn': InstanceArn,
+              'aws/identityStoreId': IdentityStoreId,
+              description: perm.PermissionSet.Description,
+              timestamp,
+            },
+          })
+        })
+      })
+    }
+
     return {
       status: { code: 0 },
-      resources: Groups.map((g) => ({
-        id: g.GroupId,
-        kind: kindIdentityGroup,
-        displayName: g.DisplayName,
-        altIds: g.ExternalIds?.map((id) => `${id.Issuer}::${id.Id}`),
-        labels: {
-          'aws/id': g.GroupId,
-          'aws/identityStoreId': g.IdentityStoreId,
-          description: g.Description,
-          timestamp,
-        },
-      })) as Resource[],
+      resources,
     }
   }
 
@@ -151,8 +222,11 @@ export class AWSIdentityCenterIntegration
     const GroupId = getGroupFromResources(resources, 'group')
     const UserName = getUserNameFromResources(resources, 'user')
     const grantee = getUserFromResources(resources, 'user')
+    const granted = resources.find((r) =>
+      /group|account/.test(r.kind.toLowerCase())
+    )
 
-    let userId: string
+    let awsUserId: string
 
     const [idstore, ssoadmin] = await this.GetClients()
     const listInstances = new ListInstancesCommand({ MaxResults: 5 })
@@ -171,9 +245,9 @@ export class AWSIdentityCenterIntegration
           },
         })
       )
-      userId = out.UserId
+      awsUserId = out.UserId
       console.error(
-        `@indent/aws-iam-integration: ApplyUpdate: [OK] GetUserIdCommand { UserName: ${grantee.email}, UserId: ${userId} }`
+        `@indent/aws-iam-integration: ApplyUpdate: [OK] GetUserIdCommand { UserName: ${grantee.email}, UserId: ${awsUserId} }`
       )
     } catch (err) {
       // handle error
@@ -183,7 +257,7 @@ export class AWSIdentityCenterIntegration
       console.error(err)
     }
 
-    if (!userId) {
+    if (!awsUserId) {
       // Create user
       const granteeUser = new CreateUserCommand({
         IdentityStoreId,
@@ -216,33 +290,68 @@ export class AWSIdentityCenterIntegration
 
     try {
       if (event === 'access/grant') {
-        const cmd = new CreateGroupMembershipCommand({
-          GroupId,
-          IdentityStoreId,
-          MemberId: {
-            UserId: userId,
-          },
-        })
-        await idstore.send(cmd)
-      } else {
-        const listCmd = new ListGroupMembershipsCommand({
-          IdentityStoreId,
-          GroupId,
-        })
-        const memberList = await idstore.send(listCmd)
-        const membership = memberList.GroupMemberships.find(
-          (g) => g.MemberId.UserId === userId
-        )
+        if (granted.kind === kindIdentityGroup) {
+          await idstore.send(
+            new CreateGroupMembershipCommand({
+              GroupId,
+              IdentityStoreId,
+              MemberId: {
+                UserId: awsUserId,
+              },
+            })
+          )
+        } else if (granted.kind === kindIdentityAccountRole) {
+          const PermissionSetArn = granted.labels?.['aws/permissionArn']
+          const InstanceArn = granted.labels?.['aws/instanceArn']
+          const TargetId = granted.labels?.['aws/accountId']
 
-        if (membership) {
-          const cmd = new DeleteGroupMembershipCommand({
-            MembershipId: membership.MembershipId,
-            IdentityStoreId,
+          new CreateAccountAssignmentCommand({
+            InstanceArn,
+            PrincipalId: awsUserId,
+            PrincipalType: 'USER',
+            PermissionSetArn,
+            TargetId,
+            TargetType: 'AWS_ACCOUNT',
           })
-          await idstore.send(cmd)
-        } else {
-          console.warn(
-            `@indent/aws-iam-integration: ApplyUpdate: [OK] member already removed { GroupId: ${GroupId}, UserId: ${userId} }`
+        }
+      } else {
+        if (granted.kind === kindIdentityGroup) {
+          const memberList = await idstore.send(
+            new ListGroupMembershipsCommand({
+              IdentityStoreId,
+              GroupId,
+            })
+          )
+          const membership = memberList.GroupMemberships.find(
+            (g) => g.MemberId.UserId === awsUserId
+          )
+
+          if (membership) {
+            await idstore.send(
+              new DeleteGroupMembershipCommand({
+                MembershipId: membership.MembershipId,
+                IdentityStoreId,
+              })
+            )
+          } else {
+            console.warn(
+              `@indent/aws-iam-integration: ApplyUpdate: [OK] member already removed { GroupId: ${GroupId}, UserId: ${awsUserId} }`
+            )
+          }
+        } else if (granted.kind === kindIdentityAccountRole) {
+          const PermissionSetArn = granted.labels?.['aws/permissionArn']
+          const InstanceArn = granted.labels?.['aws/instanceArn']
+          const TargetId = granted.labels?.['aws/accountId']
+
+          await ssoadmin.send(
+            new DeleteAccountAssignmentCommand({
+              InstanceArn,
+              PrincipalId: awsUserId,
+              PrincipalType: 'USER',
+              PermissionSetArn,
+              TargetId,
+              TargetType: 'AWS_ACCOUNT',
+            })
           )
         }
       }
