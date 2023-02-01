@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.29...@indent/integration-aws-iam@0.0.1-canary.30) (2023-02-01)
+
+
+### Bug Fixes
+
+* **integrations:** aws-identity-center ([f85e315](https://github.com/indentapis/integrations/commit/f85e315d7a8fd2efbede1d3260f4a738afdd5cb7))
+
+
+
+
+
 ## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.28...@indent/integration-aws-iam@0.0.1-canary.29) (2023-02-01)
 
 
