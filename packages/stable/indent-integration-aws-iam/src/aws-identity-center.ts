@@ -208,8 +208,10 @@ export class AWSIdentityCenterIntegration
     return (
       req.events.filter((e) =>
         Boolean(
-          e.resources?.filter((r) =>
-            r.kind?.toLowerCase().includes(kindIdentityGroup.toLowerCase())
+          e.resources?.filter(
+            (r) =>
+              r.kind.includes(kindIdentityGroup.toLowerCase()) ||
+              r.kind.includes(kindIdentityAccountRole.toLowerCase())
           ).length
         )
       ).length > 0
