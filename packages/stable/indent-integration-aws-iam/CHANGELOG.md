@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.34](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.33...@indent/integration-aws-iam@0.0.1-canary.34) (2023-02-02)
+
+
+### Bug Fixes
+
+* **aws-iam:** ssoadmin ([48010b2](https://github.com/indentapis/integrations/commit/48010b2569c53e34dfe33336cd63c4734c76f0df))
+
+
+
+
+
 ## [0.0.1-canary.33](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.32...@indent/integration-aws-iam@0.0.1-canary.33) (2023-02-02)
 
 
