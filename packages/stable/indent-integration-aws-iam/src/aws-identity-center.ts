@@ -250,7 +250,7 @@ export class AWSIdentityCenterIntegration
         })
       )
       awsUserId = out.UserId
-      console.error(
+      console.log(
         `@indent/aws-iam-integration: ApplyUpdate: [OK] GetUserIdCommand { UserName: ${grantee.email}, UserId: ${awsUserId} }`
       )
     } catch (err) {
@@ -309,14 +309,16 @@ export class AWSIdentityCenterIntegration
           const InstanceArn = granted.labels?.['aws/instanceArn']
           const TargetId = granted.labels?.['aws/accountId']
 
-          new CreateAccountAssignmentCommand({
-            InstanceArn,
-            PrincipalId: awsUserId,
-            PrincipalType: 'USER',
-            PermissionSetArn,
-            TargetId,
-            TargetType: 'AWS_ACCOUNT',
-          })
+          await ssoadmin.send(
+            new CreateAccountAssignmentCommand({
+              InstanceArn,
+              PrincipalId: awsUserId,
+              PrincipalType: 'USER',
+              PermissionSetArn,
+              TargetId,
+              TargetType: 'AWS_ACCOUNT',
+            })
+          )
         }
       } else {
         if (granted.kind === kindIdentityGroup) {
