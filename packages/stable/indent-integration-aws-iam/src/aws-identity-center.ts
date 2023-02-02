@@ -210,8 +210,10 @@ export class AWSIdentityCenterIntegration
         Boolean(
           e.resources?.filter(
             (r) =>
-              r.kind.includes(kindIdentityGroup.toLowerCase()) ||
-              r.kind.includes(kindIdentityAccountRole.toLowerCase())
+              r.kind?.toLowerCase().includes(kindIdentityGroup.toLowerCase()) ||
+              r.kind
+                ?.toLowerCase()
+                .includes(kindIdentityAccountRole.toLowerCase())
           ).length
         )
       ).length > 0
