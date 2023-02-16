@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.35](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.34...@indent/integration-aws-iam@0.0.1-canary.35) (2023-02-16)
+
+
+### Bug Fixes
+
+* **aws-iam:** add ExternalId option ([1585012](https://github.com/indentapis/integrations/commit/15850124eed150603aad7ee884bdd7b1b51eb793))
+
+
+
+
+
 ## [0.0.1-canary.34](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.33...@indent/integration-aws-iam@0.0.1-canary.34) (2023-02-02)
 
 
