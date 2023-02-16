@@ -166,7 +166,12 @@ export const catalog: CatalogItem[] = [
     displayName: 'AWS IAM',
     integrations: ['AWSIAMGroupIntegration', 'AWSIdentityCenterIntegration'],
     runtimes: ['AWS Lambda'],
-    environmentVariables: ['DEFAULT_USER_PW'],
+    environmentVariables: [
+      'DEFAULT_USER_PW',
+      'INDENT_AWS_DIRECT_ASSIGNMENT',
+      'AWS_STS_ASSUME_ROLE',
+      'AWS_STS_EXTERNAL_ID',
+    ],
     capabilities: ['PullUpdate', 'ApplyUpdate'],
     links: { repoSource: 'packages/beta/indent-integration-aws-iam' },
     readme: {

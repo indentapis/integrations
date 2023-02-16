@@ -89,6 +89,7 @@ export class AWSIdentityCenterIntegration
       const stsClient = new STSClient({ region: process.env.AWS_REGION })
       const cmd = new AssumeRoleCommand({
         RoleArn: process.env.AWS_STS_ASSUME_ROLE,
+        ExternalId: process.env.AWS_STS_EXTERNAL_ID,
         RoleSessionName: `Indent-IdentityCenter-Manager`,
       })
       const result = await stsClient.send(cmd)
