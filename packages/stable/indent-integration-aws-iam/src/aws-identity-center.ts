@@ -79,14 +79,16 @@ export class AWSIdentityCenterIntegration
   private async GetClients(): Promise<
     [IdentitystoreClient, SSOAdminClient, OrganizationsClient]
   > {
-    if (this._idClient)
+    if (this._idClient) {
       return [this._idClient, this._ssoClient, this._orgClient]
+    }
 
-    const cfg: IdentitystoreClientConfig = { region: process.env.AWS_REGION }
+    const region = process.env.AWS_IDENTITY_REGION || process.env.AWS_REGION
+    const cfg: IdentitystoreClientConfig = { region }
 
     // Handle STS (assumed role)
     if (process.env.AWS_STS_ASSUME_ROLE) {
-      const stsClient = new STSClient({ region: process.env.AWS_REGION })
+      const stsClient = new STSClient({ region })
       const cmd = new AssumeRoleCommand({
         RoleArn: process.env.AWS_STS_ASSUME_ROLE,
         ExternalId: process.env.AWS_STS_EXTERNAL_ID,
