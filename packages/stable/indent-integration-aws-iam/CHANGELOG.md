@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.38](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.37...@indent/integration-aws-iam@0.0.1-canary.38) (2023-02-17)
+
+
+### Bug Fixes
+
+* identity-center default next token ([4911632](https://github.com/indentapis/integrations/commit/49116322c8e62dc71f51661e0d4a1e37370611e2))
+
+
+
+
+
 ## [0.0.1-canary.37](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.36...@indent/integration-aws-iam@0.0.1-canary.37) (2023-02-17)
 
 
