@@ -29,6 +29,7 @@ import {
   ListGroupsCommand,
 } from '@aws-sdk/client-identitystore'
 import {
+  Account,
   ListAccountsCommand,
   OrganizationsClient,
 } from '@aws-sdk/client-organizations'
@@ -157,15 +158,25 @@ export class AWSIdentityCenterIntegration
     })) as Resource[]
 
     if (INDENT_AWS_DIRECT_ASSIGNMENT) {
-      // TODO: Loop with max results / next token
-      const { Accounts, NextToken } = await orgClient.send(
-        new ListAccountsCommand({})
-      )
+      let Accounts: Account[] = []
+      let NextToken: string = ''
 
-      // TODO: Loop with max results / next token
+      while (Accounts.length === 0 || NextToken) {
+        const { Accounts: _accounts, NextToken: _nextToken } =
+          await orgClient.send(
+            new ListAccountsCommand({
+              MaxResults: 20,
+              NextToken,
+            })
+          )
+        Accounts.push(..._accounts)
+        NextToken = _nextToken
+      }
+
       const { PermissionSets } = await ssoadmin.send(
         new ListPermissionSetsCommand({
           InstanceArn,
+          MaxResults: 100,
         })
       )
 
