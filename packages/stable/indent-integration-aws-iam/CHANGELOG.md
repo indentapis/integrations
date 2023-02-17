@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.37](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.36...@indent/integration-aws-iam@0.0.1-canary.37) (2023-02-17)
+
+
+### Bug Fixes
+
+* identity-center pagination ([62582c2](https://github.com/indentapis/integrations/commit/62582c2564075a14a13b43fcb4054dcd41442f31))
+
+
+
+
+
 ## [0.0.1-canary.36](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.35...@indent/integration-aws-iam@0.0.1-canary.36) (2023-02-17)
 
 
