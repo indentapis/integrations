@@ -159,7 +159,7 @@ export class AWSIdentityCenterIntegration
 
     if (INDENT_AWS_DIRECT_ASSIGNMENT) {
       let Accounts: Account[] = []
-      let NextToken: string = ''
+      let NextToken: string
 
       while (Accounts.length === 0 || NextToken) {
         const { Accounts: _accounts, NextToken: _nextToken } =
