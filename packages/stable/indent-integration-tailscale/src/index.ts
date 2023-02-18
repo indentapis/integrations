@@ -190,11 +190,11 @@ export class TailscaleGroupIntegration
       })
     }
 
-    if (updateResponse.status > 201) {
+    if (updateResponse?.status > 201) {
       return {
         status: {
           code: StatusCode.UNKNOWN,
-          details: { errorData: updateResponse.data },
+          details: { errorData: updateResponse?.data },
         },
       }
     }
