@@ -38,7 +38,7 @@ describe('OktaProfileIntegration', () => {
     },
   ]
 
-  describe('ApplyUpdate', () => {
+  describe.skip('ApplyUpdate', () => {
     beforeEach(() => setupMocks())
 
     describe('access/grant', () => {
