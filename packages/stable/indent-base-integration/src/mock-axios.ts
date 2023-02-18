@@ -10,7 +10,14 @@ export function addMock(config: AxiosRequestConfig, res: AxiosResponse): any {
 }
 
 const getConfigKey = (config: AxiosRequestConfig) =>
-  [(config.method || 'get').toLowerCase(), config.baseURL, config.url].join(':')
+  [
+    (config.method || 'get').toLowerCase(),
+    config.baseURL,
+    config.url,
+    config.method.toLowerCase() === 'post' ? JSON.stringify(config.data) : '',
+  ]
+    .filter(Boolean)
+    .join(':')
 
 const isMocked = (config: AxiosRequestConfig) => getConfigKey(config) in mocks
 
