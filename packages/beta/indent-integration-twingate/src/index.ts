@@ -169,7 +169,7 @@ export class TwingateGroupIntegration
       (g) =>
         ({
           kind: kindTwingateGroup,
-          id: g.id,
+          id: Buffer.from(g.id, 'base64').toString('ascii'),
           displayName: g.name,
           labels: {
             timestamp,
@@ -207,7 +207,7 @@ export class TwingateGroupIntegration
       data: {
         query: TWINGATE_MUTATION_UPDATE_GROUP,
         variables: {
-          id,
+          id: Buffer.from(id, 'ascii').toString('base64'),
           [key]: [user.id],
         },
       },

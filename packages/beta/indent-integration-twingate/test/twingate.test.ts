@@ -50,7 +50,7 @@ describe('TwingateGroupIntegration', () => {
           expect(res.resources).toMatchObject([
             {
               displayName: 'Testing',
-              id: 'R3JvdXA6NTQ4Njk=',
+              id: 'Group:54869',
               kind: 'twingate.v1.Group',
               labels: {
                 'twingate.v1.Group/is_active': 'true',
