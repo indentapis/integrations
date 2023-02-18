@@ -12,7 +12,10 @@ export function getNextHandler({
   ) => {
     const { response } = await handleRequest(
       {
-        body: req.body || '{}',
+        body:
+          (typeof req.body === 'string'
+            ? req.body
+            : JSON.stringify(req.body)) || '{}',
         headers: req.headers,
         secret: process.env.INDENT_WEBHOOK_SECRET || 's123',
       },
