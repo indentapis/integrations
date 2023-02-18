@@ -8,14 +8,14 @@
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "TWINGATE_NETWORK=rainbow TWINGATE_API_KEY=exampleApiKey123456 jest --config ../../../jest.config.js twingate.test.*",
+    "test": "TWINGATE_NETWORK=rainbow TWINGATE_API_KEY=example123 jest --config ../../../jest.config.js twingate.test.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "canary"
+    "@indent/base-integration": "^0.0.1-canary.27"
   },
   "publishConfig": {
     "access": "public"

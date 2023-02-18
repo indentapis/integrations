@@ -6,6 +6,7 @@ import {
   HealthCheckResponse,
   IntegrationInfoResponse,
   PullUpdateRequest,
+  StatusCode,
   WriteRequest,
 } from '@indent/base-integration'
 import {
@@ -16,8 +17,12 @@ import {
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
+
 const TWINGATE_API_KEY = process.env.TWINGATE_API_KEY
 const NETWORK = process.env.TWINGATE_NETWORK
+
+export const kindTwingateUser = 'twingate.v1.User'
+export const kindTwingateGroup = 'twingate.v1.Group'
 
 type TwingateUser = {
   id: string
@@ -26,6 +31,7 @@ type TwingateUser = {
   firstName: string
   groups: { id: string }[]
 }
+
 type TwingateGroup = {
   id: string
   name: string
@@ -33,10 +39,61 @@ type TwingateGroup = {
   isActive: boolean
   users: { id: string }[]
 }
+
 type TwingatePullResponse = {
   users: TwingateUser[]
   groups: TwingateGroup[]
 }
+
+export const TWINGATE_GROUP_TYPE = 'MANUAL'
+export const TWINGATE_QUERY_LIST_GROUPS = `
+  query($filter: GroupFilterInput!) {
+    groups(filter: $filter, first: 1000) {
+      edges {
+        node {
+          id
+          name
+          createdAt
+          updatedAt
+          isActive
+          type
+        }
+      }
+      pageInfo {
+        startCursor
+        hasNextPage
+      }
+    }
+  }
+`
+
+const TWINGATE_QUERY_GET_USER_BY_EMAIL = `
+  query getUser($filter: UserFilterInput!){
+    users(filter: $filter) {
+        edges {
+          node{
+            id
+            firstName
+            lastName
+            email
+            createdAt
+            updatedAt
+            isAdmin
+            state
+          }
+        }
+      }
+    }
+`
+
+const TWINGATE_MUTATION_UPDATE_GROUP = `
+  mutation(id: ID!, addedUserIds: [ID], removedUserIds: [ID]){
+    groupUpdate(id: $id, addedUserIds: $addedUserIds, removedUserIds: $removedUserIds) {
+      ok
+      error
+    }
+  }
+`
 
 export class TwingateGroupIntegration
   extends BaseHttpIntegration
@@ -75,157 +132,116 @@ export class TwingateGroupIntegration
   FetchTwingate(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
-    config.baseURL = `https://${NETWORK}.twingate.com/api/graphql`
+    config.baseURL = `https://${NETWORK}.twingate.com/api/graphql/`
     config.headers = {
-      'Content-Type': 'application/json',
       Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-API-KEY': TWINGATE_API_KEY,
     }
-    config.headers = { 'X-API-KEY': TWINGATE_API_KEY }
     return this.Fetch(config)
   }
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
-    const response = (await this.FetchTwingate({
-      method: 'post',
+    const response = await this.FetchTwingate({
+      method: 'POST',
       data: {
-        query: `
-      fragment fields on User {
-        id
-        firstName
-        lastName
-        email
-        groups {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-      
-      {
-        users(after: null, first: 1000) {
-          edges {
-            node {
-              ...fields
-            }
-          }
-        }
-        groups {
-          edges {
-            node {
-              id
-              name
-              type
-              isActive
-              users {
-                edges {
-                  node {
-                    id
-                  }
-                }
-              }
-            }
-          }
-        }
-        groups {
-          edges {
-            node {
-              id
-              name
-              type
-              isActive
-              users {
-                edges {
-                  node {
-                    id
-                  }
-                }
-              }
-            }
-          }
-        }
-      }`,
-      },
-    }).then((r) => r.data)) as TwingatePullResponse
-
-    const { users, groups } = response
-    const timestamp = new Date().toISOString()
-    const resources: Resource[] = [
-      ...users.map(
-        (u) =>
-          ({
-            kind: 'twingate.v1.User',
-            id: u.id,
-            email: u.email,
-            displayName: [u.firstName, u.lastName].join(' '),
-            labels: { timestamp },
-          } as Resource)
-      ),
-      ...groups.map(
-        (g) =>
-          ({
-            kind: 'twingate.v1.Group',
-            id: g.id,
-            displayName: g.name,
-            labels: {
-              timestamp,
-              'twingate.v1.Group/is_active': String(g.isActive),
-              'twingate.v1.Group/type': String(g.type),
+        query: TWINGATE_QUERY_LIST_GROUPS,
+        variables: {
+          filter: {
+            type: {
+              in: [TWINGATE_GROUP_TYPE],
             },
-          } as Resource)
-      ),
-    ]
+          },
+        },
+      },
+    }).then((r) => r.data)
+
+    const {
+      data: {
+        groups: { edges: groupEdges },
+      },
+      // TODO: paginate if needed
+      pageInfo,
+    } = response
+    const groups = groupEdges.map((e) => e.node as TwingateGroup)
+    const timestamp = new Date().toISOString()
+    const resources: Resource[] = groups.map(
+      (g) =>
+        ({
+          kind: kindTwingateGroup,
+          id: g.id,
+          displayName: g.name,
+          labels: {
+            timestamp,
+            [`${kindTwingateGroup}/is_active`]: String(g.isActive),
+            [`${kindTwingateGroup}/type`]: String(g.type),
+          },
+        } as Resource)
+    )
 
     return { resources }
   }
 
-  async ApplyUpdate(_req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
-    // async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
-    // const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
-    // const { event, resources } = auditEvent
-    // const { email } = getResourceByKind(resources, 'user')
-    // const { id } = getResourceByKind(resources, 'twingate.v1.group')
+  async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
+    const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
+    const { event, resources } = auditEvent
+    const { email } = getResourceByKind(resources, 'user')
+    const { id } = getResourceByKind(resources, kindTwingateGroup)
 
-    // // get the twingate acl from remote
-    // const response = (await this.FetchTwingate({
-    //   method: 'get',
-    //   url: `/network/${NETWORK}/acl`,
-    // }).then((r) => r.data)) as TwingateACL
-    // // transform it
-    // let aclGroup = response.groups[id]
-    // if (aclGroup) {
-    //   aclGroup = aclGroup.filter((e: string) => e !== email)
-    //   if (event === 'access/grant') {
-    //     aclGroup.push(email)
-    //   }
-    // } else {
-    //   if (event === 'access/grant') {
-    //     aclGroup = [email]
-    //   }
-    // }
-    // response.groups[id] = aclGroup
+    // Get the Twingate user ID, assuming the first result always matches.
+    // TODO See if this can be stored in indent.
+    const userResponse = await this.FetchTwingate({
+      method: 'POST',
+      data: {
+        query: TWINGATE_QUERY_GET_USER_BY_EMAIL,
+        variables: {
+          filter: { email: { eq: email } },
+        },
+      },
+    })
+    const user = userResponse.data?.users?.edges[0]?.node
+    const key = event === 'access/grant' ? 'addedUserIds' : 'removedUserIds'
 
-    // const updateResponse = await this.FetchTwingate({
-    //   method: 'post',
-    //   url: `/network/${NETWORK}/acl`,
-    //   data: JSON.stringify(response, null, 2),
-    // })
+    const response = await this.FetchTwingate({
+      method: 'POST',
+      data: {
+        query: TWINGATE_MUTATION_UPDATE_GROUP,
+        variables: {
+          id,
+          [key]: [user.id],
+        },
+      },
+    })
 
-    // if (updateResponse.status > 201) {
-    //   return {
-    //     status: {
-    //       code: StatusCode.UNKNOWN,
-    //       details: { errorData: updateResponse.data },
-    //     },
-    //   }
-    // }
-
+    if (response.status > 204) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data },
+        },
+      }
+    }
+    if (response.data?.errors) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data.errors },
+        },
+      }
+    }
+    if (response.data?.groupUpdate?.error) {
+      return {
+        status: {
+          code: StatusCode.UNKNOWN,
+          details: { errorData: response.data.data.groupUpdate.error },
+        },
+      }
+    }
     return { status: {} }
   }
 }
 
-const _getResourceByKind = (resources: Resource[], kind: string): Resource =>
+const getResourceByKind = (resources: Resource[], kind: string): Resource =>
   resources.filter(
     (r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase())
   )[0]

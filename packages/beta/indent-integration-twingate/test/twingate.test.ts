@@ -1,10 +1,14 @@
 import { addMock } from '@indent/base-integration'
-import { TwingateGroupIntegration } from '../src'
+import {
+  TWINGATE_GROUP_TYPE,
+  TWINGATE_QUERY_LIST_GROUPS,
+  TwingateGroupIntegration,
+  kindTwingateGroup,
+} from '../src'
 
-const TWINGATE_API_KEY = process.env.TWINGATE_API_KEY || ''
 const NETWORK = process.env.TWINGATE_NETWORK || ''
 
-describe.skip('TwingateGroupIntegration', () => {
+describe('TwingateGroupIntegration', () => {
   describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
       const integration = new TwingateGroupIntegration()
@@ -34,7 +38,31 @@ describe.skip('TwingateGroupIntegration', () => {
     },
   ]
 
-  describe('ApplyUpdate', () => {
+  describe('PullUpdate', () => {
+    beforeEach(() => setupMocks())
+    it('should return users and groups', () => {
+      const integration = new TwingateGroupIntegration()
+      return integration
+        .PullUpdate({
+          kinds: [kindTwingateGroup],
+        })
+        .then((res) =>
+          expect(res.resources).toMatchObject([
+            {
+              displayName: 'Testing',
+              id: 'R3JvdXA6NTQ4Njk=',
+              kind: 'twingate.v1.Group',
+              labels: {
+                'twingate.v1.Group/is_active': 'true',
+                'twingate.v1.Group/type': 'MANUAL',
+              },
+            },
+          ])
+        )
+    })
+  })
+
+  describe.skip('ApplyUpdate', () => {
     beforeEach(() => setupMocks())
     describe('access/grant', () => {
       it('should respond with success (from mock)', () => {
@@ -73,9 +101,18 @@ describe.skip('TwingateGroupIntegration', () => {
 function setupMocks() {
   addMock(
     {
-      method: 'get',
-      baseURL: 'https://api.twingate.com/api/v2',
-      url: `/network/${NETWORK}/acl`,
+      method: 'POST',
+      baseURL: `https://${NETWORK}.twingate.com/api/graphql/`,
+      data: {
+        query: TWINGATE_QUERY_LIST_GROUPS,
+        variables: {
+          filter: {
+            type: {
+              in: [TWINGATE_GROUP_TYPE],
+            },
+          },
+        },
+      },
     },
     {
       config: {},
@@ -83,34 +120,27 @@ function setupMocks() {
       status: 200,
       statusText: '200',
       data: {
-        acls: [
-          {
-            action: 'accept',
-            users: ['*'],
-            ports: ['*:*'],
+        data: {
+          groups: {
+            edges: [
+              {
+                node: {
+                  id: 'R3JvdXA6NTQ4Njk=',
+                  name: 'Testing',
+                  createdAt: '2022-07-06T01:10:56.382376+00:00',
+                  updatedAt: '2022-07-06T01:10:56.382393+00:00',
+                  isActive: true,
+                  type: 'MANUAL',
+                },
+              },
+            ],
+            pageInfo: {
+              startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+              hasNextPage: false,
+            },
           },
-        ],
-        groups: {
-          'group:example': ['user5678@example.com'],
-        },
-        hosts: {
-          'example-host-1': '100.100.100.100',
         },
       },
-    }
-  )
-  addMock(
-    {
-      method: 'post',
-      baseURL: 'https://api.twingate.com/api/v2',
-      url: `/network/${NETWORK}/acl`,
-    },
-    {
-      config: {},
-      headers: {},
-      status: 201,
-      statusText: '201',
-      data: null,
     }
   )
 }
