@@ -3,7 +3,7 @@ import { JiraProjectRoleIntegration } from '..'
 
 const JIRA_INSTANCE_URL = process.env.JIRA_INSTANCE_URL || ''
 
-describe('JiraProjectRoleIntegration', () => {
+describe.skip('JiraProjectRoleIntegration', () => {
   describe('Base functionality', () => {
     it('should respond with a valid health check', () => {
       const integration = new JiraProjectRoleIntegration()

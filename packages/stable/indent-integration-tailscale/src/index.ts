@@ -15,7 +15,7 @@ import {
   Resource,
 } from '@indent/types'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import tailscale from '../lib/tailscale'
+// import tailscale from '../lib/tailscale'
 
 const { version } = require('../package.json')
 const TAILSCALE_API_KEY = process.env.TAILSCALE_API_KEY
@@ -110,6 +110,7 @@ export class TailscaleGroupIntegration
     let updateResponse: AxiosResponse
 
     if (TAILSCALE_ALLOW_COMMENTS) {
+      /**
       try {
         // JWCC = JSON with comments and trailing comments
         const aclJWCC = resData as string
@@ -162,6 +163,7 @@ export class TailscaleGroupIntegration
         console.error(err)
         return { status: { code: StatusCode.UNKNOWN, message: err.toString() } }
       }
+       */
     } else {
       // !!! Warning !!!
       // By using `application/json` updating ACLs will erase all the comments
