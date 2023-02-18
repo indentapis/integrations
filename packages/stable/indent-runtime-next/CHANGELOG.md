@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/runtime-next@0.0.1-canary.29...@indent/runtime-next@0.0.1-canary.30) (2023-02-18)
+
+
+### Bug Fixes
+
+* next body parsing ([1cfe70a](https://github.com/indentapis/integrations/commit/1cfe70a776f36eec0535e80d000906892b7ad758))
+
+
+
+
+
 ## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/runtime-next@0.0.1-canary.28...@indent/runtime-next@0.0.1-canary.29) (2023-02-18)
 
 **Note:** Version bump only for package @indent/runtime-next

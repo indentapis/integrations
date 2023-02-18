@@ -2,7 +2,7 @@
   "name": "@indent/runtime-next",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.29",
+  "version": "0.0.1-canary.30",
   "files": [
     "lib"
   ],
