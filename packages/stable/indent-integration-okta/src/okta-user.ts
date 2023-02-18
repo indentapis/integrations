@@ -10,15 +10,19 @@ import { PullUpdateResponse, Resource } from '@indent/types'
 import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
-
-// Okta Slack App ID - used to more accurately link okta users to slack users
-const APP_ID = process.env.OKTA_SLACK_APP_ID || ''
 
 export class OktaUserIntegration
   extends BaseHttpIntegration
   implements PullIntegration
 {
+  secretNames: string[] = [
+    'OKTA_DOMAIN',
+    'OKTA_TOKEN',
+    'OKTA_SLACK_APP_ID',
+    'OKTA_CLIENT_ID',
+    'OKTA_PRIVATE_KEY',
+  ]
+
   GetInfo(): IntegrationInfoResponse {
     return {
       version,
@@ -36,6 +40,10 @@ export class OktaUserIntegration
   }
 
   async PullUpdate(req: PullUpdateRequest): Promise<PullUpdateResponse> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+    // Okta Slack App ID - used to more accurately link okta users to slack users
+    const APP_ID = process.env.OKTA_SLACK_APP_ID || ''
+
     if (!this.MatchPull(req)) {
       return {
         status: {
@@ -100,10 +108,11 @@ export class OktaUserIntegration
           transform: (appuser) => ({
             id: [OKTA_DOMAIN, appuser.id].join(`/api/v1/apps/${APP_ID}/users/`),
             kind: 'okta.v1.AppUser',
-            email: appuser.profile.email,
-            displayName: [appuser.profile.firstName, appuser.profile.lastName]
-              .filter(Boolean)
-              .join(' '),
+            email: appuser.profile.email || appuser.credentials.userName,
+            displayName:
+              [appuser.profile.firstName, appuser.profile.lastName]
+                .filter(Boolean)
+                .join(' ') || appuser.credentials.userName,
             labels: {
               oktaAppId: APP_ID,
               oktaId: appuser.id,
@@ -116,27 +125,26 @@ export class OktaUserIntegration
             },
           }),
         })
-    const slackUserResources = (
+    const slackUserResources: Resource[] = (
       appUserResources.length > 0 ? appUserResources : oktaUserResources
     ).map((r) =>
       pick({
-        // Due to missing slack app ID this pull webhook resolves based on email
         id: r.labels.slackId || '',
         displayName: r.displayName,
         kind: 'slack/user',
         email: r.email,
-        labels: {
+        labels: pick({
           oktaId: r.labels.oktaId,
           managerId: r.labels.managerId,
           timestamp,
-        },
-      } as Resource)
+        }),
+      })
     )
 
     let resources = [
       ...oktaUserResources,
       ...appUserResources,
-      ...slackUserResources,
+      ...slackUserResources.filter((u) => u.id || u.email),
     ]
 
     console.log('@indent/integration-okta: pulled users')

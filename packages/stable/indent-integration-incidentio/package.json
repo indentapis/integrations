@@ -1,22 +1,21 @@
 {
-  "name": "@indent/integration-aws-iam",
+  "name": "@indent/integration-incidentio",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.26",
+  "version": "0.0.1-canary.32",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "jest --config ../../../jest.config.js example.test.*",
+    "test": "INCIDENTIO_API_KEY=y_abcdefgh123 jest --config ../../../jest.config.js incidentio.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@aws-sdk/client-iam": "3.46.0",
-    "@indent/base-integration": "^0.0.1-canary.27"
+    "@indent/base-integration": "^0.0.1-canary.28"
   },
   "publishConfig": {
     "access": "public"

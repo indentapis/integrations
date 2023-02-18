@@ -19,5 +19,11 @@ _out/copybara: _out/copybara.jar _out
 _out/copybara.jar:
 	./templates/scripts/download.sh $(COPYBARA_JAR_URL) $@ $(COPYBARA_JAR_SHA)
 
+test:
+	yarn test
+
+build:
+	yarn build
+
 version-canary:
-	yarn version-canary --yes && yarn  publish-git-canary --yes
+	yarn version-canary --yes && yarn publish-git-canary --yes

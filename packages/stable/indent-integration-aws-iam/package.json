@@ -1,0 +1,31 @@
+{
+  "name": "@indent/integration-aws-iam",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.1-canary.38",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "test": "jest --config ../../../jest.config.js example.test.*",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@aws-sdk/client-iam": "3.46.0",
+    "@aws-sdk/client-identitystore": "^3.259.0",
+    "@aws-sdk/client-organizations": "^3.262.0",
+    "@aws-sdk/client-sso-admin": "^3.259.0",
+    "@aws-sdk/client-sts": "^3.259.0",
+    "@aws-sdk/types": "^3.257.0",
+    "@indent/base-integration": "^0.0.1-canary.28"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "gitHead": "HEAD~1"
+}

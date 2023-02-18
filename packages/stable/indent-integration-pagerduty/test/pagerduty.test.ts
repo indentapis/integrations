@@ -3,10 +3,18 @@ import { readFileSync } from 'fs'
 import path from 'path'
 import { PagerdutyDecisionIntegration } from '..'
 
-const date = new Date().toISOString()
+const now = new Date()
+const before = new Date(now.getTime())
+before.setMinutes(before.getMinutes() - 1)
+const since = before.toISOString()
+const after = new Date(now.getTime())
+after.setMinutes(after.getMinutes() + 5)
+const until = after.toISOString()
+const date = now.toISOString()
 const autoApproveInput = {
   events: [
     {
+      timestamp: date,
       event: 'access/request',
       actor: {
         id: 'U0ABCDEFGHIJKLMNOP',
@@ -72,7 +80,7 @@ function setupMocks() {
     {
       method: 'get',
       baseURL: 'https://api.pagerduty.com',
-      url: `/schedules/${SNAPSHOT_V2_SCHEDULES.schedules[0].id}/users`,
+      url: `/schedules/${SNAPSHOT_V2_SCHEDULES.schedules[0].id}/users?since=${since}&until=${until}`,
     },
     success(SNAPSHOT_V2_SCHEDULES_ONCALLS)
   )

@@ -2,14 +2,16 @@
   "name": "@indent/integration-tailscale",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.20",
+  "version": "0.0.1-canary.21",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "TAILSCALE_TAILNET=example TAILSCALE_API_KEY=exampleApiKey123456 jest --config ../../../jest.config.js tailscale.test.*",
-    "build": "yarn run clean && yarn run compile",
+    "test": "TAILSCALE_ALLOW_COMMENTS=1 npm run test:tailscale && npm run test:tailscale",
+    "test:tailscale": "TAILSCALE_TAILNET=example TAILSCALE_API_KEY=exampleApiKey123456 jest --config ../../../jest.config.js tailscale.test.*",
+    "build": "yarn run clean && yarn run gopherjs && yarn run compile",
+    "gopherjs": "cd tailscale-go && $GOPATH/bin/gopherjs build main.go -m -o ../lib/tailscale.js",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"

@@ -18,6 +18,14 @@ git clone https://github.com/indentapis/integrations && cd integrations
 yarn
 ```
 
+Install Go `v1.18` and GopherJS:
+
+```
+brew install go@1.18
+brew link go@1.18
+go install github.com/gopherjs/gopherjs
+```
+
 To configure your project, by linking all the modules together:
 
 ```bash
@@ -61,4 +69,20 @@ Or for a specific integration:
 
 ```bash
 yarn test --scope='@indent/<integration>-webhook'
+```
+
+### Releasing
+
+When releasing a new package/integration, you will first need to create a PR from your branch:
+
+```bash
+git checkout -b add-feature
+# or 
+gh pr create <ID-num>
+```
+
+And then publish the canary packages, which will build and test the integrations before releasing:
+
+```
+make version-canary
 ```

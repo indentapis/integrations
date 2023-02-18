@@ -14,14 +14,27 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest] 
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - name: setup-node
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: 14.x
           cache: yarn
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.18.5'
+          cache: true
+      - name: go.env
+        shell: bash
+        run: |
+          echo "GOPATH=$(go env GOPATH)" >> $GITHUB_ENV
+          echo "GOBIN=$(go env GOPATH)/bin" >> $GITHUB_ENV
+      - name: go.deps
+        run: |
+          go mod download
+          go install github.com/gopherjs/gopherjs
       - name: deps
         run: |
           yarn

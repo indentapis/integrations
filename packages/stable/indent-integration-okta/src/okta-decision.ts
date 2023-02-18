@@ -13,6 +13,9 @@ import { callOktaAPI } from './okta-api'
 
 const version = require('../package.json').version
 
+const AUTO_APPROVAL_OKTA_GROUPS = process.env.AUTO_APPROVAL_OKTA_GROUPS || ''
+const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6' // hours
+
 export type OktaDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedOktaGroups?: string[]
   getApprovalEvent?: Event
@@ -32,6 +35,11 @@ export class OktaDecisionIntegration
       this._name = opts.name
       this._autoApprovedOktaGroups = opts.autoApprovedOktaGroups
       this._getApprovalEvent = opts.getApprovalEvent
+    }
+    if (!this._autoApprovedOktaGroups) {
+      if (AUTO_APPROVAL_OKTA_GROUPS !== '') {
+        this._autoApprovedOktaGroups = AUTO_APPROVAL_OKTA_GROUPS.split(',')
+      }
     }
   }
 
@@ -86,7 +94,9 @@ export class OktaDecisionIntegration
 
 export function getDefaultApprovalEvent(reqEvent: Event): Event {
   let expireTime = new Date()
-  let hours = 1
+  const hours = parseInt(AUTO_APPROVAL_DURATION, 10)
+
+  expireTime.setTime(expireTime.getTime() + hours * 60 * 60 * 1000)
 
   expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
 
@@ -94,7 +104,7 @@ export function getDefaultApprovalEvent(reqEvent: Event): Event {
     actor: {
       displayName: 'Okta Approval Bot',
       email: 'bot@indent.com',
-      id: 'custom-okta-approval-bot',
+      id: 'okta-approval-bot',
       kind: 'indent.v1.Bot',
     },
     event: 'access/approve',

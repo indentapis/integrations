@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 env:
   AWS_REGION: us-west-2
@@ -16,7 +15,14 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [14]
-        integration: [okta, pagerduty, tailscale, auto-approval, aws-iam]
+        integration:
+          - okta
+          - aws-iam
+          - tailscale
+          - pagerduty
+          - incidentio
+          - auto-approval
+          - okta-auto-approval
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout
@@ -48,7 +54,17 @@ jobs:
           mv $WEBHOOK_DIR/package.example.json $WEBHOOK_DIR/package.json
           cd templates/scripts && yarn && cd ../../ && \
             npx ts-node ./templates/scripts/generate.ts
-          sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION}/g" $WEBHOOK_DIR/package.json
+          declare -a INTEGRATION_PKG
+          case $INTEGRATION in
+            "okta-auto-approval")
+              INTEGRATION_PKG="okta"
+              ;;
+            *)
+              INTEGRATION_PKG=$INTEGRATION
+              ;;
+          esac
+          echo $INTEGRATION_PKG
+          sed -i "s/\@indent\/integration-example/\@indent\/integration-${INTEGRATION_PKG}/g" $WEBHOOK_DIR/package.json
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@ee29fafb6aa450493bac9136b346e51ea60a8b5e
@@ -58,6 +74,7 @@ jobs:
       - name: Build example (${{ matrix.integration }})
         env:
           WEBHOOK_DIR: tmp/examples/${{ matrix.indent-runtime }}-${{ matrix.integration }}-webhook
+          INTEGRATION: ${{ matrix.integration }}
         run: |
           cd $WEBHOOK_DIR
           yarn build

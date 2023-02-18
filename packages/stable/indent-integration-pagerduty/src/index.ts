@@ -15,7 +15,10 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
 const PAGERDUTY_KEY = process.env.PAGERDUTY_KEY || ''
-const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
+const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6' // hours
+const AUTO_APPROVAL_WINDOW_BEFORE =
+  process.env.AUTO_APPROVAL_WINDOW_BEFORE || '1' // minutes
+const AUTO_APPROVAL_WINDOW_AFTER = process.env.AUTO_APPROVAL_WINDOW_AFTER || '5' // minutes
 const AUTO_APPROVAL_PAGERDUTY_SCHEDULES =
   process.env.AUTO_APPROVAL_PAGERDUTY_SCHEDULES || ''
 
@@ -121,11 +124,23 @@ export class PagerdutyDecisionIntegration
         : true
     )
 
+    const sinceMs = Date.parse(req.events[0].timestamp) || Date.now()
+    const before = new Date(sinceMs)
+    before.setMinutes(
+      before.getMinutes() - parseInt(AUTO_APPROVAL_WINDOW_BEFORE, 10)
+    )
+    const since = before.toISOString()
+    const after = new Date(sinceMs)
+    after.setMinutes(
+      after.getMinutes() + parseInt(AUTO_APPROVAL_WINDOW_AFTER, 10)
+    )
+    const until = after.toISOString()
+
     const onCallResponses = await Promise.all(
       approvedSchedules.map((sched) =>
         this.FetchPagerduty({
           method: 'get',
-          url: `/schedules/${sched.id}/users`,
+          url: `/schedules/${sched.id}/users?since=${since}&until=${until}`,
         })
       )
     )
@@ -134,6 +149,7 @@ export class PagerdutyDecisionIntegration
       .map((s) => s.data.users)
       .flat()
       .map((u) => u.email)
+      .filter(Boolean)
       .reduce((acc, email) => ({ ...acc, [email]: true }), {})
 
     // get approved on call emails

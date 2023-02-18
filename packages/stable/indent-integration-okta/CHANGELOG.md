@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.43](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.42...@indent/integration-okta@0.0.1-canary.43) (2022-12-07)
+
+
+### Bug Fixes
+
+* **templates:** add okta-auto-approval ([56e1f73](https://github.com/indentapis/integrations/commit/56e1f7341f0098fa09180249263a74e2a6768e94))
+
+
+
+
+
+## [0.0.1-canary.42](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.41...@indent/integration-okta@0.0.1-canary.42) (2022-11-29)
+
+
+### Bug Fixes
+
+* **integrations-okta:** add error handling & fix empty secrets ([#49](https://github.com/indentapis/integrations/issues/49)) ([5e40847](https://github.com/indentapis/integrations/commit/5e408476da926e1618291218716d7874e7e82e26))
+
+
+
+
+
+## [0.0.1-canary.41](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.40...@indent/integration-okta@0.0.1-canary.41) (2022-11-28)
+
+
+### Features
+
+* **aws-lambda:** add AWS Secrets Manager support ([#47](https://github.com/indentapis/integrations/issues/47)) ([82dc091](https://github.com/indentapis/integrations/commit/82dc0913c905743abfe8aa752350fcb79f62a354))
+
+
+
+
+
+## [0.0.1-canary.40](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.39...@indent/integration-okta@0.0.1-canary.40) (2022-08-15)
+
+
+### Features
+
+* **okta:** add `PullUpdate` capability for apps [ID-1674] ([#40](https://github.com/indentapis/integrations/issues/40)) ([2345aa2](https://github.com/indentapis/integrations/commit/2345aa2fcf750ae87405170178e7dfebbdc17976))
+
+
+
+
+
+## [0.0.1-canary.39](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.38...@indent/integration-okta@0.0.1-canary.39) (2022-07-19)
+
+
+### Bug Fixes
+
+* **okta:** pull users ([d7503fa](https://github.com/indentapis/integrations/commit/d7503fa595175d167135d89b9e1ee1ab78dbb76d))
+
+
+
+
+
+## [0.0.1-canary.38](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.37...@indent/integration-okta@0.0.1-canary.38) (2022-07-19)
+
+
+### Bug Fixes
+
+* **okta:** use credentials.userName fallback ([724a267](https://github.com/indentapis/integrations/commit/724a267b3866d90009dec4541b0b0ccd96ed12b8))
+
+
+
+
+
 ## [0.0.1-canary.37](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.36...@indent/integration-okta@0.0.1-canary.37) (2022-06-30)
 
 **Note:** Version bump only for package @indent/integration-okta

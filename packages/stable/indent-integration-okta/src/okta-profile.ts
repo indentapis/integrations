@@ -13,7 +13,6 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { getToken } from './okta-auth'
 
 const version = require('../package.json').version
-const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
 const OKTA_PROFILE_RESOURCE_KIND =
   process.env.OKTA_PROFILE_RESOURCE_KIND || 'ProfileAttribute'
 const OKTA_PROFILE_ATTRIBUTE =
@@ -48,6 +47,8 @@ export class OktaProfileIntegration
   async FetchOkta(
     config: AxiosRequestConfig<any>
   ): Promise<AxiosResponse<any, any>> {
+    const OKTA_DOMAIN = process.env.OKTA_DOMAIN || ''
+
     const { Authorization } = await getToken('okta.users.manage')
     config.baseURL = /http/.test(OKTA_DOMAIN)
       ? OKTA_DOMAIN

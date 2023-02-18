@@ -2,20 +2,20 @@
   "name": "@indent/integration-pagerduty",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.30",
+  "version": "0.0.1-canary.34",
   "files": [
     "lib"
   ],
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "PAGERDUTY_API_KEY=y_abcdefgh123 jest --config ../../../jest.config.js pagerduty.*",
+    "test": "PAGERDUTY_KEY=y_abcdefgh123 jest --config ../../../jest.config.js pagerduty.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.27"
+    "@indent/base-integration": "^0.0.1-canary.28"
   },
   "publishConfig": {
     "access": "public"

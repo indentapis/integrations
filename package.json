@@ -18,9 +18,9 @@
     "clean-build": "turbo run build --no-cache --force",
     "prepublish": "lerna run prepublishOnly",
     "publish-canary": "lerna publish --canary",
-    "publish-git-canary": "yarn publish-canary from-package --git-head HEAD~1",
-    "version-canary": "lerna version prerelease -m 'chore(release): publish-canary' --conventional-commits --preid canary --no-private",
-    "version-canary-force": "yarn version-canary --force-publish"
+    "publish-git-canary": "yarn test && yarn publish-canary from-package --git-head HEAD~1",
+    "version-canary": "yarn test && lerna version prerelease -m 'chore(release): publish-canary' --conventional-commits --preid canary --no-private",
+    "version-canary-force": "yarn test && yarn version-canary --force-publish"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.89",

@@ -8,6 +8,21 @@ variable "aws_profile" {
   default = "default"
 }
 
+variable "secrets_prefix" {
+  type    = string
+  default = "idt-"
+}
+
+variable "secrets_backend" {
+  type    = string
+  default = "env-var"
+
+  validation {
+    condition     = length(regexall("^(aws-secrets-manager|env-var)$", var.secrets_backend)) > 0
+    error_message = "ERROR: Valid backends are \"aws-secrets-manager\" and \"env-var\"!"
+  }
+}
+
 variable "name" {
   type    = string
   default = "idt-custom-webhook"
