@@ -2,7 +2,7 @@
   "name": "@indent/integration-aws-iam",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.38",
+  "version": "0.0.1-canary.39",
   "files": [
     "lib"
   ],
@@ -21,7 +21,7 @@
     "@aws-sdk/client-sso-admin": "^3.259.0",
     "@aws-sdk/client-sts": "^3.259.0",
     "@aws-sdk/types": "^3.257.0",
-    "@indent/base-integration": "^0.0.1-canary.28"
+    "@indent/base-integration": "^0.0.1-canary.29"
   },
   "publishConfig": {
     "access": "public"

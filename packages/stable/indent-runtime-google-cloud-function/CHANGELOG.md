@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/runtime-google-cloud-function@0.0.1-canary.28...@indent/runtime-google-cloud-function@0.0.1-canary.29) (2023-02-18)
+
+**Note:** Version bump only for package @indent/runtime-google-cloud-function
+
+
+
+
+
 ## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/runtime-google-cloud-function@0.0.1-canary.27...@indent/runtime-google-cloud-function@0.0.1-canary.28) (2022-11-28)
 
 **Note:** Version bump only for package @indent/runtime-google-cloud-function

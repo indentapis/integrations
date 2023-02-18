@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/integration-jira@0.0.1-canary.29...@indent/integration-jira@0.0.1-canary.30) (2023-02-18)
+
+
+### Bug Fixes
+
+* build issues ([fdd4866](https://github.com/indentapis/integrations/commit/fdd4866563a445868169e1eff738dd3b6ed7a3a7))
+
+
+
+
+
 ## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-jira@0.0.1-canary.28...@indent/integration-jira@0.0.1-canary.29) (2022-11-28)
 
 **Note:** Version bump only for package @indent/integration-jira

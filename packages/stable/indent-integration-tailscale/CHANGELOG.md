@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.22](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.21...@indent/integration-tailscale@0.0.1-canary.22) (2023-02-18)
+
+
+### Bug Fixes
+
+* build issues ([fdd4866](https://github.com/indentapis/integrations/commit/fdd4866563a445868169e1eff738dd3b6ed7a3a7))
+* tailscale types ([a775619](https://github.com/indentapis/integrations/commit/a7756197421407c4ec0104ec5e1beaa71afb57be))
+
+
+
+
+
 ## [0.0.1-canary.21](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.20...@indent/integration-tailscale@0.0.1-canary.21) (2022-09-07)
 
 
