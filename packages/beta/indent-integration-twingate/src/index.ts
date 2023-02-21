@@ -87,7 +87,7 @@ const TWINGATE_QUERY_GET_USER_BY_EMAIL = `
 `
 
 const TWINGATE_MUTATION_UPDATE_GROUP = `
-  mutation(id: ID!, addedUserIds: [ID], removedUserIds: [ID]){
+  mutation($id: ID!, $addedUserIds: [ID], $removedUserIds: [ID]){
     groupUpdate(id: $id, addedUserIds: $addedUserIds, removedUserIds: $removedUserIds) {
       ok
       error
