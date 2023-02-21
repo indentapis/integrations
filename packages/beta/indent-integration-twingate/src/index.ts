@@ -198,7 +198,7 @@ export class TwingateGroupIntegration
           filter: { email: { eq: email } },
         },
       },
-    })
+    }).then((r) => r.data)
     const user = userResponse.data?.users?.edges[0]?.node
     const key = event === 'access/grant' ? 'addedUserIds' : 'removedUserIds'
 
@@ -208,7 +208,7 @@ export class TwingateGroupIntegration
         query: TWINGATE_MUTATION_UPDATE_GROUP,
         variables: {
           id: Buffer.from(id, 'ascii').toString('base64'),
-          [key]: [user.id],
+          [key]: [user?.id],
         },
       },
     })
@@ -217,7 +217,7 @@ export class TwingateGroupIntegration
       return {
         status: {
           code: StatusCode.UNKNOWN,
-          details: { errorData: response.data },
+          details: { errorData: JSON.stringify(response.data) },
         },
       }
     }
@@ -225,15 +225,17 @@ export class TwingateGroupIntegration
       return {
         status: {
           code: StatusCode.UNKNOWN,
-          details: { errorData: response.data.errors },
+          details: { errorData: JSON.stringify(response.data.errors) },
         },
       }
     }
-    if (response.data?.groupUpdate?.error) {
+    if (response.data?.data?.groupUpdate?.error) {
       return {
         status: {
           code: StatusCode.UNKNOWN,
-          details: { errorData: response.data.data.groupUpdate.error },
+          details: {
+            errorData: JSON.stringify(response.data.data.groupUpdate.error),
+          },
         },
       }
     }
