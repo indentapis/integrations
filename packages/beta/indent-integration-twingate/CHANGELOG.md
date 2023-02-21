@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.24](https://github.com/indentapis/integrations/compare/@indent/integration-twingate@0.0.1-canary.23...@indent/integration-twingate@0.0.1-canary.24) (2023-02-21)
+
+
+### Bug Fixes
+
+* **twingate:** groupUpdate vars ([ae279a0](https://github.com/indentapis/integrations/commit/ae279a0f087523aebef7f6d25bb3e98faa19b590))
+
+
+
+
+
 ## [0.0.1-canary.23](https://github.com/indentapis/integrations/compare/@indent/integration-twingate@0.0.1-canary.22...@indent/integration-twingate@0.0.1-canary.23) (2023-02-21)
 
 
