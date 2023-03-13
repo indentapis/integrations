@@ -98,6 +98,30 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
+    name: 'opsgenie',
+    displayName: 'OpsGenie',
+    runtimes: ['AWS Lambda'],
+    integrations: ['OpsgenieDecisionIntegration'],
+    environmentVariables: [
+      'OPSGENIE_KEY_KEY',
+      'AUTO_APPROVAL_DURATION',
+      'AUTO_APPROVAL_SCHEDULES',
+    ],
+    capabilities: ['GetDecision', 'PullUpdate'],
+    links: {
+      repoSource: 'packages/stable/indent-integration-opsgenie',
+    },
+    readme: {
+      connection: [
+        '[Go to OpsGenie > Settings > Integrations](https://support.atlassian.com/opsgenie/docs/create-a-default-api-integration/) and create a new API key for readonly access',
+        'Add this as `OPSGENIE_KEY` as a GitHub Secret',
+        'Optional: select which on-call schedules get auto-approval by setting `AUTO_APPROVAL_SCHEDULES` as a GitHub Secret',
+      ],
+      docsLink:
+        '<a href="https://indent.com/docs/integrations/opsgenie" target="_blank">this link</a>',
+    },
+  },
+  {
     name: 'tailscale',
     displayName: 'Tailscale',
     integrations: ['TailscaleGroupIntegration'],

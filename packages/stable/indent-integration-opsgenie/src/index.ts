@@ -17,6 +17,7 @@ const version = require('../package.json').version
 
 const OPSGENIE_KEY = process.env.OPSGENIE_KEY || ''
 const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
+const AUTO_APPROVAL_SCHEDULES = process.env.AUTO_APPROVAL_SCHEDULES || ''
 
 export type OpsgenieDecisionIntegrationOpts = BaseHttpIntegrationOpts & {
   autoApprovedSchedules?: string[]
@@ -44,6 +45,11 @@ export class OpsgenieDecisionIntegration
       this._name = opts.name
       this._autoApprovedSchedules = opts.autoApprovedSchedules
       this._getApprovalEvent = opts.getApprovalEvent
+    }
+    if (!this._autoApprovedSchedules) {
+      if (AUTO_APPROVAL_SCHEDULES !== '') {
+        this._autoApprovedSchedules = AUTO_APPROVAL_SCHEDULES.split(',')
+      }
     }
   }
 

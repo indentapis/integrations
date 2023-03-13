@@ -98,8 +98,6 @@ export function getDefaultApprovalEvent(reqEvent: Event): Event {
 
   expireTime.setTime(expireTime.getTime() + hours * 60 * 60 * 1000)
 
-  expireTime.setTime(expireTime.getTime() + 1 * 60 * 60 * 1000)
-
   return {
     actor: {
       displayName: 'Okta Approval Bot',
