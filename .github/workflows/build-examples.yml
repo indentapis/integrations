@@ -20,6 +20,7 @@ jobs:
           - aws-iam
           - tailscale
           - pagerduty
+          - opsgenie
           - incidentio
           - auto-approval
           - okta-auto-approval
