@@ -7,6 +7,7 @@ integration_target_tailscale = "git@github.com:indentapis/template-aws-lambda-ta
 integration_target_auto_approval = "git@github.com:indentapis/template-aws-lambda-auto-approval.git"
 integration_target_aws_iam = "git@github.com:indentapis/template-aws-lambda-aws-iam.git"
 integration_target_incidentio = "git@github.com:indentapis/template-aws-lambda-incidentio.git"
+integration_target_opsgenie = "git@github.com:indentapis/template-aws-lambda-opsgenie.git"
 
 core.workflow(
     name = "okta",
@@ -117,5 +118,21 @@ core.workflow(
     transformations = [
       metadata.replace_message("sync(integration): aws-lambda-incidentio"),
       core.move("tmp/examples/aws-lambda-incidentio-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "opsgenie",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_opsgenie,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-opsgenie-webhook", "tmp/examples/aws-lambda-opsgenie-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-opsgenie"),
+      core.move("tmp/examples/aws-lambda-opsgenie-webhook", ""),
     ],
 )
