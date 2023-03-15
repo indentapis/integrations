@@ -103,7 +103,7 @@ export const catalog: CatalogItem[] = [
     runtimes: ['AWS Lambda'],
     integrations: ['OpsgenieDecisionIntegration'],
     environmentVariables: [
-      'OPSGENIE_KEY_KEY',
+      'OPSGENIE_KEY',
       'AUTO_APPROVAL_DURATION',
       'AUTO_APPROVAL_SCHEDULES',
     ],
