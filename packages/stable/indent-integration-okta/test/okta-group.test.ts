@@ -24,11 +24,12 @@ describe('OktaGroupIntegration', () => {
 
   const resourcePair = [
     {
-      kind: 'user',
+      kind: 'okta.v1.User',
       id: 'u123',
+      email: 'test@example.com',
     },
     {
-      kind: 'group',
+      kind: 'okta.v1.Group',
       id: 'g123',
     },
   ]
@@ -107,7 +108,7 @@ describe('OktaGroupIntegration', () => {
           kind: 'slack/user',
           email: 'jane.okta@example.com',
           labels: {
-            oktaId: '0oabcdefg1234',
+            oktaId: 'u123',
           },
         },
         meta: {
@@ -142,6 +143,24 @@ function setupMocks() {
     data: null,
   }
 
+  addMock(
+    {
+      method: 'get',
+      url: '/api/v1/users?search=(profile.email eq "test@example.com")',
+      baseURL: `https://${OKTA_DOMAIN}`,
+    },
+    {
+      config: {},
+      headers: {},
+      status: 200,
+      statusText: '200',
+      data: [
+        {
+          id: 'u123',
+        },
+      ],
+    }
+  )
   addMock(
     {
       method: 'put',
@@ -180,7 +199,7 @@ function setupMocks() {
   addMock(
     {
       method: 'get',
-      url: '/api/v1/users/0oabcdefg1234/groups',
+      url: '/api/v1/users/u123/groups',
       baseURL: `https://${OKTA_DOMAIN}`,
     },
     {

@@ -88,7 +88,7 @@ export class OktaProfileIntegration
     if (event) {
       const oktaUserId = oktaUser.labels['oktaId'] || oktaUser.id
       const user = await this.FetchOkta({
-        method: 'GET',
+        method: 'get',
         url: `/api/v1/users/${oktaUserId}`,
       }).then((r) => r.data)
 
@@ -112,7 +112,7 @@ export class OktaProfileIntegration
       }
 
       const response = await this.FetchOkta({
-        method: 'POST',
+        method: 'post',
         url: `/api/v1/users/${oktaUserId}`,
         data: updatedUser,
       })

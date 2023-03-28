@@ -66,10 +66,30 @@ export class OktaGroupIntegration
   async ApplyUpdate(req: ApplyUpdateRequest): Promise<ApplyUpdateResponse> {
     const auditEvent = req.events.find((e) => /grant|revoke/.test(e.event))
     const { event, resources } = auditEvent
-    const user = getOktaIdFromResources(resources, 'user')
     const group =
       getOktaIdFromResources(resources, 'app') ||
       getOktaIdFromResources(resources, 'group')
+    let user = getOktaIdFromResources(resources, 'user')
+
+    if (!user) {
+      // Get the Okta User ID from the API based on email
+      const email = getUserEmailFromResources(resources, 'user')
+      const { response } = await callOktaAPI(this, {
+        method: 'GET',
+        url: `/api/v1/users?search=(profile.email eq "${email}")`,
+        scope: 'okta.users.manage',
+      })
+      user = response.data?.[0]?.id
+      if (!user) {
+        return {
+          status: {
+            code: StatusCode.NOT_FOUND,
+            message: `failed to find Okta user with email ${email}`,
+          },
+        }
+      }
+    }
+
     const method =
       event === 'access/grant'
         ? // If it's a grant event, add the user
@@ -137,6 +157,15 @@ export class OktaGroupIntegration
   }
 }
 
+const getUserEmailFromResources = (
+  resources: Resource[],
+  kind: string
+): string => {
+  return resources
+    .filter((r) => r.kind && r.kind.toLowerCase().includes(kind.toLowerCase()))
+    .map((r) => r.email)[0]
+}
+
 const getOktaIdFromResources = (
   resources: Resource[],
   kind: string
@@ -147,8 +176,10 @@ const getOktaIdFromResources = (
       if (r.labels && r.labels.oktaId) {
         return r.labels.oktaId
       }
-
-      return r.id
+      if (kind !== 'user' || r.kind.toLowerCase() === 'okta.v1.user') {
+        return r.id
+      }
+      return ''
     })[0]
 }
 

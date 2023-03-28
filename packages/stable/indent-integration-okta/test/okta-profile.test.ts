@@ -20,7 +20,7 @@ describe('OktaProfileIntegration', () => {
 
   const resourcePair = [
     {
-      kind: 'user',
+      kind: 'okta.v1.User',
       id: '00ub0oNGTSWTBKOLGLNR',
       labels: {
         'okta/userProfileAttribute/id': 'customer_id',
@@ -38,7 +38,7 @@ describe('OktaProfileIntegration', () => {
     },
   ]
 
-  describe.skip('ApplyUpdate', () => {
+  describe('ApplyUpdate', () => {
     beforeEach(() => setupMocks())
 
     describe('access/grant', () => {
@@ -78,7 +78,7 @@ describe('OktaProfileIntegration', () => {
 function setupMocks() {
   addMock(
     {
-      method: 'GET',
+      method: 'get',
       url: '/api/v1/users/00ub0oNGTSWTBKOLGLNR',
       baseURL: `https://${OKTA_DOMAIN}`,
     },
@@ -105,9 +105,10 @@ function setupMocks() {
   )
   addMock(
     {
-      method: 'POST',
+      method: 'post',
       url: '/api/v1/users/00ub0oNGTSWTBKOLGLNR',
       baseURL: `https://${OKTA_DOMAIN}`,
+      data: { profile: { customer_id: ['C123456'] } },
     },
     {
       config: {},
