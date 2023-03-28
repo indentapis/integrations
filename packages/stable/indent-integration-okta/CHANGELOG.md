@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.45](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.44...@indent/integration-okta@0.0.1-canary.45) (2023-03-28)
+
+
+### Bug Fixes
+
+* **okta:** resolve user by email ([38b849b](https://github.com/indentapis/integrations/commit/38b849b605db4ec01904feaa7526ef0028af6d09))
+
+
+
+
+
 ## [0.0.1-canary.44](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.43...@indent/integration-okta@0.0.1-canary.44) (2023-02-18)
 
 

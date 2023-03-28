@@ -1,6 +1,6 @@
 {
   "name": "@indent/integration-okta",
-  "version": "0.0.1-canary.44",
+  "version": "0.0.1-canary.45",
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {
