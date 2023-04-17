@@ -63,7 +63,7 @@ export class AutoApproveIntegration
 
 function getApprovalEvent(reqEvent: Event) {
   const expireTime = new Date()
-  const hours = parseInt(AUTO_APPROVAL_DURATION, 10)
+  const hours = parseFloat(AUTO_APPROVAL_DURATION)
 
   expireTime.setTime(expireTime.getTime() + hours * 60 * 60 * 1000)
 
