@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.36](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.35...@indent/integration-pagerduty@0.0.1-canary.36) (2023-04-18)
+
+
+### Bug Fixes
+
+* **okta:** add denial env vars ([#54](https://github.com/indentapis/integrations/issues/54)) ([a4ec47a](https://github.com/indentapis/integrations/commit/a4ec47ab5a9d34e85c458333425d8bd5657a6a69))
+
+
+
+
+
 ## [0.0.1-canary.35](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.34...@indent/integration-pagerduty@0.0.1-canary.35) (2023-02-18)
 
 **Note:** Version bump only for package @indent/integration-pagerduty
