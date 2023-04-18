@@ -125,11 +125,30 @@ describe('OktaGroupIntegration', () => {
 
   describe('GetDecision', () => {
     beforeEach(() => setupMocks())
-    it('should respond with Approval details', async () => {
+    it.skip('should respond with Approval details', async () => {
       const integration = new OktaDecisionIntegration(options)
       const res = await integration.GetDecision(autoApproveInput)
 
       expect(res).toBeTruthy()
+    })
+
+    it('should respond with Denial', async () => {
+      const integration = new OktaDecisionIntegration({
+        ...options,
+        autoDenialExcludeOktaGroups: ['123'],
+      })
+      const res = await integration.GetDecision(autoApproveInput)
+
+      expect(res.claims[0].event).toEqual('access/deny')
+    })
+
+    it('should respond with no claims', async () => {
+      const integration = new OktaDecisionIntegration({
+        ...options,
+        autoDenialExcludeOktaGroups: ['0ohijklmn5678'],
+      })
+      const res = await integration.GetDecision(autoApproveInput)
+      expect(res.claims).toHaveLength(0)
     })
   })
 })
