@@ -77,6 +77,13 @@ export class OktaUserIntegration
         labels: {
           oktaId: user.id,
           managerId: user.profile.managerId || '',
+          'indent.com/resource/is_deactivated': [
+            'STAGED',
+            'SUSPENDED',
+            'DEPROVISIONED',
+          ].includes(user.status)
+            ? 'true'
+            : 'false',
           timestamp,
         },
       }),
