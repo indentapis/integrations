@@ -33,6 +33,7 @@ describe('OktaUserIntegration', () => {
             labels: {
               oktaId: '0123',
               managerId: 'm123',
+              'indent.com/resource/is_deactivated': 'false',
               timestamp: res.resources[0].labels.timestamp,
             },
           },
@@ -44,6 +45,7 @@ describe('OktaUserIntegration', () => {
             labels: {
               oktaId: '2345',
               managerId: 'm123',
+              'indent.com/resource/is_deactivated': 'false',
               timestamp: res.resources[0].labels.timestamp,
             },
           },
@@ -90,6 +92,7 @@ function setupMocks() {
       data: [
         {
           id: '0123',
+          status: 'ACTIVE',
           profile: {
             email: 'user@example.com',
             firstName: 'Example',
@@ -114,6 +117,7 @@ function setupMocks() {
       data: [
         {
           id: '2345',
+          status: 'ACTIVE',
           profile: {
             email: 'user2@example.com',
             firstName: 'Example',
