@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.47](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.46...@indent/integration-okta@0.0.1-canary.47) (2023-05-09)
+
+
+### Bug Fixes
+
+* **okta:** add is_deactivated ([137367b](https://github.com/indentapis/integrations/commit/137367be3af345d59200da85eba06e70ad7ac9ae))
+* **okta:** add is_deactivated ([a10dcc8](https://github.com/indentapis/integrations/commit/a10dcc8e6e228c6aa8fc4abf3129e2eae8c2025d))
+
+
+
+
+
 ## [0.0.1-canary.46](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.45...@indent/integration-okta@0.0.1-canary.46) (2023-04-18)
 
 
