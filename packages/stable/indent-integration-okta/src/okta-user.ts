@@ -156,6 +156,7 @@ export class OktaUserIntegration
 
     console.log('@indent/integration-okta: pulled users')
     console.log({
+      firstResourceLabels: resources[0].labels,
       resources,
     })
 
