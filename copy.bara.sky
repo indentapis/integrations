@@ -8,6 +8,8 @@ integration_target_auto_approval = "git@github.com:indentapis/template-aws-lambd
 integration_target_aws_iam = "git@github.com:indentapis/template-aws-lambda-aws-iam.git"
 integration_target_incidentio = "git@github.com:indentapis/template-aws-lambda-incidentio.git"
 integration_target_opsgenie = "git@github.com:indentapis/template-aws-lambda-opsgenie.git"
+integration_target_github_issue = "git@github.com:indentapis/template-aws-lambda-github-issue.git"
+integration_target_cloudflare = "git@github.com:indentapis/template-aws-lambda-cloudflare.git"
 
 core.workflow(
     name = "okta",
@@ -141,7 +143,7 @@ core.workflow(
     name = "github-issue",
     origin = folder.origin(),
     destination = git.github_pr_destination(
-      url = integration_target_github-issue,
+      url = integration_target_github_issue,
       destination_ref = "main"
     ),
     origin_files = glob(["tmp/examples/aws-lambda-github-issue-webhook", "tmp/examples/aws-lambda-github-issue-webhook/**"]),
