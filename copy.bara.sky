@@ -136,3 +136,35 @@ core.workflow(
       core.move("tmp/examples/aws-lambda-opsgenie-webhook", ""),
     ],
 )
+
+core.workflow(
+    name = "github-issue",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_github-issue,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-github-issue-webhook", "tmp/examples/aws-lambda-github-issue-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-github-issue"),
+      core.move("tmp/examples/aws-lambda-github-issue-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "cloudflare",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_cloudflare,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-cloudflare-webhook", "tmp/examples/aws-lambda-cloudflare-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-cloudflare"),
+      core.move("tmp/examples/aws-lambda-cloudflare-webhook", ""),
+    ],
+)
