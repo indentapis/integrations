@@ -1,0 +1,25 @@
+{
+  "name": "@indent/integration-github-issue",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.1-canary.16",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "test": "GITHUB_ORG=example GH_TOKEN=exampleToken jest --config ../../../jest.config.js github.test.*",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-integration": "^0.0.1-canary.29"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "gitHead": "HEAD~1"
+}

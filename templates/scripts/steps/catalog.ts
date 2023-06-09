@@ -204,4 +204,37 @@ export const catalog: CatalogItem[] = [
         '<a href="https://indent.com/docs/integrations/aws-iam" target="_blank">this link</a>',
     },
   },
+  {
+    name: 'cloudflare',
+    displayName: 'Cloudflare',
+    integrations: ['CloudflareIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: ['CLOUDFLARE_TOKEN', 'CLOUDFLARE_ACCOUNT'],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
+    links: { repoSource: 'packages/beta/indent-integration-cloudflare' },
+    readme: {
+      connection: [],
+      docsLink:
+        '<a href="https://indent.com/docs/integrations/cloudflare" target="_blank">this link</a>',
+    },
+  },
+  {
+    name: 'github-issue',
+    displayName: 'GitHub Issues',
+    integrations: ['GithubIssueIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: [
+      'GH_TOKEN',
+      'GITHUB_ORG',
+      'GITHUB_REPO',
+      'INDENT_SPACE_NAME',
+    ],
+    capabilities: ['ApplyUpdate'],
+    links: { repoSource: 'packages/stable/indent-integration-github-issue' },
+    readme: {
+      connection: [],
+      docsLink:
+        '<a href="https://indent.com/docs/integrations/github" target="_blank">this link</a>',
+    },
+  },
 ]
