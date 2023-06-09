@@ -24,6 +24,8 @@ jobs:
           - incidentio
           - auto-approval
           - okta-auto-approval
+          - github-issue
+          - cloudflare
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout
