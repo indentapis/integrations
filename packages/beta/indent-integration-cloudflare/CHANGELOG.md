@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-cloudflare@0.0.1-canary.28...@indent/integration-cloudflare@0.0.1-canary.29) (2023-08-15)
+
+
+### Bug Fixes
+
+* **cloudflare:** role payload ([0248118](https://github.com/indentapis/integrations/commit/024811803b515088b26b14c181136f852c12de92))
+
+
+
+
+
 ## [0.0.1-canary.28](https://github.com/indentapis/integrations/compare/@indent/integration-cloudflare@0.0.1-canary.27...@indent/integration-cloudflare@0.0.1-canary.28) (2023-02-18)
 
 **Note:** Version bump only for package @indent/integration-cloudflare
