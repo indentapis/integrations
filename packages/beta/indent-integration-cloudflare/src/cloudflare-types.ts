@@ -21,9 +21,9 @@ export type CloudflareMember = {
 
 export type CloudflareRole = {
   id: string
-  name: string
-  description: string
-  permissions: {
+  name?: string
+  description?: string
+  permissions?: {
     analytics: {
       read: boolean
       write: boolean

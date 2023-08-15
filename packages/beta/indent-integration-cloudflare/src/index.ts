@@ -183,9 +183,7 @@ export class CloudflareIntegration
             return res
           }
         } else {
-          existingMember.roles?.push(
-            JSON.parse(granted.labels['cloudflare/role'])
-          )
+          existingMember.roles?.push({ id: getCloudflareId(granted) })
 
           const { data: updateMemberData } = await this.FetchCloudflare({
             method: 'PUT',

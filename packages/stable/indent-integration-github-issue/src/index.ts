@@ -13,8 +13,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 const pkg = require('../package.json')
 
 export const GITHUB_TOKEN = process.env.GH_TOKEN
-export const GITHUB_ORG = process.env.GITHUB_ORG
-export const GITHUB_REPO = process.env.GITHUB_REPO
+export const GITHUB_ORG = process.env.GH_ORG
+export const GITHUB_REPO = process.env.GH_REPO
 export const INDENT_SPACE_NAME = process.env.INDENT_SPACE_NAME
 
 export class GithubIssueIntegration

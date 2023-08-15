@@ -225,8 +225,8 @@ export const catalog: CatalogItem[] = [
     runtimes: ['AWS Lambda'],
     environmentVariables: [
       'GH_TOKEN',
-      'GITHUB_ORG',
-      'GITHUB_REPO',
+      'GH_ORG',
+      'GH_REPO',
       'INDENT_SPACE_NAME',
     ],
     capabilities: ['ApplyUpdate'],
