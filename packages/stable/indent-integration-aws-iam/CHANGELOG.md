@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.40](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.39...@indent/integration-aws-iam@0.0.1-canary.40) (2023-09-07)
+
+
+### Bug Fixes
+
+* **okta:** auto-approve/deny branching ([b289a81](https://github.com/indentapis/integrations/commit/b289a81d5512c2aedb75f5a42d1c4b9aa8a8d96d))
+
+
+
+
+
 ## [0.0.1-canary.39](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.38...@indent/integration-aws-iam@0.0.1-canary.39) (2023-02-18)
 
 **Note:** Version bump only for package @indent/integration-aws-iam

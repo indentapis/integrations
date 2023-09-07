@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.49](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.48...@indent/integration-okta@0.0.1-canary.49) (2023-09-07)
+
+
+### Bug Fixes
+
+* **okta:** auto-approve/deny branching ([b289a81](https://github.com/indentapis/integrations/commit/b289a81d5512c2aedb75f5a42d1c4b9aa8a8d96d))
+
+
+
+
+
 ## [0.0.1-canary.48](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.47...@indent/integration-okta@0.0.1-canary.48) (2023-05-10)
 
 
