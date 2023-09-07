@@ -100,6 +100,7 @@ export class OktaDecisionIntegration
     const groups = response.data as PartialOktaGroup[]
     const groupsSet = new Set(groups.map((g) => g.id))
 
+    // Check for auto denial
     if (
       reqEvent &&
       (this._autoDenialExcludeOktaGroups ||
@@ -115,7 +116,10 @@ export class OktaDecisionIntegration
           : getDefaultDenialEvent(reqEvent)
         claims.push(claim)
       }
-    } else if (
+    }
+
+    // Check for auto approval
+    if (
       reqEvent &&
       this._autoApprovalOktaGroups &&
       this._autoApprovalOktaGroups.some((gid) => groupsSet.has(gid))

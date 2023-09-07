@@ -15,12 +15,12 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@aws-sdk/client-iam": "3.46.0",
-    "@aws-sdk/client-identitystore": "^3.259.0",
-    "@aws-sdk/client-organizations": "^3.262.0",
-    "@aws-sdk/client-sso-admin": "^3.259.0",
-    "@aws-sdk/client-sts": "^3.259.0",
-    "@aws-sdk/types": "^3.257.0",
+    "@aws-sdk/client-iam": "^3.405.0",
+    "@aws-sdk/client-identitystore": "^3.405.0",
+    "@aws-sdk/client-organizations": "^3.405.0",
+    "@aws-sdk/client-sso-admin": "^3.405.0",
+    "@aws-sdk/client-sts": "^3.405.0",
+    "@aws-sdk/types": "^3.398.0",
     "@indent/base-integration": "^0.0.1-canary.29"
   },
   "publishConfig": {
