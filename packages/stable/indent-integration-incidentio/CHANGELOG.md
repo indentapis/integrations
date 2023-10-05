@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.39](https://github.com/indentapis/integrations/compare/@indent/integration-incidentio@0.0.1-canary.38...@indent/integration-incidentio@0.0.1-canary.39) (2023-10-05)
+
+
+### Bug Fixes
+
+* **incidentio:** status_category ([a3fe53b](https://github.com/indentapis/integrations/commit/a3fe53be099cbb8bea8848f0ffeaf4359402c75b))
+
+
+
+
+
 ## [0.0.1-canary.38](https://github.com/indentapis/integrations/compare/@indent/integration-incidentio@0.0.1-canary.37...@indent/integration-incidentio@0.0.1-canary.38) (2023-10-05)
 
 **Note:** Version bump only for package @indent/integration-incidentio
