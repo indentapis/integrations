@@ -75,7 +75,7 @@ export class CloudflareIntegration
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchCloudflare({
-      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles?per_page=200`,
     })
 
     const {
@@ -111,7 +111,7 @@ export class CloudflareIntegration
     console.log('start apply')
     try {
       // list cloudflare members
-      const pageSize = 50
+      const pageSize = 200
       const {
         data: { result: memberList },
       } = await this.FetchCloudflare({

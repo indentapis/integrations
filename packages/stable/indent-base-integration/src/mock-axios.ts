@@ -15,7 +15,7 @@ const getConfigKey = (config: AxiosRequestConfig) =>
     config.baseURL,
     config.url,
     config.method.toLowerCase() === 'post'
-      ? config.url.includes('tailscale')
+      ? config.url?.includes('tailscale')
         ? // add special case for tailscale ACL formatting
           JSON.stringify(config.data, null, 2)
         : JSON.stringify(config.data)

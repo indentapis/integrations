@@ -86,7 +86,7 @@ function setupMocks() {
     {
       method: 'GET',
       baseURL: 'https://api.cloudflare.com',
-      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles`,
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/roles?per_page=200`,
     },
     {
       status: 200,
@@ -163,7 +163,7 @@ function setupMocks() {
     {
       method: 'GET',
       baseURL: 'https://api.cloudflare.com',
-      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members?per_page=50`,
+      url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members?per_page=200`,
     },
     {
       status: 200,
