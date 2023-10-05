@@ -108,7 +108,7 @@ export class IncidentioDecisionIntegration
 
     const response = await this.FetchIncidentio({
       method: 'get',
-      url: '/v2/incidents?status_category=live&page_size=100',
+      url: '/v2/incidents?status_category[one_of]=live&page_size=250',
     })
 
     const { incidents = [] } = response.data

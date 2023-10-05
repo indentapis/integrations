@@ -78,7 +78,7 @@ function setupMocks() {
     {
       method: 'get',
       baseURL: 'https://api.incident.io',
-      url: `/v2/incidents?status_category=live&page_size=100`,
+      url: `/v2/incidents?status_category[one_of]=live&page_size=250`,
     },
     success(SNAPSHOT_V2_INCIDENTS)
   )
