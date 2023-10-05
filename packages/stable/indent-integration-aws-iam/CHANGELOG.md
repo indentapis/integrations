@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.41](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.40...@indent/integration-aws-iam@0.0.1-canary.41) (2023-10-05)
+
+
+### Bug Fixes
+
+* **incidentio:** use v2 incidents ([66fc64c](https://github.com/indentapis/integrations/commit/66fc64c738cf80cf546aa575ab5f98c7e39d7839))
+
+
+
+
+
 ## [0.0.1-canary.40](https://github.com/indentapis/integrations/compare/@indent/integration-aws-iam@0.0.1-canary.39...@indent/integration-aws-iam@0.0.1-canary.40) (2023-09-07)
 
 
