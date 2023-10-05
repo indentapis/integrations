@@ -108,7 +108,7 @@ export class IncidentioDecisionIntegration
 
     const response = await this.FetchIncidentio({
       method: 'get',
-      url: '/v1/incidents',
+      url: '/v2/incidents?status_category=live&page_size=100',
     })
 
     const { incidents = [] } = response.data
@@ -121,7 +121,7 @@ export class IncidentioDecisionIntegration
           inc.incident_role_assignments.filter(
             (assignment: any) =>
               // Check if requesting actor is an incident assignee
-              assignment.assignee.email === actorEmail &&
+              assignment.assignee?.email === actorEmail &&
               (!this._autoApprovedRoles
                 ? // If no auto approved roles are set, allow any role
                   true

@@ -59,8 +59,8 @@ describe('GetDecision', () => {
 const snapshot = (filename: string) =>
   JSON.parse(readFileSync(path.resolve(__dirname, filename)).toString())
 
-const SNAPSHOT_V1_INCIDENTS = snapshot(
-  './snapshots/api-incident-io-v1-list-incidents-20220818.json'
+const SNAPSHOT_V2_INCIDENTS = snapshot(
+  './snapshots/api-incident-io-v2-list-incidents-20231004.json'
 )
 
 function setupMocks() {
@@ -78,8 +78,8 @@ function setupMocks() {
     {
       method: 'get',
       baseURL: 'https://api.incident.io',
-      url: `/v1/incidents`,
+      url: `/v2/incidents?status_category=live&page_size=100`,
     },
-    success(SNAPSHOT_V1_INCIDENTS)
+    success(SNAPSHOT_V2_INCIDENTS)
   )
 }
