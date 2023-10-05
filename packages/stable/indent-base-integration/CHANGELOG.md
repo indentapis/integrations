@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.29...@indent/base-integration@0.0.1-canary.30) (2023-10-05)
+
+
+### Bug Fixes
+
+* **cloudflare:** pull all roles ([76e7b7c](https://github.com/indentapis/integrations/commit/76e7b7c08f6128bafc6f526f1ed97668d6b02d71))
+* **tailscale:** mock ([dbd8daa](https://github.com/indentapis/integrations/commit/dbd8daa41dbfdf0d2b2f5fae9ff74cd858452f55))
+
+
+
+
+
 ## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.28...@indent/base-integration@0.0.1-canary.29) (2023-02-18)
 
 **Note:** Version bump only for package @indent/base-integration

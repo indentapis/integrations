@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.32](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.31...@indent/runtime-aws-lambda@0.0.1-canary.32) (2023-10-05)
+
+**Note:** Version bump only for package @indent/runtime-aws-lambda
+
+
+
+
+
 ## [0.0.1-canary.31](https://github.com/indentapis/integrations/compare/@indent/runtime-aws-lambda@0.0.1-canary.30...@indent/runtime-aws-lambda@0.0.1-canary.31) (2023-02-18)
 
 **Note:** Version bump only for package @indent/runtime-aws-lambda

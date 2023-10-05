@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.50](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.49...@indent/integration-okta@0.0.1-canary.50) (2023-10-05)
+
+**Note:** Version bump only for package @indent/integration-okta
+
+
+
+
+
 ## [0.0.1-canary.49](https://github.com/indentapis/integrations/compare/@indent/integration-okta@0.0.1-canary.48...@indent/integration-okta@0.0.1-canary.49) (2023-09-07)
 
 

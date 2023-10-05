@@ -2,7 +2,7 @@
   "name": "@indent/integration-merge",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.22",
+  "version": "0.0.1-canary.23",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.29"
+    "@indent/base-integration": "^0.0.1-canary.30"
   },
   "publishConfig": {
     "access": "public"

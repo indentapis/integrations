@@ -2,7 +2,7 @@
   "name": "@indent/runtime-aws-lambda",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.31",
+  "version": "0.0.1-canary.32",
   "files": [
     "lib"
   ],
@@ -14,7 +14,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.29",
+    "@indent/base-integration": "^0.0.1-canary.30",
     "aws-lambda": "^1.0.7",
     "axios": "0.24.0"
   },

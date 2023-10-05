@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.8](https://github.com/indentapis/integrations/compare/@indent/integration-auto-approval-email@0.0.1-canary.7...@indent/integration-auto-approval-email@0.0.1-canary.8) (2023-10-05)
+
+**Note:** Version bump only for package @indent/integration-auto-approval-email
+
+
+
+
+
 ## [0.0.1-canary.7](https://github.com/indentapis/integrations/compare/@indent/integration-auto-approval-email@0.0.1-canary.6...@indent/integration-auto-approval-email@0.0.1-canary.7) (2023-02-18)
 
 **Note:** Version bump only for package @indent/integration-auto-approval-email
