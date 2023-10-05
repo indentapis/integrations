@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/integration-cloudflare@0.0.1-canary.29...@indent/integration-cloudflare@0.0.1-canary.30) (2023-10-05)
+
+
+### Bug Fixes
+
+* **cloudflare:** new api ([a06e2b9](https://github.com/indentapis/integrations/commit/a06e2b940d493dff104958895f1ee380d2e160d1))
+
+
+
+
+
 ## [0.0.1-canary.29](https://github.com/indentapis/integrations/compare/@indent/integration-cloudflare@0.0.1-canary.28...@indent/integration-cloudflare@0.0.1-canary.29) (2023-08-15)
 
 

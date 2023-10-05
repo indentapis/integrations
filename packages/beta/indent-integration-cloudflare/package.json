@@ -2,7 +2,7 @@
   "name": "@indent/integration-cloudflare",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.29",
+  "version": "0.0.1-canary.30",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
     "test": "CLOUDFLARE_ACCOUNT=example_account_id CLOUDFLARE_TOKEN=example_token jest --config ../../../jest.config.js cloudflare.*",
