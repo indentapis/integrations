@@ -112,6 +112,7 @@ export class IncidentioDecisionIntegration
     })
 
     const { incidents = [] } = response.data
+    console.log('open incidents:', incidents.length)
 
     const reqEvent = req.events.find((e) => e.event === 'access/request')
     const actorEmail = reqEvent.actor.email
