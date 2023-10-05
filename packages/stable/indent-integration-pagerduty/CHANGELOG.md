@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.38](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.37...@indent/integration-pagerduty@0.0.1-canary.38) (2023-10-05)
+
+**Note:** Version bump only for package @indent/integration-pagerduty
+
+
+
+
+
 ## [0.0.1-canary.37](https://github.com/indentapis/integrations/compare/@indent/integration-pagerduty@0.0.1-canary.36...@indent/integration-pagerduty@0.0.1-canary.37) (2023-10-05)
 
 **Note:** Version bump only for package @indent/integration-pagerduty

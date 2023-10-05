@@ -2,7 +2,7 @@
   "name": "@indent/integration-twingate",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.25",
+  "version": "0.0.1-canary.26",
   "files": [
     "lib"
   ],
@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.30"
+    "@indent/base-integration": "^0.0.1-canary.31"
   },
   "publishConfig": {
     "access": "public"

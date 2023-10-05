@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.31](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.30...@indent/base-integration@0.0.1-canary.31) (2023-10-05)
+
+
+### Bug Fixes
+
+* tailscale mock ([edbff0e](https://github.com/indentapis/integrations/commit/edbff0ef5a56da54d0c53aac11edf33fa9c8c1ca))
+
+
+
+
+
 ## [0.0.1-canary.30](https://github.com/indentapis/integrations/compare/@indent/base-integration@0.0.1-canary.29...@indent/base-integration@0.0.1-canary.30) (2023-10-05)
 
 
