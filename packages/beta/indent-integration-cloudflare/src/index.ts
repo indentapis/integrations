@@ -136,12 +136,15 @@ export class CloudflareIntegration
             res.status.code = StatusCode.OK
             return res
           } else {
-            existingMember.roles?.filter(
+            // otherwise revoke the role
+            const updatedMember = { ...existingMember }
+            updatedMember.roles = existingMember.roles?.filter(
               (r: CloudflareRole) => r.id !== getCloudflareId(granted)
             )
 
             if (existingMember.roles?.length === 1) {
               if (memberList.length > 1) {
+                // if not the last member, remove the member
                 const { data: removeMemberData } = await this.FetchCloudflare({
                   method: 'DELETE',
                   url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
@@ -166,7 +169,9 @@ export class CloudflareIntegration
                   method: 'PUT',
                   url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
                   data: {
-                    ...existingMember,
+                    roles: updatedMember.roles.map((r: CloudflareRole) => ({
+                      id: r.id,
+                    })),
                   },
                 }
               )
@@ -183,14 +188,14 @@ export class CloudflareIntegration
             return res
           }
         } else {
-          existingMember.roles?.push({ id: getCloudflareId(granted) })
+          // if member exists but doesn't have role
+          const updatedMember = { roles: existingMember.roles }
+          updatedMember.roles?.push({ id: getCloudflareId(granted) })
 
           const { data: updateMemberData } = await this.FetchCloudflare({
             method: 'PUT',
             url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members/${existingMember.id}`,
-            data: {
-              ...existingMember,
-            },
+            data: updatedMember,
           })
 
           if (updateMemberData.success) {
@@ -204,7 +209,7 @@ export class CloudflareIntegration
         }
       } else if (event === 'access/grant') {
         // if member does not exist, create member with role
-        console.log('start create new member')
+        console.log('creating new member')
         const { data: createMemberData } = await this.FetchCloudflare({
           method: 'POST',
           url: `/client/v4/accounts/${CLOUDFLARE_ACCOUNT}/members`,
@@ -213,13 +218,13 @@ export class CloudflareIntegration
             roles: [getCloudflareId(granted)],
           },
         })
-        console.log(createMemberData)
         if (createMemberData.success) {
           console.log('new member created successfully')
           res.status.code = StatusCode.OK
         } else {
           console.error('failed to create member')
           console.error(createMemberData)
+          res.status.code = StatusCode.UNKNOWN
         }
       } else {
         // if there's no existing member and access/revoke, respond with success
