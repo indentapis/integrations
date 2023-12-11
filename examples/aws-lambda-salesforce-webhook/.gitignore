@@ -1,0 +1,12 @@
+data
+dist
+lib
+.env
+node_modules
+*.tfstate
+.terraform*
+*.tfstate.*
+terraform/config/*.tfvars
+!terraform/config/example.tfvars
+yarn.lock
+package-lock.json
