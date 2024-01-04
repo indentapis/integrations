@@ -15,6 +15,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const { version } = require('../package.json')
 const INCIDENTIO_API_KEY = process.env.INCIDENTIO_API_KEY || ''
+const INCIDENTIO_APPROVE_PARTICIPANTS =
+  process.env.INCIDENTIO_APPROVE_PARTICIPANTS || ''
 const AUTO_APPROVAL_DURATION = process.env.AUTO_APPROVAL_DURATION || '6'
 const AUTO_APPROVAL_INCIDENTIO_ROLES =
   process.env.AUTO_APPROVAL_INCIDENTIO_ROLES || ''
@@ -116,7 +118,7 @@ export class IncidentioDecisionIntegration
 
     const reqEvent = req.events.find((e) => e.event === 'access/request')
     const actorEmail = reqEvent.actor.email
-    const isIncidentResponder =
+    let isIncidentResponder =
       incidents.filter(
         (inc: any) =>
           inc.incident_role_assignments.filter(
@@ -131,6 +133,30 @@ export class IncidentioDecisionIntegration
                   this._autoApprovedRoles.includes(assignment.role.shortform))
           ).length > 0
       ).length > 0
+
+    if (!isIncidentResponder && INCIDENTIO_APPROVE_PARTICIPANTS) {
+      console.log('checking incident updates for participants')
+      console.log('> incidents:', incidents.map((i: any) => i.id).join(', '))
+      const participants = {}
+
+      await Promise.all(
+        incidents.map(async (inc: any) => {
+          const res = await this.FetchIncidentio({
+            method: 'get',
+            url: `/v2/incident_updates?incident_id=${inc.id}&page_size=250`,
+          })
+          const { incident_updates: updates } = res.data
+          updates.forEach((update: any) => {
+            participants[update.updater.user.email] = true
+          })
+        })
+      )
+
+      console.log('> isParticipant:', participants[actorEmail])
+      if (participants[actorEmail]) {
+        isIncidentResponder = true
+      }
+    }
 
     if (isIncidentResponder) {
       const claim = this._getApprovalEvent
