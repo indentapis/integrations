@@ -2,7 +2,7 @@
   "name": "@indent/integration-incidentio",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.39",
+  "version": "0.0.1-canary.40",
   "files": [
     "lib"
   ],

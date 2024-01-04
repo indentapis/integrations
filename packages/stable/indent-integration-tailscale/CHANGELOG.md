@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.23](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.22...@indent/integration-tailscale@0.0.1-canary.23) (2024-01-04)
+
+
+### Features
+
+* **incidentio:** add approvals for participants ([0e56712](https://github.com/indentapis/integrations/commit/0e567124d4830aeb61eab7212ab386e5c5175c96))
+
+
+
+
+
 ## [0.0.1-canary.22](https://github.com/indentapis/integrations/compare/@indent/integration-tailscale@0.0.1-canary.21...@indent/integration-tailscale@0.0.1-canary.22) (2023-02-18)
 
 
