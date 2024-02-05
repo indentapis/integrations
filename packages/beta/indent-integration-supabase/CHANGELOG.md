@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.0.1-canary.33 (2024-02-05)
+
+
+### Features
+
+* **supabase:** add integration ([677c811](https://github.com/indentapis/integrations/commit/677c81113c2ba0940df37d630831e7c6f2b3da92))
+
+
+
+
+
 ## [0.0.1-canary.32](https://github.com/indentapis/integrations/compare/@indent/integration-cloudflare@0.0.1-canary.31...@indent/integration-cloudflare@0.0.1-canary.32) (2023-10-05)
 
 **Note:** Version bump only for package @indent/integration-cloudflare
