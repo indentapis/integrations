@@ -1,0 +1,22 @@
+{
+  "name": "@indent/integration-supabase",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.1-canary.32",
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "test": "ORG_ID=exampleorg-id SUPABASE_TOKEN=example_token jest --config ../../../jest.config.js supabase.*",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-integration": "^0.0.1-canary.31"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "gitHead": "HEAD~1"
+}

@@ -9,12 +9,12 @@ export function addMock(config: AxiosRequestConfig, res: AxiosResponse): any {
   return mocks
 }
 
-const getConfigKey = (config: AxiosRequestConfig) =>
-  [
+const getConfigKey = (config: AxiosRequestConfig) => {
+  return [
     (config.method || 'get').toLowerCase(),
     config.baseURL,
     config.url,
-    config.method.toLowerCase() === 'post'
+    config.method.toLowerCase() !== 'get'
       ? (config.baseURL || config.url)?.includes('tailscale')
         ? // add special case for tailscale ACL formatting
           JSON.stringify(config.data, null, 2)
@@ -23,6 +23,7 @@ const getConfigKey = (config: AxiosRequestConfig) =>
   ]
     .filter(Boolean)
     .join(':')
+}
 
 const isMocked = (config: AxiosRequestConfig) => getConfigKey(config) in mocks
 
