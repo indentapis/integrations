@@ -1,7 +1,7 @@
 import { StatusCode, addMock } from '@indent/base-integration'
 import { SupabaseIntegration } from '..'
 
-const ORG_ID = process.env.ORG_ID || ''
+const SUPABASE_ORG_ID = process.env.SUPABASE_ORG_ID || ''
 
 describe('SupabaseIntegration', () => {
   describe('Base functionality', () => {
@@ -37,7 +37,7 @@ describe('SupabaseIntegration', () => {
     },
     {
       kind: 'supabase.v1.Role',
-      id: `${ORG_ID}-3729916`,
+      id: `${SUPABASE_ORG_ID}-3729916`,
       displayName: 'Administrator',
       labels: {
         role_id: '3729916',
@@ -76,7 +76,7 @@ function setupMocks() {
     {
       method: 'GET',
       baseURL: 'https://api.supabase.io',
-      url: `/platform/organizations/${ORG_ID}/roles`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/roles`,
     },
     {
       status: 200,
@@ -107,7 +107,7 @@ function setupMocks() {
     {
       method: 'GET',
       baseURL: 'https://api.supabase.io',
-      url: `/platform/organizations/${ORG_ID}/members`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/members`,
     },
     {
       status: 200,
@@ -130,10 +130,9 @@ function setupMocks() {
     {
       method: 'POST',
       baseURL: 'https://api.supabase.io',
-      url: `/platform/organizations/${ORG_ID}/members/invite`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite`,
       data: {
         invited_email: 'user@example.com',
-        owner_id: 509170,
         role_id: 3729916,
       },
     },
@@ -141,7 +140,6 @@ function setupMocks() {
       status: 200,
       data: {
         invited_email: 'user@example.com',
-        owner_id: 509170,
         role_id: 3729916,
       },
       statusText: '',
@@ -154,32 +152,11 @@ function setupMocks() {
     {
       method: 'DELETE',
       baseURL: 'https://api.supabase.io',
-      url: `/platform/organizations/${ORG_ID}/members/invite?invited_id=f650384e-0d8d-440c-91d6-a428cf6094c9`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=f650384e-0d8d-440c-91d6-a428cf6094c9`,
     },
     {
       status: 200,
       data: undefined,
-      statusText: '',
-      headers: undefined,
-      config: undefined,
-    }
-  )
-
-  addMock(
-    {
-      method: 'GET',
-      baseURL: 'https://api.supabase.io',
-      url: `/platform/profile`,
-    },
-    {
-      status: 200,
-      data: {
-        id: 509170,
-        auth0_id: 'github|1026125',
-        primary_email: 'admin@example.com',
-        username: 'user',
-        gotrue_id: 'f650384e-0d8d-440c-91d6-a428cf6094c9',
-      },
       statusText: '',
       headers: undefined,
       config: undefined,

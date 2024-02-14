@@ -18,7 +18,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const pkg = require('../package.json')
 const SUPABASE_TOKEN = process.env.SUPABASE_TOKEN || ''
-const ORG_ID = process.env.ORG_ID || ''
+const SUPABASE_ORG_ID = process.env.SUPABASE_ORG_ID || ''
 
 export class SupabaseIntegration
   extends BaseHttpIntegration
@@ -72,17 +72,17 @@ export class SupabaseIntegration
 
   async PullUpdate(_req: PullUpdateRequest): Promise<PullUpdateResponse> {
     const response = await this.FetchSupabase({
-      url: `/platform/organizations/${ORG_ID}/roles`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/roles`,
     })
 
     const { data: result } = response
     const kind = 'supabase.v1.Role'
     const resources = result.map((r) => ({
-      id: `${ORG_ID}-${r.id}`,
+      id: `${SUPABASE_ORG_ID}-${r.id}`,
       displayName: r.name,
       kind,
       labels: {
-        org_id: ORG_ID,
+        org_id: SUPABASE_ORG_ID,
         role_id: `${r.id}`,
       },
     })) as Resource[]
@@ -102,15 +102,9 @@ export class SupabaseIntegration
     }
 
     try {
-      // Get current profile to extract owner_id
-      const profileResponse = await this.FetchSupabase({
-        url: `/platform/profile`,
-      })
-      const profile = profileResponse.data
-
       // Fetch current organization members
       const { data: members } = await this.FetchSupabase({
-        url: `/platform/organizations/${ORG_ID}/members`,
+        url: `/v0/organizations/${SUPABASE_ORG_ID}/members`,
       })
 
       const existingMember = members.find(
@@ -118,9 +112,6 @@ export class SupabaseIntegration
       )
 
       if (event === 'access/grant') {
-        console.log('GRANT PATH')
-        console.log('existingMember', existingMember)
-        console.log('memberCount:', members.length)
         if (
           existingMember &&
           existingMember.role_ids.includes(
@@ -133,7 +124,7 @@ export class SupabaseIntegration
           // Update existing member with new role
           await this.FetchSupabase({
             method: 'PATCH',
-            url: `/platform/organizations/${ORG_ID}/members/${existingMember.gotrue_id}`,
+            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/${existingMember.gotrue_id}`,
             data: { role_id: parseInt(resource.labels.role_id, 10) },
           })
           res.status.code = StatusCode.OK
@@ -142,10 +133,9 @@ export class SupabaseIntegration
           // Invite new member
           await this.FetchSupabase({
             method: 'POST',
-            url: `/platform/organizations/${ORG_ID}/members/invite`,
+            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite`,
             data: {
               invited_email: actor.email,
-              owner_id: parseInt(profile.id, 10),
               role_id: parseInt(resource.labels.role_id, 10),
             },
           })
@@ -160,7 +150,7 @@ export class SupabaseIntegration
           // Remove role from existing member or remove the member if needed
           await this.FetchSupabase({
             method: 'DELETE',
-            url: `/platform/organizations/${ORG_ID}/members/invite?invited_id=${existingMember.gotrue_id}`,
+            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=${existingMember.gotrue_id}`,
           })
           res.status.code = StatusCode.OK
           delete res.status.message

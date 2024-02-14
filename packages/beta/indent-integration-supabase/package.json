@@ -5,7 +5,7 @@
   "version": "0.0.1-canary.33",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "test": "ORG_ID=exampleorg-id SUPABASE_TOKEN=example_token jest --config ../../../jest.config.js supabase.*",
+    "test": "SUPABASE_ORG_ID=exampleorgid SUPABASE_TOKEN=example_token jest --config ../../../jest.config.js supabase.*",
     "build": "yarn run clean && yarn run compile",
     "clean": "rimraf -rf ./lib",
     "compile": "tsc -p tsconfig.build.json",

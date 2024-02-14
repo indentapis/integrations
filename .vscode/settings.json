@@ -15,5 +15,10 @@
   "search.exclude": {
     "**/.next": true,
     "**/packages/**/lib": true
+  },
+  "[javascript][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   }
 }

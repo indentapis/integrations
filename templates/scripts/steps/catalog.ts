@@ -237,4 +237,22 @@ export const catalog: CatalogItem[] = [
         '<a href="https://indent.com/docs/integrations/github" target="_blank">this link</a>',
     },
   },
+  {
+    name: 'supabase',
+    displayName: 'Supabase',
+    integrations: ['SupabaseIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: ['SUPABASE_TOKEN', 'SUPABASE_ORG_ID'],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
+    links: { repoSource: 'packages/beta/indent-integration-supabase' },
+    readme: {
+      connection: [
+        '[Go to Supabase Account Tokens](https://supabase.com/dashboard/account/tokens) and click the arrow next to "Generate new token" for experimental API.',
+        'Add `SUPABASE_TOKEN` as a GitHub Secret.',
+        'Add the org ID (`/dashboard/org/<ORG_ID>/general`) `SUPABASE_ORG_ID` as a GitHub Secret.',
+      ],
+      docsLink:
+        '<a href="https://github.com/indentapis/template-aws-lambda-supabase" target="_blank">this link</a>',
+    },
+  },
 ]
