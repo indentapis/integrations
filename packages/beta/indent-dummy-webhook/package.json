@@ -2,7 +2,7 @@
   "name": "@indent/dummy-webhook",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.32",
+  "version": "0.0.1-canary.33",
   "files": [
     "lib"
   ],
@@ -14,7 +14,7 @@
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
-    "@indent/base-integration": "^0.0.1-canary.32"
+    "@indent/base-integration": "^0.0.1-canary.33"
   },
   "peerDependencies": {
     "next": "*"

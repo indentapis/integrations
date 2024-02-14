@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.22](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.21...@indent/integration-opsgenie@0.0.1-canary.22) (2024-02-14)
+
+**Note:** Version bump only for package @indent/integration-opsgenie
+
+
+
+
+
 ## [0.0.1-canary.21](https://github.com/indentapis/integrations/compare/@indent/integration-opsgenie@0.0.1-canary.20...@indent/integration-opsgenie@0.0.1-canary.21) (2024-02-05)
 
 **Note:** Version bump only for package @indent/integration-opsgenie

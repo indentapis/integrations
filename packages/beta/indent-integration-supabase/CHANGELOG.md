@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.34](https://github.com/indentapis/integrations/compare/@indent/integration-supabase@0.0.1-canary.33...@indent/integration-supabase@0.0.1-canary.34) (2024-02-14)
+
+
+### Bug Fixes
+
+* **supabase:** remove optional field ([42d8158](https://github.com/indentapis/integrations/commit/42d81586eaad6a30396a3cf2bc9c38620bfc8c1f))
+
+
+
+
+
 ## 0.0.1-canary.33 (2024-02-05)
 
 

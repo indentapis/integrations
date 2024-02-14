@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.42](https://github.com/indentapis/integrations/compare/@indent/integration-incidentio@0.0.1-canary.41...@indent/integration-incidentio@0.0.1-canary.42) (2024-02-14)
+
+**Note:** Version bump only for package @indent/integration-incidentio
+
+
+
+
+
 ## [0.0.1-canary.41](https://github.com/indentapis/integrations/compare/@indent/integration-incidentio@0.0.1-canary.40...@indent/integration-incidentio@0.0.1-canary.41) (2024-02-05)
 
 **Note:** Version bump only for package @indent/integration-incidentio
