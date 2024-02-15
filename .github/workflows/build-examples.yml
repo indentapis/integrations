@@ -27,6 +27,7 @@ jobs:
           - okta-auto-approval
           - github-issue
           - cloudflare
+          - supabase
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout
