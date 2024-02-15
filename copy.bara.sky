@@ -10,6 +10,7 @@ integration_target_incidentio = "git@github.com:indentapis/template-aws-lambda-i
 integration_target_opsgenie = "git@github.com:indentapis/template-aws-lambda-opsgenie.git"
 integration_target_github_issue = "git@github.com:indentapis/template-aws-lambda-github-issue.git"
 integration_target_cloudflare = "git@github.com:indentapis/template-aws-lambda-cloudflare.git"
+integration_target_supabase = "git@github.com:indentapis/template-aws-lambda-supabase.git"
 
 core.workflow(
     name = "okta",
@@ -168,5 +169,21 @@ core.workflow(
     transformations = [
       metadata.replace_message("sync(integration): aws-lambda-cloudflare"),
       core.move("tmp/examples/aws-lambda-cloudflare-webhook", ""),
+    ],
+)
+
+core.workflow(
+    name = "supabase",
+    origin = folder.origin(),
+    destination = git.github_pr_destination(
+      url = integration_target_supabase,
+      destination_ref = "main"
+    ),
+    origin_files = glob(["tmp/examples/aws-lambda-supabase-webhook", "tmp/examples/aws-lambda-supabase-webhook/**"]),
+    destination_files = glob(["**"]),
+    authoring = author,
+    transformations = [
+      metadata.replace_message("sync(integration): aws-lambda-supabase"),
+      core.move("tmp/examples/aws-lambda-supabase-webhook", ""),
     ],
 )
