@@ -100,7 +100,7 @@ function setupMocks() {
       statusText: '',
       headers: undefined,
       config: undefined,
-    }
+    },
   )
 
   addMock(
@@ -123,7 +123,7 @@ function setupMocks() {
       statusText: '',
       headers: undefined,
       config: undefined,
-    }
+    },
   )
 
   addMock(
@@ -145,14 +145,36 @@ function setupMocks() {
       statusText: '',
       headers: undefined,
       config: undefined,
-    }
+    },
+  )
+
+  addMock(
+    {
+      method: 'GET',
+      baseURL: 'https://api.supabase.io',
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite`,
+    },
+    {
+      status: 200,
+      data: [
+        {
+          invited_id: 1234,
+          invited_at: 'now',
+          invited_email: 'user@example.com',
+          role_id: 3729916,
+        },
+      ],
+      statusText: '',
+      headers: undefined,
+      config: undefined,
+    },
   )
 
   addMock(
     {
       method: 'DELETE',
       baseURL: 'https://api.supabase.io',
-      url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=f650384e-0d8d-440c-91d6-a428cf6094c9`,
+      url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=1234`,
     },
     {
       status: 200,
@@ -160,6 +182,6 @@ function setupMocks() {
       statusText: '',
       headers: undefined,
       config: undefined,
-    }
+    },
   )
 }

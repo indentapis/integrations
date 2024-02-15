@@ -111,12 +111,17 @@ export class SupabaseIntegration
         (m) => m.primary_email === actor.email
       )
 
+      const { data: invited } = await this.FetchSupabase({
+        url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite`,
+      })
+
+      const invitedMember = invited.find((m) => m.invited_email === actor.email)
+
       if (event === 'access/grant') {
         if (
-          existingMember &&
-          existingMember.role_ids.includes(
-            parseInt(resource.labels.role_id, 10)
-          )
+          invitedMember ||
+          (existingMember &&
+            existingMember.role_id === parseInt(resource.labels.role_id, 10))
         ) {
           res.status.code = StatusCode.OK
           delete res.status.message
@@ -144,14 +149,26 @@ export class SupabaseIntegration
         }
       } else if (event === 'access/revoke') {
         if (!existingMember) {
-          res.status.code = StatusCode.OK
-          delete res.status.message
+          if (!invitedMember) {
+            res.status.code = StatusCode.OK
+            delete res.status.message
+          } else {
+            // Remove role from existing member or remove the member if needed
+            await this.FetchSupabase({
+              method: 'DELETE',
+              url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=${invitedMember.invited_id}`,
+            })
+            console.log('deleted invite')
+            res.status.code = StatusCode.OK
+            delete res.status.message
+          }
         } else {
-          // Remove role from existing member or remove the member if needed
+          // Remove member from organization
           await this.FetchSupabase({
             method: 'DELETE',
-            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/invite?invited_id=${existingMember.gotrue_id}`,
+            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/${existingMember.gotrue_id}`,
           })
+          console.log('removed from organization')
           res.status.code = StatusCode.OK
           delete res.status.message
         }
