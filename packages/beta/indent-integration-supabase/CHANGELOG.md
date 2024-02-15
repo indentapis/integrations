@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.35](https://github.com/indentapis/integrations/compare/@indent/integration-supabase@0.0.1-canary.34...@indent/integration-supabase@0.0.1-canary.35) (2024-02-15)
+
+
+### Bug Fixes
+
+* **supabase:** invites ([91c3366](https://github.com/indentapis/integrations/commit/91c3366bcc4fa14c768d08cb9b3f39cda3ddae3b))
+
+
+
+
+
 ## [0.0.1-canary.34](https://github.com/indentapis/integrations/compare/@indent/integration-supabase@0.0.1-canary.33...@indent/integration-supabase@0.0.1-canary.34) (2024-02-14)
 
 

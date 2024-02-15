@@ -2,7 +2,7 @@
   "name": "@indent/integration-supabase",
   "main": "lib/index",
   "types": "lib/index",
-  "version": "0.0.1-canary.34",
+  "version": "0.0.1-canary.35",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
     "test": "SUPABASE_ORG_ID=exampleorgid SUPABASE_TOKEN=example_token jest --config ../../../jest.config.js supabase.*",
