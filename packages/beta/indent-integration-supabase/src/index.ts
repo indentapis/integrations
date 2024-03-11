@@ -163,14 +163,31 @@ export class SupabaseIntegration
             delete res.status.message
           }
         } else {
-          // Remove member from organization
-          await this.FetchSupabase({
-            method: 'DELETE',
-            url: `/v0/organizations/${SUPABASE_ORG_ID}/members/${existingMember.gotrue_id}`,
-          })
-          console.log('removed from organization')
-          res.status.code = StatusCode.OK
-          delete res.status.message
+          if (resource.labels?.['fallback_role_id']) {
+            // If there's a fallback role, update the member to that role
+            await this.FetchSupabase({
+              method: 'PATCH',
+              url: `/v0/organizations/${SUPABASE_ORG_ID}/members/${existingMember.gotrue_id}`,
+              data: {
+                role_id: parseInt(resource.labels['fallback_role_id'], 10),
+              },
+            })
+            console.log(
+              'updated role to fallback role',
+              resource.labels['fallback_role_id']
+            )
+            res.status.code = StatusCode.OK
+            delete res.status.message
+          } else {
+            // Remove member from organization
+            await this.FetchSupabase({
+              method: 'DELETE',
+              url: `/v0/organizations/${SUPABASE_ORG_ID}/members/${existingMember.gotrue_id}`,
+            })
+            console.log('removed from organization')
+            res.status.code = StatusCode.OK
+            delete res.status.message
+          }
         }
       }
     } catch (err) {
