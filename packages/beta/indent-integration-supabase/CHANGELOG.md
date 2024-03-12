@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-canary.36](https://github.com/indentapis/integrations/compare/@indent/integration-supabase@0.0.1-canary.35...@indent/integration-supabase@0.0.1-canary.36) (2024-03-12)
+
+
+### Bug Fixes
+
+* **supabase:** fallback_role_id ([#56](https://github.com/indentapis/integrations/issues/56)) ([a6ef720](https://github.com/indentapis/integrations/commit/a6ef7206d034ed5ff8ed32571ee25794a290b92a))
+
+
+
+
+
 ## [0.0.1-canary.35](https://github.com/indentapis/integrations/compare/@indent/integration-supabase@0.0.1-canary.34...@indent/integration-supabase@0.0.1-canary.35) (2024-02-15)
 
 
