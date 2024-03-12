@@ -11,7 +11,7 @@ locals {
 }
 
 resource "aws_lambda_layer_version" "deps" {
-  compatible_runtimes = ["nodejs14.x"]
+  compatible_runtimes = [var.lambda_runtime]
   layer_name          = "${local.name}-dependency_layer"
   s3_bucket           = var.artifact.bucket
   s3_key              = var.artifact.deps_key
@@ -24,7 +24,7 @@ resource "aws_lambda_function" "lambda" {
   s3_key        = var.artifact.function_key
   memory_size   = local.lambda_memory
   handler       = "index.handle"
-  runtime       = "nodejs14.x"
+  runtime       = var.lambda_runtime
   timeout       = var.timeout
 
   layers = concat(

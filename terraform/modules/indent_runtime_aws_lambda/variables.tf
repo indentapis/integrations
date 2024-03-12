@@ -51,3 +51,9 @@ variable "timeout" {
   type    = number
   default = 120
 }
+
+
+variable "lambda_runtime" {
+  type    = string
+  default = "nodejs14.x"
+}
