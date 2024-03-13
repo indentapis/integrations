@@ -1,0 +1,23 @@
+{
+  "name": "@indent/integration-salesforce",
+  "main": "lib/index",
+  "types": "lib/index",
+  "version": "0.0.1-canary.01",
+  "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
+    "test": "SALESFORCE_INSTANCE_URL=https://random.com SALESFORCE_ACCESS_TOKEN=example_token jest --config ../../../jest.config.js salesforce.*",
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./lib",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@indent/base-integration": "^0.0.1-canary.31",
+    "jsforce": "^1.11.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "gitHead": "HEAD~1"
+}

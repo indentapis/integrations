@@ -28,6 +28,7 @@ jobs:
           - github-issue
           - cloudflare
           - supabase
+          - salesforce
         indent-runtime: [aws-lambda]
     steps:
       - name: Checkout

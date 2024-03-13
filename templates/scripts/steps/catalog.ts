@@ -219,6 +219,23 @@ export const catalog: CatalogItem[] = [
     },
   },
   {
+    name: 'salesforce',
+    displayName: 'Salesforce',
+    integrations: ['SalesforceIntegration'],
+    runtimes: ['AWS Lambda'],
+    environmentVariables: [
+      'SALESFORCE_INSTANCE_URL',
+      'SALESFORCE_ACCESS_TOKEN',
+    ],
+    capabilities: ['PullUpdate', 'ApplyUpdate'],
+    links: { repoSource: 'packages/beta/indent-integration-salesforce' },
+    readme: {
+      connection: [],
+      docsLink:
+        '<a href="https://indent.com/docs/integrations/salesforce" target="_blank">this link</a>',
+    },
+  },
+  {
     name: 'github-issue',
     displayName: 'GitHub Issues',
     integrations: ['GithubIssueIntegration'],
